@@ -14,4 +14,17 @@ module.exports = {
   parserOptions: {
     parser: 'babel-eslint',
   },
+  overrides: [{
+    files: ['src/**'],
+    rules: {
+      'linebreak-style': 0,
+      'no-plusplus': 0,
+      'arrow-parens': 0,
+      'no-alert': 0,
+      'no-nested-ternary': 0,
+      'no-confusing-arrow': 0,
+      'object-curly-newline': 0,
+      'indent': ['error', 3],
+    },
+  }],
 };
