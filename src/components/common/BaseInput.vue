@@ -194,7 +194,10 @@ export default {
   }
   &.hasLabel.hasError { border-radius: 0 20px; }
   &.textarea.hasLabel.hasError { border-radius: 0 10px; }
-  &.disabled { background: $grey-disabled; }
+  &.disabled {
+    background: $grey-disabled;
+    &.night { background: #fff3; }
+  }
   &.green:focus-within { border: 1px solid $green; }
   &.orange:focus-within { border: 1px solid $orange; }
   &.red:focus-within { border: 2px solid $red; }

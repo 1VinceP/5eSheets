@@ -3,6 +3,7 @@ import { mapMutations } from 'vuex';
 import { Input, Select } from '@/components/common';
 import AbilityBox from '@/components/characterForm/AbilityBox.vue';
 import Skill from '@/components/characterForm/Skill.vue';
+import Counter from '@/components/characterForm/Counter.vue';
 import classList from '@/constants/classes.constants';
 // import subclassList from
 import raceList from '@/constants/races.constants';
@@ -52,6 +53,22 @@ export default {
          this.editClassProp({ prop: type, value, index });
       },
 
+      calculateHitDice() {
+         const dice = [];
+         const { hitDice } = this.character;
+         hitDice.forEach(die => {
+            const index = dice.findIndex(d => d.dieValue === die.dieValue);
+            if (index >= 0) {
+               dice[index].current += Number(die.current);
+            } else {
+               dice.push({ current: Number(die.current), dieValue: die.dieValue });
+            }
+         });
+         console.log(dice);
+
+         return dice;
+      },
+
       changeSort() {
          if (this.sort === 'skill') {
             this.sort = 'ability';
@@ -63,17 +80,25 @@ export default {
       },
 
       showSubclasses(className, classLevel) {
-         return classLevel >= this.classList.find(c => c.name === className).subclassLevel;
+         if (className && classLevel >= 0) {
+            return classLevel >= this.classList.find(c => c.name === className).subclassLevel;
+         }
+
+         return false;
       },
 
       findSubclasses(className) {
-         const { subclasses } = this.classList.find(c => c.name === className);
-         return subclasses;
+         if (className) {
+            const { subclasses } = this.classList.find(c => c.name === className);
+            return subclasses;
+         }
+
+         return [];
       },
    },
 
    components: {
-      Input, Select, AbilityBox, Skill,
+      Input, Select, AbilityBox, Skill, Counter,
    },
 
    props: {
@@ -93,6 +118,16 @@ export default {
          night
       />
 
+      <div v-if="calculateHitDice().length > 0" class="hdLabel">Hit Dice</div>
+      <div v-for="(dieSet, i) in calculateHitDice()" :key="`hitdie-${i}`" class="hit-die">
+         <Counter
+            v-if="dieSet.dieValue"
+            :key="i"
+            :value="dieSet.current"
+            :outOf="`d${dieSet.dieValue}`"
+         />
+      </div>
+
       <Select
          name="race"
          label="Race"
@@ -102,7 +137,7 @@ export default {
          night
       />
 
-      <div class="class-select" v-for="(charClass, i) in character.classes" :key="i">
+      <div class="class-select" v-for="(charClass, i) in character.classes" :key="`class-${i}`">
          <Select
             :name="`className-${i}`"
             :value="charClass.name"
@@ -117,6 +152,7 @@ export default {
          <Input
             :name="`classLevel-${i}`"
             :value="charClass.level"
+            :disabled="!charClass.name"
             @input="(value, prop) => editClass(value, prop, 'level')"
             type="number"
             label="Level"
@@ -190,6 +226,17 @@ export default {
    display: flex;
    flex-direction: column;
    align-items: center;
+}
+
+.hdLabel {
+   width: 100%;
+   margin-bottom: 6px;
+   font-size: 14px;
+   color: $grey;
+}
+.hit-die {
+   width: 100%;
+   margin-bottom: 6px;
 }
 
 .class-select {

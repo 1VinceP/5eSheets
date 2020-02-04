@@ -9,6 +9,9 @@ import ResetIcon from 'vue-material-design-icons/Cached.vue';
 import LongRestIcon from 'vue-material-design-icons/Clock.vue';
 import ShortRestIcon from 'vue-material-design-icons/ClockOutline.vue';
 
+import ChevronDown from 'vue-material-design-icons/ChevronDown.vue';
+import ChevronUp from 'vue-material-design-icons/ChevronUp.vue';
+
 import Header from '@/components/Header.vue';
 import Stats from '@/components/characterForm/Stats.vue';
 import Feats from '@/components/characterForm/Feats.vue';
@@ -23,6 +26,7 @@ export default {
       isNew: true,
       editing: true,
       view: 'stats',
+      footOpen: false,
    }),
 
    computed: {
@@ -94,7 +98,7 @@ export default {
    },
 
    components: {
-      Header, FAB, Stats, Feats, Gear, Magic, Life,
+      Header, FAB, Stats, Feats, Gear, Magic, Life, ChevronDown, ChevronUp,
    },
 };
 </script>
@@ -109,9 +113,15 @@ export default {
       <Magic v-else-if="view === 'magic'" :character="character" />
       <Life v-else :character="character" :setView="setView" />
 
-      <FAB :items="floatingItems" style="bottom: 70px;" />
+      <FAB
+         :items="floatingItems"
+         :style="{
+            bottom: footOpen ? '120px' : '70px',
+            transition: 'bottom .15s ease-in-out',
+         }"
+      />
 
-      <span class="footer">
+      <span :class="['footer', { footOpen }]">
          <div
             :class="['foot-item', { selected: view === 'stats' }]"
             @click="view = 'stats'"
@@ -136,6 +146,10 @@ export default {
          >
             Magic
          </div>
+         <div class="foot-item" @click="footOpen = !footOpen">
+            <ChevronDown v-if="!footOpen" />
+            <ChevronUp v-else />
+         </div>
          <div
             :class="['foot-item', { selected: view === 'life' }]"
             @click="view = 'life'"
@@ -154,13 +168,17 @@ export default {
 }
 
 .footer {
-   height: 50px;
+   height: 100px;
    width: 100%;
-   display: flex;
-   align-items: center;
+   display: grid;
+   grid-template-columns: repeat(5, 1fr);
+   grid-template-rows: repeat(2, 50%);
    background: #323231;
    position: fixed;
    bottom: 0px;
+   transform: translateY(50px);
+   transition: transform .15s ease-in-out;
+   &.footOpen { transform: translateY(0px); }
 
    & .foot-item {
       height: 100%;

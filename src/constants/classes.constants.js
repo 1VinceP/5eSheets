@@ -3,6 +3,7 @@ export default [
       name: 'Artificer',
       subclasses: ['Alchemist', 'Artillerist', 'Battle Smith'],
       subclassLevel: 3,
+      hitDie: '8',
    },
    {
       name: 'Barbarian',
@@ -15,6 +16,7 @@ export default [
          'Zealot',
       ],
       subclassLevel: 3,
+      hitDie: '12',
    },
    {
       name: 'Bard',
@@ -26,6 +28,7 @@ export default [
          'College of Whispers',
       ],
       subclassLevel: 3,
+      hitDie: '8',
    },
    {
       name: 'Cleric',
@@ -44,6 +47,7 @@ export default [
          'War Domain',
       ],
       subclassLevel: 1,
+      hitDie: '8',
    },
    {
       name: 'Druid',
@@ -55,6 +59,7 @@ export default [
          'Circle of Spores',
       ],
       subclassLevel: 2,
+      hitDie: '8',
    },
    {
       name: 'Fighter',
@@ -67,6 +72,7 @@ export default [
          'Samurai',
       ],
       subclassLevel: 3,
+      hitDie: '10',
    },
    {
       name: 'Monk',
@@ -80,6 +86,7 @@ export default [
          'Sun Soul',
       ],
       subclassLevel: 3,
+      hitDie: '8',
    },
    {
       name: 'Mystic',
@@ -92,6 +99,7 @@ export default [
          'Order of the Wu Jen',
       ],
       subclassLevel: 3,
+      hitDie: '8',
    },
    {
       name: 'Paladin',
@@ -105,6 +113,7 @@ export default [
          'Oath of the Vengeance',
       ],
       subclassLevel: 3,
+      hitDie: '10',
    },
    {
       name: 'Ranger',
@@ -116,6 +125,7 @@ export default [
          'Monster Slayer Conclave',
       ],
       subclassLevel: 3,
+      hitDie: '10',
    },
    {
       name: 'Rogue',
@@ -129,6 +139,7 @@ export default [
          'Thief',
       ],
       subclassLevel: 3,
+      hitDie: '8',
    },
    {
       name: 'Sorcerer',
@@ -140,6 +151,7 @@ export default [
          'Wild Bloodline',
       ],
       subclassLevel: 1,
+      hitDie: '6',
    },
    {
       name: 'Warlock',
@@ -152,6 +164,7 @@ export default [
          'Undying',
       ],
       subclassLevel: 3,
+      hitDie: '8',
    },
    {
       name: 'Wizard',
@@ -168,6 +181,7 @@ export default [
          'War Magic',
       ],
       subclassLevel: 2,
+      hitDie: '6',
    },
    {
       name: 'Teeny a Saurus',
@@ -178,5 +192,6 @@ export default [
          'Velociraptor',
       ],
       subclassLevel: 3,
+      hitDie: '12',
    },
 ];

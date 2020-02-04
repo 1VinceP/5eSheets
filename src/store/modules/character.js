@@ -1,5 +1,6 @@
 import uuid from 'uuid/v4';
-import router from '../../router';
+import router from '@/router';
+import classList from '@/constants/classes.constants';
 
 const initialSkill = {
    proficient: false,
@@ -11,6 +12,7 @@ const initialSkill = {
 
 const initialState = () => ({
    name: '',
+   hitDice: [{ dieValue: null, max: null, current: null }],
    classes: [{ name: '', level: 0, subclass: '' }],
    race: '',
    proficiencyBonus: 2,
@@ -65,14 +67,22 @@ export default {
 
       editClassProp(state, { prop, value, index }) {
          state.classes[index][prop] = value;
+         if (prop === 'level') {
+            state.hitDice[index].dieValue = classList
+               .find(c => c.name === state.classes[index].name).hitDie;
+            state.hitDice[index].max = Number(value);
+            state.hitDice[index].current = Number(value);
+         }
       },
 
       addClass(state) {
          state.classes = [...state.classes, initialState().classes[0]];
+         state.hitDice = [...state.hitDice, initialState().hitDice[0]];
       },
 
       removeClass(state) {
          state.classes = state.classes.slice(0, -1);
+         state.hitDice = state.hitDice.slice(0, -1);
       },
 
       editAbility(state, { ability, prop, value }) {
