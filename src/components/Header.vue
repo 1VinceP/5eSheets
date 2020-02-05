@@ -15,8 +15,8 @@ export default {
 
 <template>
    <header class="header">
-      <Button secondary @click="toggleNav" style="color: #fff;">Menu</Button>
       <h1 class="title">5eSheets</h1>
+      <Button secondary @click="toggleNav" style="color: #fff;">Menu</Button>
    </header>
 </template>
 

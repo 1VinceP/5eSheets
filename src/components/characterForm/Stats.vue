@@ -1,5 +1,6 @@
 <script>
 import { mapMutations } from 'vuex';
+import map from 'lodash/map';
 import { Input, Select } from '@/components/common';
 import AbilityBox from '@/components/characterForm/AbilityBox.vue';
 import Skill from '@/components/characterForm/Skill.vue';
@@ -32,6 +33,10 @@ export default {
 
          return skillArray;
       },
+
+      hitDiceArray() {
+         return map(this.character.hitDice);
+      },
    },
 
    created() {
@@ -42,7 +47,10 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['editProp', 'editClassProp', 'addClass', 'removeClass']),
+      ...mapMutations(
+         'character',
+         ['editProp', 'editHitDie', 'editClassProp', 'addClass', 'removeClass'],
+      ),
 
       editField(value, prop) {
          this.editProp({ value, prop });
@@ -51,22 +59,6 @@ export default {
       editClass(value, prop, type) {
          const index = prop.split('-')[1];
          this.editClassProp({ prop: type, value, index });
-      },
-
-      calculateHitDice() {
-         const dice = [];
-         const { hitDice } = this.character;
-         hitDice.forEach(die => {
-            const index = dice.findIndex(d => d.dieValue === die.dieValue);
-            if (index >= 0) {
-               dice[index].current += Number(die.current);
-            } else {
-               dice.push({ current: Number(die.current), dieValue: die.dieValue });
-            }
-         });
-         console.log(dice);
-
-         return dice;
       },
 
       changeSort() {
@@ -118,14 +110,22 @@ export default {
          night
       />
 
-      <div v-if="calculateHitDice().length > 0" class="hdLabel">Hit Dice</div>
-      <div v-for="(dieSet, i) in calculateHitDice()" :key="`hitdie-${i}`" class="hit-die">
-         <Counter
-            v-if="dieSet.dieValue"
-            :key="i"
-            :value="dieSet.current"
-            :outOf="`d${dieSet.dieValue}`"
-         />
+      <div v-if="hitDiceArray.some(hd => hd.max > 0)" class="hd-label">Hit Dice</div>
+      <div class="hd-container">
+         <div v-for="(dieSet, i) in hitDiceArray" :key="`hitdie-${i}`" class="hit-die">
+            <Counter
+               v-if="dieSet.max > 0"
+               :key="i"
+               :name="dieSet.dieValue.toString()"
+               :value="dieSet.current"
+               min="0"
+               :label="`d${dieSet.dieValue}`"
+               :disableDecrease="dieSet.current === 0"
+               :disableIncrease="dieSet.current >= dieSet.max"
+               @onDecrease="editHitDie({ direction: 'decrease', dieValue: dieSet.dieValue })"
+               @onIncrease="editHitDie({ direction: 'increase', dieValue: dieSet.dieValue })"
+            />
+         </div>
       </div>
 
       <Select
@@ -154,8 +154,9 @@ export default {
             :value="charClass.level"
             :disabled="!charClass.name"
             @input="(value, prop) => editClass(value, prop, 'level')"
-            type="number"
             label="Level"
+            type="number"
+            min="0"
             night
             style="width: 45%;"
          />
@@ -171,16 +172,12 @@ export default {
             style="margin-top: 10px;"
          />
       </div>
-      <div class="multiclass-buttons">
-         <span
-            :class="['remove-class', { disabled: character.classes.length <= 1 }]"
-            @click="character.classes.length > 1 && removeClass()"
-         >
-            -
-         </span>
-         <span class="label">Multiclass</span>
-         <span class="add-class" @click="addClass">+</span>
-      </div>
+      <Counter
+         label="Multiclass"
+         :disableDecrease="character.classes.length <= 1"
+         @onDecrease="removeClass"
+         @onIncrease="addClass"
+      />
 
       <section class="abilities">
          <p class="global-tip">
@@ -228,15 +225,21 @@ export default {
    align-items: center;
 }
 
-.hdLabel {
+.hd-label {
    width: 100%;
    margin-bottom: 6px;
    font-size: 14px;
    color: $grey;
 }
-.hit-die {
+.hd-container {
    width: 100%;
-   margin-bottom: 6px;
+   display: flex;
+   flex-wrap: wrap;
+   justify-content: space-between;
+   & .hit-die {
+      width: 47%;
+      margin-bottom: 6px;
+   }
 }
 
 .class-select {
@@ -256,6 +259,7 @@ export default {
       justify-content: center;
       align-items: center;
       color: #fff;
+      &.label { background: #0004; }
       &.remove-class {
          background: $red;
          &.disabled { background: $grey; }
@@ -273,6 +277,7 @@ export default {
    & .ability-row {
       width: 100%;
       display: flex;
+      justify-content: space-between;
       align-items: center;
    }
 }

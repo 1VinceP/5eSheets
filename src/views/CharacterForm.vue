@@ -27,6 +27,7 @@ export default {
       editing: true,
       view: 'stats',
       footOpen: false,
+      footerTemp: '',
    }),
 
    computed: {
@@ -73,6 +74,7 @@ export default {
 
       setView(view) {
          this.view = view;
+         this.footOpen = false;
       },
 
       editField(value, prop) {
@@ -124,25 +126,25 @@ export default {
       <span :class="['footer', { footOpen }]">
          <div
             :class="['foot-item', { selected: view === 'stats' }]"
-            @click="view = 'stats'"
+            @click="setView('stats')"
          >
             Stats
          </div>
          <div
             :class="['foot-item', { selected: view === 'feats' }]"
-            @click="view = 'feats'"
+            @click="setView('feats')"
          >
             Feats
          </div>
          <div
             :class="['foot-item', { selected: view === 'gear' }]"
-            @click="view = 'gear'"
+            @click="setView('gear')"
          >
             Gear
          </div>
          <div
             :class="['foot-item', { selected: view === 'magic' }]"
-            @click="view = 'magic'"
+            @click="setView('magic')"
          >
             Magic
          </div>
@@ -152,7 +154,7 @@ export default {
          </div>
          <div
             :class="['foot-item', { selected: view === 'life' }]"
-            @click="view = 'life'"
+            @click="setView('life')"
          >
             Life
          </div>

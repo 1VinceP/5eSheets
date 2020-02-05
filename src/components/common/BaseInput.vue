@@ -65,6 +65,8 @@ export default {
     name: String,
     placeholder: String,
     type: String,
+    min: String,
+    max: String,
     value: [String, Number],
     buttonLabel: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
@@ -146,6 +148,8 @@ export default {
       :autocomplete="autocomplete || (type === 'password' && 'off')"
       :readonly="readonly"
       :disabled="disabled || loading"
+      :min="min"
+      :max="max"
     />
 
     <span v-show="(buttonLabel || type === 'password') && !textarea" class="accessories">

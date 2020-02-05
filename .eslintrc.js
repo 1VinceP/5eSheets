@@ -20,11 +20,13 @@ module.exports = {
       'linebreak-style': 0,
       'no-plusplus': 0,
       'arrow-parens': 0,
+      'arrow-body-style': 0,
       'no-alert': 0,
       'no-nested-ternary': 0,
       'no-confusing-arrow': 0,
       'object-curly-newline': 0,
       'indent': ['error', 3],
+      'function-paren-newline': 0,
     },
   }],
 };

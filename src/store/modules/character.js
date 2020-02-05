@@ -1,4 +1,5 @@
 import uuid from 'uuid/v4';
+import reduce from 'lodash/reduce';
 import router from '@/router';
 import classList from '@/constants/classes.constants';
 
@@ -12,8 +13,13 @@ const initialSkill = {
 
 const initialState = () => ({
    name: '',
-   hitDice: [{ dieValue: null, max: null, current: null }],
-   classes: [{ name: '', level: 0, subclass: '' }],
+   hitDice: {
+      6: { current: 0, max: 0, dieValue: 6 },
+      8: { current: 0, max: 0, dieValue: 8 },
+      10: { current: 0, max: 0, dieValue: 10 },
+      12: { current: 0, max: 0, dieValue: 12 },
+   },
+   classes: [{ name: '', level: 0, subclass: '', hitDie: null }],
    race: '',
    proficiencyBonus: 2,
    abilities: {
@@ -41,6 +47,14 @@ const initialState = () => ({
    lastEdited: '',
 });
 
+function getNewHitDieValue(dieValue, classes) {
+   return reduce(classes, (total, next) => {
+      return next.hitDie === dieValue
+         ? total + Number(next.level)
+         : total;
+   }, 0);
+}
+
 export default {
    namespaced: true,
 
@@ -65,24 +79,39 @@ export default {
          state[prop] = value;
       },
 
+      editHitDie(state, { direction, dieValue }) {
+         const value = direction === 'decrease' ? -1 : 1;
+         state.hitDice[dieValue].current += value;
+      },
+
       editClassProp(state, { prop, value, index }) {
          state.classes[index][prop] = value;
-         if (prop === 'level') {
-            state.hitDice[index].dieValue = classList
-               .find(c => c.name === state.classes[index].name).hitDie;
-            state.hitDice[index].max = Number(value);
-            state.hitDice[index].current = Number(value);
+         if (prop === 'name') {
+            state.classes[index].hitDie = classList.find(c => c.name === value).hitDie;
+         } else if (prop === 'level') {
+            const dieValue = classList.find(c => c.name === state.classes[index].name).hitDie;
+            const newValue = getNewHitDieValue(dieValue, state.classes);
+
+            state.hitDice[dieValue].max = newValue;
+            state.hitDice[dieValue].current = newValue;
          }
       },
 
       addClass(state) {
          state.classes = [...state.classes, initialState().classes[0]];
-         state.hitDice = [...state.hitDice, initialState().hitDice[0]];
       },
 
       removeClass(state) {
          state.classes = state.classes.slice(0, -1);
-         state.hitDice = state.hitDice.slice(0, -1);
+         const lastClassIndex = state.classes.length - 1;
+         if (state.classes[lastClassIndex].level) {
+            const dieValue = classList
+               .find(c => c.name === state.classes[lastClassIndex].name).hitDie;
+            const newValue = getNewHitDieValue(dieValue, state.classes);
+
+            state.hitDice[dieValue].max = newValue;
+            state.hitDice[dieValue].current = newValue;
+         }
       },
 
       editAbility(state, { ability, prop, value }) {
