@@ -9,6 +9,8 @@ export default new Vuex.Store({
    state: {
       showNav: false,
       characters: [],
+      theme: '',
+      version: '0.0.01',
    },
 
    mutations: {

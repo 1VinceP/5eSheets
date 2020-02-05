@@ -20,10 +20,10 @@ export const skillArray = [
    { type: 'wis', label: 'Animal Handling' },
    { type: 'wis', label: 'Insight' },
    { type: 'wis', label: 'Medicine' },
+   { type: 'wis', label: 'Perception' },
    { type: 'wis', label: 'Survival', isLastOfType: true },
    { type: 'cha', label: 'Deception' },
    { type: 'cha', label: 'Intimidation' },
-   { type: 'cha', label: 'Perception' },
    { type: 'cha', label: 'Performance' },
    { type: 'cha', label: 'Persuasion' },
 ];

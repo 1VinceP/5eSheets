@@ -1,23 +1,24 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
+import startCase from 'lodash/startCase';
 // import EditIcon from 'vue-material-design-icons/Pencil.vue';
 import SaveIcon from 'vue-material-design-icons/ContentSave.vue';
 import ImportIcon from 'vue-material-design-icons/FileImport.vue';
 import ExportIcon from 'vue-material-design-icons/FileExport.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ResetIcon from 'vue-material-design-icons/Cached.vue';
-import LongRestIcon from 'vue-material-design-icons/Clock.vue';
-import ShortRestIcon from 'vue-material-design-icons/ClockOutline.vue';
 
 import ChevronDown from 'vue-material-design-icons/ChevronDown.vue';
 import ChevronUp from 'vue-material-design-icons/ChevronUp.vue';
 
 import Header from '@/components/Header.vue';
-import Stats from '@/components/characterForm/Stats.vue';
-import Feats from '@/components/characterForm/Feats.vue';
-import Gear from '@/components/characterForm/Gear.vue';
-import Magic from '@/components/characterForm/Magic.vue';
-import Life from '@/components/characterForm/Life.vue';
+import Stats from '@/components/characterForm/stats/Stats.vue';
+import Actions from '@/components/characterForm/actions/Actions.vue';
+import Feats from '@/components/characterForm/feats/Feats.vue';
+import Gear from '@/components/characterForm/gear/Gear.vue';
+import Magic from '@/components/characterForm/magic/Magic.vue';
+import Life from '@/components/characterForm/life/Life.vue';
+import Journal from '@/components/characterForm/journal/Journal.vue';
 import { FAB } from '@/components/common';
 
 export default {
@@ -35,21 +36,23 @@ export default {
          character: state => state.character,
       }),
 
+      pageTitle() {
+         return startCase(this.view);
+      },
+
       floatingItems() {
          const save = { title: 'Save', action: this.handleSave, icon: SaveIcon, bg: '#17AE82' };
          if (this.isNew) {
             return [
                save,
-               { title: 'Import', action: this.importCharacter, icon: ImportIcon },
-               { title: 'Reset', action: this.resetForm, icon: ResetIcon },
+               { title: 'Import', action: this.importCharacter, icon: ImportIcon, bg: 'darkviolet' },
+               { title: 'Reset', action: this.handleReset, icon: ResetIcon, bg: '#c42338' },
             ];
          }
 
          return [
-            { title: 'Long Rest', action: this.longRest, icon: LongRestIcon },
-            { title: 'Short Rest', action: this.shortRest, icon: ShortRestIcon },
             save,
-            { title: 'Export', action: this.exportCharacter, icon: ExportIcon },
+            { title: 'Export', action: this.exportCharacter, icon: ExportIcon, bg: 'darkviolet' },
             { title: 'Delete', action: this.deleteCharacter, icon: DeleteIcon, bg: '#C42338' },
          ];
       },
@@ -71,6 +74,13 @@ export default {
       ...mapActions('character', [
          'saveNewCharacter', 'saveCharacter', 'deleteCharacter', 'shortRest', 'longRest',
       ]),
+
+      handleReset() {
+         const confirmed = window.confirm('Your changes will be lost.');
+         if (confirmed) {
+            this.resetForm();
+         }
+      },
 
       setView(view) {
          this.view = view;
@@ -100,7 +110,7 @@ export default {
    },
 
    components: {
-      Header, FAB, Stats, Feats, Gear, Magic, Life, ChevronDown, ChevronUp,
+      Header, FAB, Stats, Actions, Feats, Gear, Magic, Life, Journal, ChevronDown, ChevronUp,
    },
 };
 </script>
@@ -109,11 +119,18 @@ export default {
    <div class="character-form global-page">
       <Header />
 
+      <div v-show="view !== 'stats' && character.name" class="headline-title">
+         <h1 class="name">{{ character.name }}'s</h1>
+         <h1 class="page-title">{{ pageTitle }}</h1>
+      </div>
+
       <Stats v-if="view === 'stats'" :character="character" />
+      <Actions v-else-if="view === 'actions'" :character="character" />
       <Gear v-else-if="view === 'gear'" :character="character" />
       <Feats v-else-if="view === 'feats'" :character="character" />
       <Magic v-else-if="view === 'magic'" :character="character" />
-      <Life v-else :character="character" :setView="setView" />
+      <Life v-else-if="view === 'life'" :character="character" />
+      <Journal v-else-if="view === 'journal'" :character="character" />
 
       <FAB
          :items="floatingItems"
@@ -131,10 +148,10 @@ export default {
             Stats
          </div>
          <div
-            :class="['foot-item', { selected: view === 'feats' }]"
-            @click="setView('feats')"
+            :class="['foot-item', { selected: view === 'actions' }]"
+            @click="setView('actions')"
          >
-            Feats
+            Actions
          </div>
          <div
             :class="['foot-item', { selected: view === 'gear' }]"
@@ -153,10 +170,22 @@ export default {
             <ChevronUp v-else />
          </div>
          <div
+            :class="['foot-item', { selected: view === 'feats' }]"
+            @click="setView('feats')"
+         >
+            Features
+         </div>
+         <div
             :class="['foot-item', { selected: view === 'life' }]"
             @click="setView('life')"
          >
             Life
+         </div>
+         <div
+            :class="['foot-item', { selected: view === 'journal' }]"
+            @click="setView('journal')"
+         >
+            Journal
          </div>
       </span>
    </div>
@@ -167,6 +196,13 @@ export default {
 
 .character-form {
    padding-bottom: 140px;
+   & .headline-title {
+      width: 100%;
+      display: flex;
+      align-items: flex-end;
+      font-size: 24px;
+      & .page-title { margin-left: 10px; }
+   }
 }
 
 .footer {
@@ -188,6 +224,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 14px;
       &.selected {
          color: $blue;
          box-shadow: inset 0 -10px 6px -10px $blue;

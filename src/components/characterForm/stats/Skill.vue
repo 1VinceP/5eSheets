@@ -98,7 +98,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import '../../_a-variables.scss';
+@import '@/_a-variables.scss';
 
 .skill-container {
    width: 100%;

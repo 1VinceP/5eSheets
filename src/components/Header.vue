@@ -28,7 +28,6 @@ export default {
    justify-content: space-between;
    align-items: center;
    padding: 10px 0px;
-   margin-bottom: 30px;
    & .title {
       font-size: 24px;
    }

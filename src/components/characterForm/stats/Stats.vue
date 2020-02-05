@@ -1,12 +1,12 @@
 <script>
 import { mapMutations } from 'vuex';
 import map from 'lodash/map';
+import CloseIcon from 'vue-material-design-icons/Close.vue';
 import { Input, Select } from '@/components/common';
-import AbilityBox from '@/components/characterForm/AbilityBox.vue';
-import Skill from '@/components/characterForm/Skill.vue';
-import Counter from '@/components/characterForm/Counter.vue';
+import AbilityBox from './AbilityBox.vue';
+import Skill from './Skill.vue';
+import Counter from './Counter.vue';
 import classList from '@/constants/classes.constants';
-// import subclassList from
 import raceList from '@/constants/races.constants';
 import { skillArray } from '@/constants/skills.constants';
 
@@ -35,7 +35,7 @@ export default {
       },
 
       hitDiceArray() {
-         return map(this.character.hitDice);
+         return map(this.character.hitDice).filter(hd => hd.max > 0);
       },
    },
 
@@ -71,12 +71,12 @@ export default {
          }
       },
 
-      showSubclasses(className, classLevel) {
+      disableSubclass(className, classLevel) {
          if (className && classLevel >= 0) {
-            return classLevel >= this.classList.find(c => c.name === className).subclassLevel;
+            return !(classLevel >= this.classList.find(c => c.name === className).subclassLevel);
          }
 
-         return false;
+         return true;
       },
 
       findSubclasses(className) {
@@ -90,7 +90,7 @@ export default {
    },
 
    components: {
-      Input, Select, AbilityBox, Skill, Counter,
+      CloseIcon, Input, Select, AbilityBox, Skill, Counter,
    },
 
    props: {
@@ -110,23 +110,119 @@ export default {
          night
       />
 
-      <div v-if="hitDiceArray.some(hd => hd.max > 0)" class="hd-label">Hit Dice</div>
+      <div class="section-label margin">HP</div>
+      <Counter
+         name="hp"
+         secondaryName="maxHp"
+         label="/"
+         :min="0"
+         :value="character.hp"
+         :secondaryValue="character.maxHp"
+         :disableIncrease="character.hp === character.maxHp"
+         @input="(value, name) => editField(Number(value), name)"
+         @secondaryInput="(value, name) => editField(Number(value), name)"
+         @onDecrease="(value, name) => editField(--character.hp, name)"
+         @onIncrease="(value, name) => editField(++character.hp, name)"
+
+      />
+
+      <div class="section-label margin">Temporary HP</div>
+      <Counter
+         name="tempHp"
+         :min="0"
+         :value="character.tempHp"
+         :disableDecrease="character.tempHp === 0"
+         @input="(value, name) => editField(Number(value), name)"
+         @onDecrease="(value, name) => editField(--character.tempHp, name)"
+         @onIncrease="(value, name) => editField(++character.tempHp, name)"
+      />
+
+      <div v-if="hitDiceArray.some(hd => hd.max > 0)" class="section-label margin">Hit Dice</div>
       <div class="hd-container">
-         <div v-for="(dieSet, i) in hitDiceArray" :key="`hitdie-${i}`" class="hit-die">
+         <div
+            v-for="(dieSet, i) in hitDiceArray"
+            :key="`hitdie-${i}`"
+            :class="[
+               'hit-die',
+               { full: hitDiceArray.length === 1 && i === 0 },
+            ]"
+         >
             <Counter
                v-if="dieSet.max > 0"
                :key="i"
                :name="dieSet.dieValue.toString()"
                :value="dieSet.current"
-               min="0"
+               :min="0"
+               :max="dieSet.max"
                :label="`d${dieSet.dieValue}`"
                :disableDecrease="dieSet.current === 0"
                :disableIncrease="dieSet.current >= dieSet.max"
+               @input="(value) => editHitDie({
+                  direction: 'calc',
+                  dieValue: dieSet.dieValue,
+                  value: Number(value),
+               })"
                @onDecrease="editHitDie({ direction: 'decrease', dieValue: dieSet.dieValue })"
                @onIncrease="editHitDie({ direction: 'increase', dieValue: dieSet.dieValue })"
             />
          </div>
       </div>
+
+      <div class="section-label">Death Saves</div>
+      <section class="death-saves">
+         <div class="saves-container success">
+            <span>Successes</span>
+            <span class="checkboxes">
+               <CloseIcon :size="18" @click="editField(0, 'deathSucceeds')" />
+               <input
+                  type="checkbox"
+                  name="deathSucceeds"
+                  :disabled="character.deathSucceeds > 1"
+                  :checked="character.deathSucceeds >= 1"
+                  @change="() => editField(1, 'deathSucceeds')"
+               />
+               <input
+                  type="checkbox"
+                  name="deathSucceeds"
+                  :disabled="character.deathSucceeds > 2"
+                  :checked="character.deathSucceeds >= 2"
+                  @change="() => editField(2, 'deathSucceeds')"
+               />
+               <input
+                  type="checkbox"
+                  name="deathSucceeds"
+                  :checked="character.deathSucceeds === 3"
+                  @change="() => editField(3, 'deathSucceeds')"
+               />
+            </span>
+         </div>
+         <div class="saves-container">
+            <span>Failures</span>
+            <span class="checkboxes">
+               <CloseIcon :size="18" @click="editField(0, 'deathFails')" />
+               <input
+                  type="checkbox"
+                  name="deathFails"
+                  :disabled="character.deathFails > 1"
+                  :checked="character.deathFails >= 1"
+                  @change="() => editField(1, 'deathFails')"
+               />
+               <input
+                  type="checkbox"
+                  name="deathFails"
+                  :disabled="character.deathFails > 2"
+                  :checked="character.deathFails >= 2"
+                  @change="() => editField(2, 'deathFails')"
+               />
+               <input
+                  type="checkbox"
+                  name="deathFails"
+                  :checked="character.deathFails === 3"
+                  @change="() => editField(3, 'deathFails')"
+               />
+            </span>
+         </div>
+      </section>
 
       <Select
          name="race"
@@ -161,15 +257,15 @@ export default {
             style="width: 45%;"
          />
          <Select
-            v-if="showSubclasses(charClass.name, charClass.level)"
             :name="`classSubclass-${i}`"
             :value="charClass.subclass"
+            :disabled="disableSubclass(charClass.name, charClass.level)"
             :options="findSubclasses(charClass.name)"
             optionKey="subclasses"
             @change="(value, prop) => editClass(value, prop, 'subclass')"
             label="Subclass"
             night
-            style="margin-top: 10px;"
+            style="margin-top: 2px;"
          />
       </div>
       <Counter
@@ -180,6 +276,7 @@ export default {
       />
 
       <section class="abilities">
+         <div class="section-label">Abilities</div>
          <p class="global-tip">
             Tap labels to edit saving proficiencies, and scores to edit scores.
          </p>
@@ -198,6 +295,7 @@ export default {
       </section>
 
       <section class="skills">
+         <div class="section-label">Skills</div>
          <p class="global-tip">
             Left box proficient, right box expertise. Header changes sort.
          </p>
@@ -210,12 +308,17 @@ export default {
             :skill="skill"
             :sort="sort"
          />
+         <div class="passive-perception">
+            Passive perception
+            <span>{{ 10 + character.abilities.wis.modifier }}</span>
+         </div>
       </section>
+
    </div>
 </template>
 
 <style lang="scss" scoped>
-@import '../../_a-variables.scss';
+@import '@/_a-variables.scss';
 
 .stats {
    height: 100%;
@@ -225,12 +328,14 @@ export default {
    align-items: center;
 }
 
-.hd-label {
+.section-label {
    width: 100%;
    margin-bottom: 6px;
    font-size: 14px;
    color: $grey;
+   &.margin + div { margin-bottom: 16px; }
 }
+
 .hd-container {
    width: 100%;
    display: flex;
@@ -239,6 +344,28 @@ export default {
    & .hit-die {
       width: 47%;
       margin-bottom: 6px;
+      &.full { width: 100%; }
+   }
+}
+
+.death-saves {
+   width: 100%;
+   border: 1px solid $grey;
+   border-radius: 10px;
+   border-top-left-radius: 0px;
+   padding: 6px;
+   & .saves-container {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      &.success {margin-bottom: 6px; }
+      & .checkboxes {
+         display: flex;
+         align-items: center;
+         & span, input:not(:last-child) { margin-right: 6px; }
+         & span { padding-top: 3px; }
+      }
    }
 }
 
@@ -285,5 +412,10 @@ export default {
 .skills {
    width: 100%;
    margin-top: 30px;
+   & .passive-perception {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+   }
 }
 </style>

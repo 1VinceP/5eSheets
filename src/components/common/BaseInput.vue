@@ -67,6 +67,7 @@ export default {
     type: String,
     min: String,
     max: String,
+    height: String,
     value: [String, Number],
     buttonLabel: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
@@ -124,6 +125,7 @@ export default {
       :placeholder="placeholder"
       :readonly="readonly"
       :disabled="disabled || loading"
+      :style="{ height: height || '80px' }"
     />
     <input v-else
       ref="input"
@@ -242,13 +244,13 @@ export default {
   }
 
   & .textarea {
-    height: 80px;
     width: 500px;
     max-width: 100%;
     background: transparent;
     border: none;
     padding: 4px 8px;
-    font-size: 16px;
+    font-size: 14px;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
     outline: none;
     &.readonly {
       border: none !important;

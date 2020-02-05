@@ -1,5 +1,6 @@
-import uuid from 'uuid/v4';
 import reduce from 'lodash/reduce';
+import toastr from 'toastr';
+import uuid from 'uuid/v4';
 import router from '@/router';
 import classList from '@/constants/classes.constants';
 
@@ -12,15 +13,21 @@ const initialSkill = {
 };
 
 const initialState = () => ({
+   /* stats */
    name: '',
+   hp: 0,
+   maxHp: 0,
+   tempHp: 0,
    hitDice: {
       6: { current: 0, max: 0, dieValue: 6 },
       8: { current: 0, max: 0, dieValue: 8 },
       10: { current: 0, max: 0, dieValue: 10 },
       12: { current: 0, max: 0, dieValue: 12 },
    },
-   classes: [{ name: '', level: 0, subclass: '', hitDie: null }],
+   deathSucceeds: 0,
+   deathFails: 0,
    race: '',
+   classes: [{ name: '', level: 0, subclass: '', hitDie: null }],
    proficiencyBonus: 2,
    abilities: {
       str: { ...initialSkill },
@@ -30,11 +37,17 @@ const initialState = () => ({
       wis: { ...initialSkill },
       cha: { ...initialSkill },
    },
+   /* life */
+   playerName: '',
+   xp: 0,
    background: '',
+   alignment: '',
    age: '',
    gender: '',
    height: '',
    weight: '',
+   size: '',
+   hair: '',
    eyes: '',
    skin: '',
    appearance: '',
@@ -45,6 +58,8 @@ const initialState = () => ({
    story: '',
    creationDate: '',
    lastEdited: '',
+   /* journal */
+   journalEntries: [{ title: '', content: '', tags: ['dog'], date: new Date(), id: '' }],
 });
 
 function getNewHitDieValue(dieValue, classes) {
@@ -79,15 +94,30 @@ export default {
          state[prop] = value;
       },
 
-      editHitDie(state, { direction, dieValue }) {
-         const value = direction === 'decrease' ? -1 : 1;
-         state.hitDice[dieValue].current += value;
+      editHitDie(state, { direction, dieValue, value }) {
+         if (direction === 'calc') {
+            state.hitDice[dieValue].current = value;
+         } else {
+            const sumValue = direction === 'decrease' ? -1 : 1;
+            state.hitDice[dieValue].current += sumValue;
+         }
       },
 
       editClassProp(state, { prop, value, index }) {
          state.classes[index][prop] = value;
          if (prop === 'name') {
-            state.classes[index].hitDie = classList.find(c => c.name === value).hitDie;
+            const oldHitDie = state.classes[index].hitDie;
+            const newHitDie = classList.find(c => c.name === value).hitDie;
+            state.classes[index].hitDie = newHitDie;
+            if (oldHitDie) {
+               // update hit dice when a class is swapped
+               const newValueForOldDice = getNewHitDieValue(oldHitDie, state.classes);
+               state.hitDice[oldHitDie].max = newValueForOldDice;
+               state.hitDice[oldHitDie].current = newValueForOldDice;
+               const newValueForNewDice = getNewHitDieValue(newHitDie, state.classes);
+               state.hitDice[newHitDie].max = newValueForNewDice;
+               state.hitDice[newHitDie].current = newValueForNewDice;
+            }
          } else if (prop === 'level') {
             const dieValue = classList.find(c => c.name === state.classes[index].name).hitDie;
             const newValue = getNewHitDieValue(dieValue, state.classes);
@@ -102,12 +132,13 @@ export default {
       },
 
       removeClass(state) {
+         const oldClassName = state.classes[state.classes.length - 1].name;
          state.classes = state.classes.slice(0, -1);
-         const lastClassIndex = state.classes.length - 1;
-         if (state.classes[lastClassIndex].level) {
+         if (oldClassName) {
             const dieValue = classList
-               .find(c => c.name === state.classes[lastClassIndex].name).hitDie;
+               .find(c => c.name === oldClassName).hitDie;
             const newValue = getNewHitDieValue(dieValue, state.classes);
+            console.log(dieValue, newValue);
 
             state.hitDice[dieValue].max = newValue;
             state.hitDice[dieValue].current = newValue;
@@ -143,6 +174,7 @@ export default {
          const newList = JSON.stringify([...rootState.characters, { ...character }]);
          localStorage.setItem('5e-characters', newList);
          router.push(`/characters/${id}`);
+         toastr.success(`${character.name} has been saved.`);
       },
 
       saveCharacter({ state, rootState }, id) {
@@ -152,6 +184,7 @@ export default {
          const charIndex = list.findIndex(c => c.id === id);
          list.splice(charIndex, 1, character);
          localStorage.setItem('5e-characters', JSON.stringify(list));
+         toastr.success(`${character.name} has been saved.`);
       },
 
       deleteCharacter({ state, rootState, commit }) {
@@ -162,6 +195,7 @@ export default {
             localStorage.setItem('5e-characters', JSON.stringify(newList));
             commit('resetForm');
             router.push('/characters');
+            toastr.success('Your character has been deleted.');
          }
       },
    },

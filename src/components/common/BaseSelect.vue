@@ -28,6 +28,7 @@ export default {
       showError: { type: Boolean, default: false },
       isError: { type: Boolean, default: false },
       night: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
    },
 };
 </script>
@@ -39,6 +40,8 @@ export default {
          {
             hasLabel: !!label,
             hasError: showError || isError,
+            disabled,
+            night,
          },
       ]"
    >
@@ -48,6 +51,7 @@ export default {
          :name="name"
          :value="value"
          :class="{ night }"
+         :disabled="disabled"
          @change="$emit('change', $event.target.value, $event.target.name)"
       >
          <option
@@ -97,7 +101,12 @@ export default {
    }
    &.hasLabel.hasError { border-radius: 0 20px; }
    &.textarea.hasLabel.hasError { border-radius: 0 10px; }
-   &.disabled { background: $grey-disabled; }
+   &.disabled {
+      background: $grey-disabled;
+      &.night {
+         background: #fff3;
+      }
+   }
    &.green:focus-within { border: 1px solid $green; }
    &.orange:focus-within { border: 1px solid $orange; }
    &.red:focus-within { border: 2px solid $red; }

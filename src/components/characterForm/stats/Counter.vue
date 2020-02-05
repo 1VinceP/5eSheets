@@ -4,12 +4,14 @@ export default {
 
    props: {
       name: String,
-      value: [String, Number],
+      value: [Number],
       min: [String, Number],
       max: [String, Number],
       label: String,
       disableDecrease: { type: Boolean, default: false },
       disableIncrease: { type: Boolean, default: false },
+      secondaryValue: [Number],
+      secondaryName: [String],
    },
 };
 </script>
@@ -24,17 +26,31 @@ export default {
       </div>
       <div class="display">
          <input
-            v-if="value >= 0"
-            class="input"
+            v-show="value >= 0"
+            :class="['input', { full: !label }]"
+            type="number"
             :min="min"
             :max="max"
             :name="name"
             :value="value"
             @input="$emit('input', $event.target.value, $event.target.name)"
          />
-         <div :class="['label', { full: !(value >= 0) }]">
+
+         <div
+            v-show="!!label"
+            :class="['label', { full: !(value >= 0), secondary: secondaryValue >= 0 }]"
+         >
             {{ label }}
          </div>
+
+         <input
+            v-if="secondaryValue >= 0"
+            class="secondary-input"
+            type="number"
+            :name="secondaryName"
+            :value="secondaryValue"
+            @input="$emit('secondaryInput', $event.target.value, $event.target.name)"
+         />
       </div>
       <div
          :class="['button up', { disabled: disableIncrease }]"
@@ -46,7 +62,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-@import '../../_a-variables.scss';
+@import '@/_a-variables.scss';
 
 .counter {
    height: 30px;
@@ -89,10 +105,25 @@ export default {
       & .label {
          width: 50%;
          text-align: left;
-         &.full {
-            width: 100%;
+         &.secondary {
+            width: 10px;
             text-align: center;
          }
+      }
+
+      & .full {
+         width: 100%;
+         text-align: center;
+      }
+
+      & .secondary-input {
+         height: 100%;
+         width: calc(50% - 10px);
+         background: transparent;
+         border: none;
+         color: #fff;
+         text-align: left;
+         font-size: 16px;
       }
    }
 }
