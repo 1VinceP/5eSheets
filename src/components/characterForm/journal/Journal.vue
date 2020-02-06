@@ -36,11 +36,10 @@ export default {
    <div class="global-page">
       <section class="tags">
          <Input
-            name="addJournalTag"
+            name="filter"
             placeholder="Filter tags, leading with #"
             v-model="tagFilter"
             night
-            style="width: 100%;"
          />
       </section>
 

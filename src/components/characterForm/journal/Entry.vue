@@ -28,6 +28,7 @@ export default {
          :label="date"
          :name="`entryTitle-${entry.id}`"
          :value="entry.title"
+         :inputStyle="{ paddingLeft: '8px' }"
          night
       />
       <Input

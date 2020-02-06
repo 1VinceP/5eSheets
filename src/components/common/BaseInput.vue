@@ -69,6 +69,7 @@ export default {
     max: String,
     height: String,
     value: [String, Number],
+    inputStyle: Object,
     buttonLabel: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
     textarea: { type: Boolean, default: false },
@@ -102,6 +103,7 @@ export default {
         night,
         disabled: disabled || loading,
         textarea,
+        readonly,
       }
     ]"
   >
@@ -125,7 +127,7 @@ export default {
       :placeholder="placeholder"
       :readonly="readonly"
       :disabled="disabled || loading"
-      :style="{ height: height || '80px' }"
+      :style="{ height: height || '80px', ...inputStyle }"
     />
     <input v-else
       ref="input"
@@ -152,6 +154,7 @@ export default {
       :disabled="disabled || loading"
       :min="min"
       :max="max"
+      :style="inputStyle"
     />
 
     <span v-show="(buttonLabel || type === 'password') && !textarea" class="accessories">
@@ -209,6 +212,7 @@ export default {
   &.red:focus-within { border: 2px solid $red; }
   &.night:focus-within { border: 1px solid $blue; }
   &:focus-within { border: 1px solid $blue; }
+  &.readonly:focus-within { border: 1px solid $grey; }
 
   & .label {
     display: flex;

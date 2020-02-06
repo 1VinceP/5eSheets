@@ -1,5 +1,5 @@
 <script>
-import { mapMutations } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 import map from 'lodash/map';
 import CloseIcon from 'vue-material-design-icons/Close.vue';
 import { Input, Select } from '@/components/common';
@@ -21,6 +21,8 @@ export default {
    }),
 
    computed: {
+      ...mapGetters('character', ['proficiencyBonus', 'initiativeBonus']),
+
       sortedSkills() {
          if (this.sort === 'skill') {
             const newSkills = [...skillArray];
@@ -110,15 +112,44 @@ export default {
          night
       />
 
+      <section class="top-stats">
+         <div class="stat-container">
+            <Input
+               label="Armor Class"
+               :inputStyle="{ textAlign: 'right' }"
+               night
+            />
+         </div>
+         <div class="stat-container">
+            <Input
+               label="Proficiency"
+               :value="`+${proficiencyBonus}`"
+               :inputStyle="{ textAlign: 'right' }"
+               readonly
+               night
+            />
+         </div>
+         <div class="stat-container">
+            <Input
+               label="Initiative"
+               :value="initiativeBonus"
+               :inputStyle="{ textAlign: 'right' }"
+               night
+            />
+         </div>
+      </section>
+
       <div class="section-label margin">HP</div>
       <Counter
          name="hp"
          secondaryName="maxHp"
          label="/"
          :min="0"
+         :max="character.maxHp"
          :value="character.hp"
          :secondaryValue="character.maxHp"
-         :disableIncrease="character.hp === character.maxHp"
+         :disableDecrease="character.hp <= 0"
+         :disableIncrease="character.hp >= character.maxHp"
          @input="(value, name) => editField(Number(value), name)"
          @secondaryInput="(value, name) => editField(Number(value), name)"
          @onDecrease="(value, name) => editField(--character.hp, name)"
@@ -336,6 +367,16 @@ export default {
    &.margin + div { margin-bottom: 16px; }
 }
 
+.top-stats {
+   width: 100%;
+   display: flex;
+   justify-content: space-between;
+   & .stat-container {
+      width: 30%;
+      & .input { text-align: right !important; }
+   }
+}
+
 .hd-container {
    width: 100%;
    display: flex;
@@ -353,6 +394,7 @@ export default {
    border: 1px solid $grey;
    border-radius: 10px;
    border-top-left-radius: 0px;
+   margin-bottom: 16px;
    padding: 6px;
    & .saves-container {
       width: 100%;

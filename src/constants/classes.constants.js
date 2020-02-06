@@ -104,13 +104,13 @@ export default [
    {
       name: 'Paladin',
       subclasses: [
+         'Oathbreaker',
          'Oath of the Ancients',
-         'Oath of the Conquest',
+         'Oath of Conquest',
          'Oath of the Crown',
-         'Oath of the Devotion',
-         'Oath of the Oathbreaker',
-         'Oath of the Redemption',
-         'Oath of the Vengeance',
+         'Oath of Devotion',
+         'Oath of Redemption',
+         'Oath of Vengeance',
       ],
       subclassLevel: 3,
       hitDie: '10',

@@ -75,7 +75,25 @@ export default {
 
    state: initialState,
 
-   getters: {},
+   getters: {
+      proficiencyBonus: state => {
+         const totalLevel = state.classes.reduce((total, charClass) => {
+            return total + charClass.level;
+         }, 0);
+
+         if (totalLevel <= 4) return 2;
+         else if (totalLevel <= 8) return 3;
+         else if (totalLevel <= 12) return 4;
+         else if (totalLevel <= 16) return 5;
+         else return 6;
+      },
+
+      initiativeBonus: state => {
+         const dexMod = state.abilities.dex.modifier;
+         const symbol = dexMod >= 0 ? '+' : '';
+         return `${symbol}${dexMod}`;
+      },
+   },
 
    mutations: {
       resetForm(state) {

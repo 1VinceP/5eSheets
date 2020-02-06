@@ -39,6 +39,7 @@ export default {
             :key="character.id"
             :to="`/characters/${character.id}`"
             class="global-link character"
+            @click="console.log(character.id)"
          >
             {{ character.name }}
             <div class="classes">

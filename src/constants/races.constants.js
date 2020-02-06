@@ -1,5 +1,5 @@
 export default [
-   'Assimar',
+   'Aasimar',
    'Dwarf',
    'Elf',
    'Halfling',

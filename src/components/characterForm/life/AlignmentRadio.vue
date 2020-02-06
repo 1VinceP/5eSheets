@@ -1,10 +1,10 @@
 <script>
 export default {
-   name: 'alignemnt-radio',
+   name: 'alignement-radio',
 
    props: {
       value: String,
-      isChecked: { type: Boolean, default: false },
+      checked: { type: Boolean, default: false },
    },
 };
 </script>
@@ -17,7 +17,7 @@ export default {
          class="radio"
          :id="value"
          :value="value"
-         :checked="isChecked"
+         :checked="checked"
          @change="$emit('change', value, 'alignment')"
       />
       <label :for="value" />

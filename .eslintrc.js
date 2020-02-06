@@ -27,6 +27,7 @@ module.exports = {
       'object-curly-newline': 0,
       'indent': ['error', 3],
       'function-paren-newline': 0,
+      'no-else-return': 0,
     },
   }],
 };

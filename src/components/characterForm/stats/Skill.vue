@@ -1,12 +1,13 @@
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import ChevronDown from 'vue-material-design-icons/ChevronDown.vue';
 
 export default {
    name: 'skill',
 
    computed: {
-      ...mapState('character', ['proficiencyBonus', 'abilities']),
+      ...mapState('character', ['abilities']),
+      ...mapGetters('character', ['proficiencyBonus']),
 
       ability() {
          return this.abilities[this.skill.type];
