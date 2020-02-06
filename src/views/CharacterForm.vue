@@ -85,6 +85,7 @@ export default {
       setView(view) {
          this.view = view;
          this.footOpen = false;
+         window.scrollTo(0, 0);
       },
 
       editField(value, prop) {

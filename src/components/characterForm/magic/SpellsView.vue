@@ -1,7 +1,6 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
-import { Input, Select } from '@/components/common';
-import Counter from '../Counter.vue';
+import { Button, Input, Select } from '@/components/common';
 import SpellContainer from './SpellContainer.vue';
 
 export default {
@@ -34,7 +33,7 @@ export default {
       },
    },
 
-   components: { Input, Select, Counter, SpellContainer },
+   components: { Button, Input, Select, SpellContainer },
 
    props: {
       character: Object,
@@ -82,13 +81,7 @@ export default {
          />
       </section>
 
-      <Counter
-         label="Spell Lists"
-         :disableDecrease="character.spellsList.length <= 1"
-         :disableIncrease="character.spellsList.length >= 10"
-         @onDecrease="removeSpellList"
-         @onIncrease="addSpellList"
-      />
+      <Button full green @click="addSpellList">Add Spell Level</Button>
    </div>
 </template>
 
@@ -107,7 +100,8 @@ export default {
    }
 
    & .spells {
-      width: 100%;
+      width: 110%;
+      margin-left: -16px;
    }
 }
 </style>

@@ -36,9 +36,14 @@ const initialState = () => ({
    proficiencyBonus: 2,
    abilities: {
       str: { ...initialSkill },
+      dex: { ...initialSkill },
+      con: { ...initialSkill },
+      int: { ...initialSkill },
+      wis: { ...initialSkill },
+      cha: { ...initialSkill },
    },
    /* magic */
-   magicDisplay: 'magic',
+   magicDisplay: 'spells',
    spellAbility: '',
    spellsList: [
       { ...initialSpellList },
@@ -67,6 +72,21 @@ const initialState = () => ({
    /* journal */
    journalEntries: [],
 });
+
+function parseNewSpell(title, content) {
+   const timeReg = new RegExp(/(Casting Time: )(.*)/g);
+   const rangeReg = new RegExp(/(Range: )(.*)/g);
+   const concRegex = new RegExp(/Duration: Concentration/g);
+
+   return {
+      title,
+      content,
+      time: timeReg.exec(content)[2],
+      conc: concRegex.test(content),
+      range: rangeReg.exec(content)[2],
+      id: uuid(),
+   };
+}
 
 export default {
    namespaced: true,
@@ -119,12 +139,8 @@ export default {
          }
       },
 
-      editSpellList(state, { prop, value, index }) {
-         // const newList = { ...state.spellsList[index] };
-         // newList[prop] = value;
-         // state.spellsList[index] = newList;
+      editSpellLevelData(state, { prop, value, index }) {
          const newList = [...state.spellsList];
-         console.log(newList);
          newList[index][prop] = value;
          state.spellsList = newList;
       },
@@ -133,6 +149,22 @@ export default {
          if (state.spellsList.length > 1) {
             state.spellsList = state.spellsList.slice(0, -1);
          }
+      },
+
+      addNewSpell(state, { title, content, level }) {
+         const newSpell = parseNewSpell(title, content);
+         const newSpellsList = [...state.spellsList];
+         newSpellsList[level].spells = [...newSpellsList[level].spells, newSpell];
+         state.spellsList = newSpellsList;
+      },
+
+      deleteSpell(state, { level, spellId }) {
+         const newSpellsList = [...state.spellsList];
+         const newListAtLevel = [...newSpellsList[level].spells];
+         const spellIndex = newListAtLevel.findIndex(spell => spell.id === spellId);
+         newListAtLevel.splice(spellIndex, 1);
+         newSpellsList[level].spells = newListAtLevel;
+         state.spellsList = newSpellsList;
       },
    },
 

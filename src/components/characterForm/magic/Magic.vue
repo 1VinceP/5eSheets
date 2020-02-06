@@ -1,6 +1,6 @@
 <script>
 import { mapState, mapMutations } from 'vuex';
-import MagicView from './MagicView.vue';
+import SpellsView from './SpellsView.vue';
 import PsionicsView from './PsionicsView.vue';
 
 export default {
@@ -16,7 +16,7 @@ export default {
       },
    },
 
-   components: { MagicView, PsionicsView },
+   components: { SpellsView, PsionicsView },
 
    props: {
       character: Object,
@@ -28,10 +28,10 @@ export default {
    <div class="global-page">
       <section class="tabs">
          <div
-            :class="['tab', { active: magicDisplay === 'magic' }]"
-            @click="editView('magic')"
+            :class="['tab', { active: magicDisplay === 'spells' }]"
+            @click="editView('spells')"
          >
-            Magic
+            Spells
          </div>
          <div
             :class="['tab', { active: magicDisplay === 'psionics' }]"
@@ -41,7 +41,7 @@ export default {
          </div>
       </section>
 
-      <MagicView v-if="magicDisplay === 'magic'" :character="character" />
+      <SpellsView v-if="magicDisplay === 'spells'" :character="character" />
       <PsionicsView v-else-if="magicDisplay === 'psionics'" :character="character" />
    </div>
 </template>

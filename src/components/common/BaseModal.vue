@@ -65,9 +65,7 @@ export default {
       </section>
 
       <section class="body">
-        <div>
-          <slot />
-        </div>
+        <slot />
         <Input
           v-if="prompt"
           class="prompt"
@@ -81,7 +79,7 @@ export default {
 
       <!-- Not a foobar joke. Its a bar that acts as a footer -->
       <section class="foot bar">
-        <Button sm v-show="!!secondaryLabel" @click="handleSecondary">
+        <Button sm :night="night" v-show="!!secondaryLabel" @click="handleSecondary">
           {{ secondaryLabel }}
         </Button>
         <Button

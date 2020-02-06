@@ -22,6 +22,7 @@ export default {
     link: { type: Boolean, default: false },
     disabled: { type: Boolean, default: false },
     loading: { type: Boolean, default: false },
+    night: { type: Boolean, default: false },
   },
 };
 </script>
@@ -30,7 +31,7 @@ export default {
   <button
     :id="id"
     :name="name"
-    :class="['button', { primary, full, lg, sm, green, orange, red, isDelete, link, loading, round }]"
+    :class="['button', { primary, full, lg, sm, green, orange, red, isDelete, link, loading, round, night }]"
     @click="$emit('click', $event.target.name)"
     :disabled="disabled || loading"
   >
@@ -58,6 +59,7 @@ export default {
     background: $blue-faded;
   }
   &.loading { position: relative; }
+  &.night { color: #fff; }
 
   &.primary {
     background: $blue;

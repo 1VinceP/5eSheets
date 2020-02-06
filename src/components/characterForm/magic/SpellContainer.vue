@@ -1,15 +1,23 @@
 <script>
 import { mapMutations } from 'vuex';
+import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
+import { Modal } from '@/components/common';
 import Counter from '../Counter.vue';
+import SpellEntry from './SpellEntry.vue';
+import Spell from './Spell.vue';
 
 export default {
    name: 'spell-container',
 
    data() {
       return {
+         modalOpen: false,
          currentSlots: this.spellLevelData.currentSlots,
          maxSlots: this.spellLevelData.maxSlots,
          spellList: this.spellLevelData.spells,
+
+         newSpellName: '',
+         newSpellContent: '',
       };
    },
 
@@ -24,14 +32,29 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['editSpellList']),
+      ...mapMutations('character', ['editSpellLevelData', 'addNewSpell']),
 
-      editSpell(value, name) {
-         this.editSpellList({ prop: name, value: Number(value), index: this.spellLevel });
+      closeModal() {
+         this.modalOpen = false;
+         this.newSpellName = '';
+         this.newSpellContent = '';
+      },
+
+      editSpellLevel(value, name) {
+         this.editSpellLevelData({ prop: name, value: Number(value), index: this.spellLevel });
+      },
+
+      addSpell() {
+         this.addNewSpell({
+            title: this.newSpellName,
+            content: this.newSpellContent,
+            level: this.spellLevel,
+         });
+         this.closeModal();
       },
    },
 
-   components: { Counter },
+   components: { PlusIcon, Modal, Counter, SpellEntry, Spell },
 
    props: {
       spellLevel: Number,
@@ -55,13 +78,42 @@ export default {
             :secondaryValue="maxSlots"
             :disableDecrease="currentSlots <= 0"
             :disableIncrease="currentSlots >= maxSlots"
-            @input="editSpell"
-            @secondaryInput="editSpell"
-            @onDecrease="(name) => editSpell(--currentSlots, name)"
-            @onIncrease="(name) => editSpell(++currentSlots, name)"
+            @input="editSpellLevel"
+            @secondaryInput="editSpellLevel"
+            @onDecrease="(name) => editSpellLevel(--currentSlots, name)"
+            @onIncrease="(name) => editSpellLevel(++currentSlots, name)"
             style="width: 50%;"
          />
       </section>
+      <Spell v-show="spellLevelData.spells.length > 0" isHeader />
+      <Spell
+         v-for="spell in spellLevelData.spells"
+         :key="spell.id"
+         :spell="spell"
+         :spellLevel="spellLevel"
+      />
+
+      <span class="add-spell">
+         <PlusIcon :size="18" @click="modalOpen = true" />
+      </span>
+
+      <Modal
+         :show="modalOpen"
+         title="Add Spell"
+         primaryLabel="Save"
+         secondaryLabel="Cancel"
+         @primary="addSpell"
+         @secondary="closeModal"
+         top
+         night
+      >
+         <SpellEntry
+            contentPlaceholder="Paste spell data here. It will be parsed automagically."
+            :entry="{ title: newSpellName, content: newSpellContent }"
+            @titleInput="value => newSpellName = value"
+            @contentInput="value => newSpellContent = value"
+         />
+      </Modal>
    </div>
 </template>
 
@@ -77,11 +129,20 @@ export default {
       display: flex;
       justify-content: space-between;
       align-items: center;
+      margin-bottom: 6px;
       & .title {
          width: 45%;
          font-size: 18px;
       }
    }
 
+   & .add-spell {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 6px;
+      padding: 3px 6px;
+   }
 }
 </style>
