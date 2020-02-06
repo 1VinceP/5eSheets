@@ -26,7 +26,7 @@ export default {
    data: () => ({
       isNew: true,
       editing: true,
-      view: 'stats',
+      view: 'magic',
       footOpen: false,
       footerTemp: '',
    }),
@@ -196,10 +196,11 @@ export default {
 
 .character-form {
    padding-bottom: 140px;
+
    & .headline-title {
       width: 100%;
       display: flex;
-      align-items: flex-end;
+      justify-content: center;
       font-size: 24px;
       & .page-title { margin-left: 10px; }
    }

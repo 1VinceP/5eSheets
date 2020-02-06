@@ -5,7 +5,7 @@ import CloseIcon from 'vue-material-design-icons/Close.vue';
 import { Input, Select } from '@/components/common';
 import AbilityBox from './AbilityBox.vue';
 import Skill from './Skill.vue';
-import Counter from './Counter.vue';
+import Counter from '../Counter.vue';
 import classList from '@/constants/classes.constants';
 import raceList from '@/constants/races.constants';
 import { skillArray } from '@/constants/skills.constants';

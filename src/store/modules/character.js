@@ -1,8 +1,7 @@
-import reduce from 'lodash/reduce';
 import toastr from 'toastr';
 import uuid from 'uuid/v4';
 import router from '@/router';
-import classList from '@/constants/classes.constants';
+import { statMutations, journalMutations } from './characterMutations';
 
 const initialSkill = {
    proficient: false,
@@ -10,6 +9,12 @@ const initialSkill = {
    modifier: 0,
    skills: [],
    experts: [],
+};
+
+const initialSpellList = {
+   maxSlots: 0,
+   currentSlots: 0,
+   spells: [],
 };
 
 const initialState = () => ({
@@ -31,12 +36,13 @@ const initialState = () => ({
    proficiencyBonus: 2,
    abilities: {
       str: { ...initialSkill },
-      dex: { ...initialSkill },
-      con: { ...initialSkill },
-      int: { ...initialSkill },
-      wis: { ...initialSkill },
-      cha: { ...initialSkill },
    },
+   /* magic */
+   magicDisplay: 'magic',
+   spellAbility: '',
+   spellsList: [
+      { ...initialSpellList },
+   ],
    /* life */
    playerName: '',
    xp: 0,
@@ -59,16 +65,8 @@ const initialState = () => ({
    creationDate: '',
    lastEdited: '',
    /* journal */
-   journalEntries: [{ title: '', content: '', tags: ['dog'], date: new Date(), id: '' }],
+   journalEntries: [],
 });
-
-function getNewHitDieValue(dieValue, classes) {
-   return reduce(classes, (total, next) => {
-      return next.hitDie === dieValue
-         ? total + Number(next.level)
-         : total;
-   }, 0);
-}
 
 export default {
    namespaced: true,
@@ -78,7 +76,7 @@ export default {
    getters: {
       proficiencyBonus: state => {
          const totalLevel = state.classes.reduce((total, charClass) => {
-            return total + charClass.level;
+            return total + Number(charClass.level);
          }, 0);
 
          if (totalLevel <= 4) return 2;
@@ -96,6 +94,9 @@ export default {
    },
 
    mutations: {
+      ...statMutations,
+      ...journalMutations,
+
       resetForm(state) {
          const s = initialState();
          Object.keys(s).forEach(key => { state[key] = s[key]; });
@@ -112,74 +113,25 @@ export default {
          state[prop] = value;
       },
 
-      editHitDie(state, { direction, dieValue, value }) {
-         if (direction === 'calc') {
-            state.hitDice[dieValue].current = value;
-         } else {
-            const sumValue = direction === 'decrease' ? -1 : 1;
-            state.hitDice[dieValue].current += sumValue;
+      addSpellList(state) {
+         if (state.spellsList.length < 10) {
+            state.spellsList = [...state.spellsList, { ...initialSpellList }];
          }
       },
 
-      editClassProp(state, { prop, value, index }) {
-         state.classes[index][prop] = value;
-         if (prop === 'name') {
-            const oldHitDie = state.classes[index].hitDie;
-            const newHitDie = classList.find(c => c.name === value).hitDie;
-            state.classes[index].hitDie = newHitDie;
-            if (oldHitDie) {
-               // update hit dice when a class is swapped
-               const newValueForOldDice = getNewHitDieValue(oldHitDie, state.classes);
-               state.hitDice[oldHitDie].max = newValueForOldDice;
-               state.hitDice[oldHitDie].current = newValueForOldDice;
-               const newValueForNewDice = getNewHitDieValue(newHitDie, state.classes);
-               state.hitDice[newHitDie].max = newValueForNewDice;
-               state.hitDice[newHitDie].current = newValueForNewDice;
-            }
-         } else if (prop === 'level') {
-            const dieValue = classList.find(c => c.name === state.classes[index].name).hitDie;
-            const newValue = getNewHitDieValue(dieValue, state.classes);
-
-            state.hitDice[dieValue].max = newValue;
-            state.hitDice[dieValue].current = newValue;
-         }
+      editSpellList(state, { prop, value, index }) {
+         // const newList = { ...state.spellsList[index] };
+         // newList[prop] = value;
+         // state.spellsList[index] = newList;
+         const newList = [...state.spellsList];
+         console.log(newList);
+         newList[index][prop] = value;
+         state.spellsList = newList;
       },
 
-      addClass(state) {
-         state.classes = [...state.classes, initialState().classes[0]];
-      },
-
-      removeClass(state) {
-         const oldClassName = state.classes[state.classes.length - 1].name;
-         state.classes = state.classes.slice(0, -1);
-         if (oldClassName) {
-            const dieValue = classList
-               .find(c => c.name === oldClassName).hitDie;
-            const newValue = getNewHitDieValue(dieValue, state.classes);
-            console.log(dieValue, newValue);
-
-            state.hitDice[dieValue].max = newValue;
-            state.hitDice[dieValue].current = newValue;
-         }
-      },
-
-      editAbility(state, { ability, prop, value }) {
-         const charAbility = state.abilities[ability];
-
-         if (prop === 'score') {
-            charAbility.score = value;
-            charAbility.modifier = Math.floor((Number(value) - 10) / 2);
-         } else if (prop === 'proficient') {
-            charAbility.proficient = !charAbility.proficient;
-         } else if (prop === 'skills' || prop === 'experts') {
-            const skillIndex = charAbility[prop].findIndex(skill => skill === value);
-            if (skillIndex >= 0) {
-               const newSkills = [...charAbility[prop]];
-               newSkills.splice(skillIndex, 1);
-               charAbility[prop] = newSkills;
-            } else {
-               charAbility[prop] = [...charAbility[prop], value];
-            }
+      removeSpellList(state) {
+         if (state.spellsList.length > 1) {
+            state.spellsList = state.spellsList.slice(0, -1);
          }
       },
    },

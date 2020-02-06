@@ -1,5 +1,6 @@
 <script>
-import { Input } from '@/components/common';
+import { mapMutations } from 'vuex';
+import { Button, Input } from '@/components/common';
 import Entry from './Entry.vue';
 
 export default {
@@ -7,24 +8,44 @@ export default {
 
    data: () => ({
       tagFilter: '',
+      tagFilterType: 'OR',
    }),
 
    computed: {
       filteredEntries() {
-         const { journalEntries } = this.character;
+         let filteredEntries = [...this.character.journalEntries];
 
          if (this.tagFilter !== '') {
-            const filteredTags = this.tagFilter.split(' #');
-            return journalEntries.filter(entry => {
-               return entry.tags.some(tag => filteredTags.includes(tag));
-            });
+            const filteredTags = this.tagFilter.split(' ');
+
+            if (this.tagFilterType === 'OR') {
+               filteredEntries = filteredEntries.filter(entry => {
+                  return entry.tags.some(tag => filteredTags.includes(tag));
+               });
+            } else if (this.tagFilterType === 'AND') {
+               filteredEntries = filteredEntries.filter(entry => {
+                  return filteredTags.every(tag => entry.tags.includes(tag));
+               });
+            }
          }
 
-         return journalEntries;
+         return filteredEntries;
       },
    },
 
-   components: { Input, Entry },
+   methods: {
+      ...mapMutations('character', ['addJournalEntry']),
+
+      switchFilterType() {
+         if (this.tagFilterType === 'AND') {
+            this.tagFilterType = 'OR';
+         } else {
+            this.tagFilterType = 'AND';
+         }
+      },
+   },
+
+   components: { Button, Input, Entry },
 
    props: {
       character: Object,
@@ -39,9 +60,13 @@ export default {
             name="filter"
             placeholder="Filter tags, leading with #"
             v-model="tagFilter"
+            :buttonLabel="tagFilterType"
+            @button="switchFilterType"
             night
          />
       </section>
+
+      <Button green full @click="addJournalEntry">Add Entry</Button>
 
       <section class="entries">
          <Entry v-for="entry in filteredEntries" :key="entry.id" :entry="entry" />

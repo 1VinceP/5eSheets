@@ -110,7 +110,7 @@ export default {
    &.green:focus-within { border: 1px solid $green; }
    &.orange:focus-within { border: 1px solid $orange; }
    &.red:focus-within { border: 2px solid $red; }
-   &.night:focus-within { border: 1px solid #eee; }
+   &.night:focus-within { border: 1px solid $blue; }
    &:focus-within { border: 1px solid $blue; }
 
    & select {

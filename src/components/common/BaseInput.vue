@@ -70,6 +70,7 @@ export default {
     height: String,
     value: [String, Number],
     inputStyle: Object,
+    buttonStyle: Object,
     buttonLabel: { type: String, default: '' },
     autofocus: { type: Boolean, default: false },
     textarea: { type: Boolean, default: false },
@@ -164,6 +165,7 @@ export default {
         :disabled="disabled"
         :loading="loading"
         @click="$emit('button', value)"
+        :style="buttonStyle"
       >
         {{ buttonLabel }}
       </Button>

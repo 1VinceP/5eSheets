@@ -1,8 +1,23 @@
 <script>
+import toastr from 'toastr';
+import 'toastr/build/toastr.min.css';
 import MobileNav from '@/components/MobileNav.vue';
 
 export default {
    components: { MobileNav },
+
+   created() {
+      toastr.options = {
+         positionClass: 'toast-top-full-width',
+         showMethod: 'slideDown',
+         hideMethod: 'slideUp',
+         closeMethod: 'slideUp',
+         timeOut: 2500,
+         showDuration: 100,
+         hideDuration: 100,
+         hideDuplicates: true,
+      };
+   },
 };
 </script>
 

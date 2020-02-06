@@ -1,18 +1,46 @@
 <script>
+import { mapMutations } from 'vuex';
 import moment from 'moment';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
-import { Input } from '@/components/common';
+import { Input, Modal } from '@/components/common';
 
 export default {
    name: 'entry',
 
    data() {
       return {
-         date: moment(this.entry.date).format('DD MMM YYYY'),
+         date: moment(this.entry.date).format('DD MMM YYYY, h:mm:ss a'),
+         modalOpen: false,
       };
    },
 
-   components: { Input, PlusIcon },
+   methods: {
+      ...mapMutations('character', [
+         'editJournalEntry',
+         'addJournalTag',
+         'removeJournalTag',
+         'removeJournalEntry',
+      ]),
+
+      editEntry(value, prop) {
+         this.editJournalEntry({ value, prop, id: this.entry.id });
+      },
+
+      addTag(value) {
+         if (value && !value.includes('#')) {
+            this.addJournalTag({ value, id: this.entry.id });
+            this.modalOpen = false;
+         } else if (value.includes('#')) {
+            window.alert('# will be added automatically.');
+         }
+      },
+
+      removeTag(tag) {
+         this.removeJournalTag({ tag, id: this.entry.id });
+      },
+   },
+
+   components: { Input, Modal, PlusIcon },
 
    props: {
       entry: Object,
@@ -25,24 +53,43 @@ export default {
       <Input
          class="entry-title"
          placeholder="Title"
+         buttonLabel="Delete"
+         name="title"
          :label="date"
-         :name="`entryTitle-${entry.id}`"
          :value="entry.title"
          :inputStyle="{ paddingLeft: '8px' }"
+         @input="editEntry"
+         @button="removeJournalEntry(entry.id)"
          night
       />
       <Input
          textarea
          class="entry-content"
          placeholder="Content"
-         :name="`entryContent-${entry.id}`"
+         name="content"
          :value="entry.content"
+         @input="editEntry"
          night
       />
       <div class="tags">
-         <div v-for="tag in entry.tags" :key="tag" class="tag">#{{ tag }}</div>
-         <PlusIcon :size="18" />
+         <div v-for="tag in entry.tags" :key="tag" class="tag" @click="removeTag(tag)">
+            #{{ tag }}
+         </div>
+         <PlusIcon @click="modalOpen = true" :size="18" />
       </div>
+
+      <Modal
+         title="Add Tag"
+         secondaryLabel="Cancel"
+         :show="modalOpen"
+         @primary="addTag"
+         @secondary="modalOpen = false"
+         top
+         prompt
+         night
+      >
+         {{ entry.title }}
+      </Modal>
    </div>
 </template>
 
@@ -51,6 +98,7 @@ export default {
 
 .entry {
    width: 100%;
+   margin-top: 40px;
 
    & .entry-title {
       padding-left: -8px;

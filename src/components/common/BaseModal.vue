@@ -17,6 +17,18 @@ export default {
     error() { return this.type === 'error'; },
   },
 
+  methods: {
+     handleSubmit(method) {
+        this.$emit(method, this.inputValue);
+        this.inputValue = '';
+     },
+
+     handleSecondary() {
+        this.$emit('secondary');
+        this.inputValue = '';
+     },
+  },
+
   components: {
     Button, Input,
   },
@@ -30,14 +42,15 @@ export default {
         'default', 'success', 'warning', 'error',
       ].indexOf(value) >= 0,
     },
+    inputType: String,
     title: String,
     primaryLabel: { type: String, default: 'Ok' },
     secondaryLabel: String,
-    promptTitle: Boolean,
-    top: Boolean, // places the modal at the top of the screen
-    prompt: Boolean,
-    loading: Boolean,
-    cancel: Boolean,
+    promptTitle: { type: Boolean, default: false },
+    top: { type: Boolean, default: false }, // places the modal at the top of the screen
+    prompt: { type: Boolean, default: false },
+    loading: { type: Boolean, default: false },
+    cancel: { type: Boolean, default: false },
     night: { type: Boolean, default: false },
   },
 };
@@ -57,16 +70,18 @@ export default {
         </div>
         <Input
           v-if="prompt"
-          type="password"
           class="prompt"
+          :type="inputType"
           v-model="inputValue"
-          @enter="$emit('enter', inputValue)"
+          @enter="handleSubmit('enter')"
+          :night="night"
+          autofocus
         />
       </section>
 
       <!-- Not a foobar joke. Its a bar that acts as a footer -->
       <section class="foot bar">
-        <Button sm v-show="!!secondaryLabel" @click="$emit('secondary')">
+        <Button sm v-show="!!secondaryLabel" @click="handleSecondary">
           {{ secondaryLabel }}
         </Button>
         <Button
@@ -75,7 +90,7 @@ export default {
           :green="success"
           :orange="warning"
           :red="error"
-          @click="$emit('primary', inputValue)"
+          @click="handleSubmit('primary')"
         >
           {{ primaryLabel }}
         </Button>
