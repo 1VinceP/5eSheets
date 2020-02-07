@@ -1,9 +1,9 @@
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex';
 import startCase from 'lodash/startCase';
-// import EditIcon from 'vue-material-design-icons/Pencil.vue';
+import uuid from 'uuid/v4';
+
 import SaveIcon from 'vue-material-design-icons/ContentSave.vue';
-import ImportIcon from 'vue-material-design-icons/FileImport.vue';
 import ExportIcon from 'vue-material-design-icons/FileExport.vue';
 import DeleteIcon from 'vue-material-design-icons/Delete.vue';
 import ResetIcon from 'vue-material-design-icons/Cached.vue';
@@ -26,7 +26,7 @@ export default {
    data: () => ({
       isNew: true,
       editing: true,
-      view: 'magic',
+      view: 'stats',
       footOpen: false,
       footerTemp: '',
    }),
@@ -45,7 +45,6 @@ export default {
          if (this.isNew) {
             return [
                save,
-               { title: 'Import', action: this.importCharacter, icon: ImportIcon, bg: 'darkviolet' },
                { title: 'Reset', action: this.handleReset, icon: ResetIcon, bg: '#c42338' },
             ];
          }
@@ -64,15 +63,15 @@ export default {
       if (id) {
          this.isNew = false;
          this.editing = false;
-         this.setCharacter(id);
+         this.setCharacterById(id);
       }
    },
 
    methods: {
       ...mapMutations('character', ['resetForm']),
-      ...mapActions(['getCharacters', 'setCharacter']),
+      ...mapActions(['getCharacters', 'setCharacterById']),
       ...mapActions('character', [
-         'saveNewCharacter', 'saveCharacter', 'deleteCharacter', 'shortRest', 'longRest',
+         'saveNewCharacter', 'saveCharacter', 'deleteCharacter',
       ]),
 
       handleReset() {
@@ -94,16 +93,27 @@ export default {
 
       handleSave() {
          const { id } = this.$route.params;
-         if (id) this.saveCharacter();
-         else {
-            this.saveNewCharacter();
+         let character;
+         if (id) {
+            character = this.saveCharacter();
+         } else {
+            character = this.saveNewCharacter();
             this.isNew = false;
          }
+
+         return character;
       },
 
-      importCharacter() {},
-
-      exportCharacter() {},
+      exportCharacter() {
+         const character = JSON.stringify({ ...this.character, id: uuid() });
+         const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(character)}`;
+         const downloadElement = document.createElement('a');
+         downloadElement.setAttribute('href', dataStr);
+         downloadElement.setAttribute('download', `${this.character.name}.json`);
+         document.body.appendChild(downloadElement);
+         downloadElement.click();
+         downloadElement.remove();
+      },
    },
 
    destroyed() {

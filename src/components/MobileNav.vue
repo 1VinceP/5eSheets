@@ -36,7 +36,7 @@ export default {
    height: 100vh;
    width: 100%;
    visibility: hidden;
-   background: url('../assets/stripes_bg.jpg') no-repeat center center fixed;
+   background: url('../assets/stars_bg.jpg') no-repeat center center fixed;
    background-size: cover;
    display: flex;
    flex-direction: column;

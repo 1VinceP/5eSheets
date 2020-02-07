@@ -3,6 +3,8 @@ export default [
    'Dwarf',
    'Elf',
    'Halfling',
+   'Half-orc',
+   'Half-elf',
    'Human',
    'Gnome',
    'Orc',

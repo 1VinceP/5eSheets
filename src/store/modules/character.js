@@ -200,5 +200,12 @@ export default {
             toastr.success('Your character has been deleted.');
          }
       },
+
+      importCharacter({ rootState, dispatch }, character) {
+         const newList = JSON.stringify([...rootState.characters, { ...character }]);
+         localStorage.setItem('5e-characters', newList);
+         dispatch('getCharacters', null, { root: true });
+         toastr.success(`${character.name} has been imported.`);
+      },
    },
 };

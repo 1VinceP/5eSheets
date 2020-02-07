@@ -33,6 +33,9 @@ export default {
 @import './_a-variables.scss';
 
 #app {
+   // background: url('assets/stars_bg.jpg') no-repeat center center fixed;
+   // background-size: cover;
+
    box-shadow: inset 0 0px 20px 1px black;
    font-family: 'Avenir', Helvetica, Arial, sans-serif;
    -webkit-font-smoothing: antialiased;
