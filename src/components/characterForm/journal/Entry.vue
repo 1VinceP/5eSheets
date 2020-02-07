@@ -28,7 +28,7 @@ export default {
 
       addTag(value) {
          if (value && !value.includes('#')) {
-            this.addJournalTag({ value, id: this.entry.id });
+            this.addJournalTag({ value: value.toLowerCase(), id: this.entry.id });
             this.modalOpen = false;
          } else if (value.includes('#')) {
             window.alert('# will be added automatically.');

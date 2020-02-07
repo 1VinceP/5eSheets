@@ -31,7 +31,7 @@ export default new Vuex.Store({
          }
       },
 
-      setCharacter({ state, commit }, id) {
+      setCharacterById({ state, commit }, id) {
          const character = state.characters.find(c => c.id === id);
          if (!character) {
             router.push('/characters');

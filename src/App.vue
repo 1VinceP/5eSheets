@@ -32,7 +32,7 @@ export default {
 @import './_a-variables.scss';
 
 #app {
-   // background: url('assets/stripes_bg.jpg') no-repeat center center fixed;
+   // background: url('assets/stars_bg.jpg') no-repeat center center fixed;
    // background-size: cover;
    background:
    linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,

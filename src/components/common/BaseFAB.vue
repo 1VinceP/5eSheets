@@ -38,6 +38,7 @@ export default {
             @click="handleItemClick(i.action)"
             :style="{ background: i.bg || '#323231aa' }"
          >
+            <input v-show="i.title === 'Import'" type="file" id="fileSelector" value="Import" />
             <component :is="i.icon" />
             <span class="item-title">
                <div>{{ i.title }}</div>
@@ -94,7 +95,17 @@ export default {
          margin-bottom: 16px;
          padding-top: 5px;
          color: #fff;
+         z-index: 2;
          cursor: pointer;
+
+         & #fileSelector {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            opacity: 0;
+            border-radius: 50%;
+         }
 
          & .item-title {
             width: 1px;

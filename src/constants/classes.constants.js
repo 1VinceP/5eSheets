@@ -163,7 +163,7 @@ export default [
          'Hexblade',
          'Undying',
       ],
-      subclassLevel: 3,
+      subclassLevel: 1,
       hitDie: '8',
    },
    {
