@@ -226,6 +226,7 @@ export default {
    background: #323231;
    position: fixed;
    bottom: 0px;
+   color: #eee;
    transform: translateY(50px);
    transition: transform .15s ease-in-out;
    &.footOpen { transform: translateY(0px); }

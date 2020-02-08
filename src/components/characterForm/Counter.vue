@@ -5,13 +5,14 @@ export default {
    props: {
       name: String,
       value: [Number],
+      label: String,
+      secondaryName: [String],
       min: [String, Number],
       max: [String, Number],
-      label: String,
+      secondaryValue: [Number],
       disableDecrease: { type: Boolean, default: false },
       disableIncrease: { type: Boolean, default: false },
-      secondaryValue: [Number],
-      secondaryName: [String],
+      night: { type: Boolean, default: false },
    },
 };
 </script>
@@ -24,7 +25,7 @@ export default {
       >
          -
       </div>
-      <div class="display">
+      <div :class="['display', { night }]">
          <input
             v-show="value >= 0"
             :class="['input', { full: !label }]"
@@ -78,6 +79,7 @@ export default {
       justify-content: center;
       align-items: center;
       border-radius: 3px;
+      color: #eee;
       &.down { background: $red; }
       &.up { background: $green; }
       &.disabled { background: $grey; }
@@ -90,14 +92,17 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
-      color: #fff;
+      color: $navy;
+      & input { color: $navy; }
+      &.night, &.night input {
+         color: #eee;
+      }
 
       & .input {
          height: 100%;
          width: 50%;
          background: transparent;
          border: none;
-         color: #fff;
          text-align: right;
          font-size: 16px;
       }
@@ -121,7 +126,6 @@ export default {
          width: calc(50% - 10px);
          background: transparent;
          border: none;
-         color: #fff;
          text-align: left;
          font-size: 16px;
       }

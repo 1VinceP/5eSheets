@@ -59,6 +59,7 @@ export default {
    props: {
       spellLevel: Number,
       spellLevelData: Object,
+      night: { type: Boolean, default: false },
    },
 };
 </script>
@@ -85,12 +86,13 @@ export default {
             style="width: 50%;"
          />
       </section>
-      <Spell v-show="spellLevelData.spells.length > 0" isHeader />
+      <Spell v-show="spellLevelData.spells.length > 0" isHeader :night="night" />
       <Spell
          v-for="spell in spellLevelData.spells"
          :key="spell.id"
          :spell="spell"
          :spellLevel="spellLevel"
+         :night="night"
       />
 
       <span class="add-spell">
@@ -105,7 +107,7 @@ export default {
          @primary="addSpell"
          @secondary="closeModal"
          top
-         night
+         :night="night"
       >
          <SpellEntry
             contentPlaceholder="Paste spell data here. It will be parsed automagically."

@@ -1,5 +1,5 @@
 <script>
-import { mapMutations } from 'vuex';
+import { mapMutations, mapGetters } from 'vuex';
 import { Button, Input } from '@/components/common';
 import Entry from './Entry.vue';
 
@@ -12,6 +12,8 @@ export default {
    }),
 
    computed: {
+      ...mapGetters(['night']),
+
       filteredEntries() {
          let filteredEntries = [...this.character.journalEntries];
 
@@ -54,7 +56,7 @@ export default {
 </script>
 
 <template>
-   <div class="global-page">
+   <div class="journal">
       <section class="tags">
          <Input
             name="filter"
@@ -62,30 +64,39 @@ export default {
             v-model="tagFilter"
             :buttonLabel="tagFilterType"
             @button="switchFilterType"
-            night
+            :night="night"
          />
       </section>
 
       <Button green full @click="addJournalEntry">Add Entry</Button>
 
       <section class="entries">
-         <Entry v-for="entry in filteredEntries" :key="entry.id" :entry="entry" />
+         <Entry
+            v-for="entry in filteredEntries"
+            :key="entry.id"
+            :entry="entry"
+            :night="night"
+         />
       </section>
    </div>
 </template>
 
 <style lang="scss" scoped>
-.tags {
+.journal {
    width: 100%;
-   & .new-tag {
-      width: 100%;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-   }
-}
 
-.entries {
-   width: 100%;
+   & .tags {
+      width: 100%;
+      & .new-tag {
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
+   }
+
+   & .entries {
+      width: 100%;
+   }
 }
 </style>

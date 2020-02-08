@@ -29,6 +29,7 @@ export default {
       isError: { type: Boolean, default: false },
       night: { type: Boolean, default: false },
       disabled: { type: Boolean, default: false },
+      disableDefault: { type: Boolean, default: false },
    },
 };
 </script>
@@ -55,6 +56,7 @@ export default {
          @change="$emit('change', $event.target.value, $event.target.name)"
       >
          <option
+            v-show="!disableDefault"
             value=""
             :class="{ night }"
          >
@@ -116,11 +118,11 @@ export default {
    & select {
       height: 100%;
       width: 100%;
+      background: transparent;
       border: none;
       font-size: 16px;
       outline: none;
       &.night {
-         background: transparent;
          color: #fff;
       }
       & option {

@@ -1,11 +1,12 @@
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import SpellsView from './SpellsView.vue';
 import PsionicsView from './PsionicsView.vue';
 
 export default {
    computed: {
       ...mapState('character', ['magicDisplay']),
+      ...mapGetters(['night']),
    },
 
    methods: {
@@ -25,16 +26,16 @@ export default {
 </script>
 
 <template>
-   <div class="global-page">
+   <div class="magic">
       <section class="tabs">
          <div
-            :class="['tab', { active: magicDisplay === 'spells' }]"
+            :class="['tab', { active: magicDisplay === 'spells', night }]"
             @click="editView('spells')"
          >
             Spells
          </div>
          <div
-            :class="['tab', { active: magicDisplay === 'psionics' }]"
+            :class="['tab', { active: magicDisplay === 'psionics', night }]"
             @click="editView('psionics')"
          >
             Psionics
@@ -49,21 +50,29 @@ export default {
 <style lang="scss" scoped>
 @import '@/_a-variables.scss';
 
-.tabs {
-   height: 30px;
+.magic {
    width: 100%;
-   display: flex;
-   justify-content: space-between;
-   margin-top: 10px;
-   border-bottom: 1px solid $grey;
-   & .tab {
-      height: 100%;
-      flex: 1;
+
+   & .tabs {
+      height: 30px;
+      width: 100%;
       display: flex;
-      justify-content: center;
-      align-items: center;
-      border-radius: 3px 3px 0px 0px;
-      &.active { background: #fff2; }
+      justify-content: space-between;
+      margin-top: 10px;
+      border-bottom: 1px solid $grey;
+      & .tab {
+         height: 100%;
+         flex: 1;
+         display: flex;
+         justify-content: center;
+         align-items: center;
+         border-radius: 3px 3px 0px 0px;
+         &.active {
+            background: #0002;
+            &.night { background: #fff2; }
+         }
+      }
    }
 }
+
 </style>

@@ -52,6 +52,7 @@ export default {
       sort: String,
       skill: Object,
       isHeader: { type: Boolean, default: false },
+      night: { type: Boolean, default: false },
    },
 };
 </script>
@@ -84,7 +85,7 @@ export default {
       <div v-show="isSeperator" class="seperator" />
    </div>
 
-   <div v-else :class="['skill', { isHeader }]">
+   <div v-else :class="['skill', { isHeader, night }]">
       <div class="label container left">
          Skill
          <ChevronDown v-if="sort === 'skill'" :size="12" />
@@ -120,7 +121,10 @@ export default {
    align-items: center;
    margin-bottom: 16px;
    font-size: 12px;
-   &.isHeader { border-bottom: 1px solid #fff; }
+   &.isHeader {
+      border-bottom: 1px solid #323231;
+      &.night { border-color: #fff; }
+   }
    &.hasSeperator { margin-bottom: 8px; }
 
    & .container {

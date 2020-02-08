@@ -1,14 +1,11 @@
 <script>
-import { mapState, mapMutations } from 'vuex';
+import { mapState, mapMutations, mapGetters } from 'vuex';
 import { Button } from '@/components/common';
 
 export default {
-   data: () => ({
-      style: { color: '#fff' },
-   }),
-
    computed: {
-      ...mapState(['showNav']),
+      ...mapState(['theme', 'handedness', 'showNav']),
+      ...mapGetters(['night']),
    },
 
    methods: {
@@ -20,35 +17,42 @@ export default {
 </script>
 
 <template>
-   <div :class="['mobile-nav', { showNav }]">
+   <div :class="['mobile-nav', theme, { showNav, flipped: handedness === 'Left' }]">
       <router-link to="/" class="global-link">
-         <Button @click="toggleNav" :style="style">Home</Button>
+         <Button @click="toggleNav" :night="night">Home</Button>
       </router-link>
       <router-link to="/characters" class="global-link">
-         <Button @click="toggleNav" :style="style">Characters</Button>
+         <Button @click="toggleNav" :night="night">Characters</Button>
       </router-link>
-      <Button @click="toggleNav" :style="style">Close</Button>
+      <router-link to="/settings" class="global-link">
+         <Button @click="toggleNav" :night="night">Settings</Button>
+      </router-link>
+      <router-link to="/about" class="global-link">
+         <Button @click="toggleNav" :night="night">About</Button>
+      </router-link>
+      <Button @click="toggleNav" :night="night">Close</Button>
    </div>
 </template>
 
 <style lang="scss" scoped>
+@import '../themes';
+
 .mobile-nav {
    height: 100vh;
    width: 100%;
    visibility: hidden;
-   background: url('../assets/stars_bg.jpg') no-repeat center center fixed;
-   background-size: cover;
    display: flex;
    flex-direction: column;
    justify-content: space-around;
    align-items: center;
-   padding: 50% 0;
+   padding: 15% 0 85% 25%;
    position: absolute;
    top: 0;
    left: 0;
    z-index: 10;
    opacity: 0;
    transition: .15s all ease-in-out;
+   &.flipped { padding: 15% 25% 85% 0; }
 }
 
 .showNav {

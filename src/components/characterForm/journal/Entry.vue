@@ -44,6 +44,7 @@ export default {
 
    props: {
       entry: Object,
+      night: { type: Boolean, default: false },
    },
 };
 </script>
@@ -51,6 +52,7 @@ export default {
 <template>
    <div class="entry">
       <Input
+         autocomplete="off"
          class="entry-title"
          placeholder="Title"
          buttonLabel="Delete"
@@ -60,19 +62,25 @@ export default {
          :inputStyle="{ paddingLeft: '8px' }"
          @input="editEntry"
          @button="removeJournalEntry(entry.id)"
-         night
+         :night="night"
       />
       <Input
          textarea
+         autocomplete="off"
          class="entry-content"
          placeholder="Content"
          name="content"
          :value="entry.content"
          @input="editEntry"
-         night
+         :night="night"
       />
       <div class="tags">
-         <div v-for="tag in entry.tags" :key="tag" class="tag" @click="removeTag(tag)">
+         <div
+            v-for="tag in entry.tags"
+            :key="tag"
+            :class="['tag', { night }]"
+            @click="removeTag(tag)"
+         >
             #{{ tag }}
          </div>
          <PlusIcon @click="modalOpen = true" :size="18" />
@@ -86,7 +94,7 @@ export default {
          @secondary="modalOpen = false"
          top
          prompt
-         night
+         :night="night"
       >
          {{ entry.title }}
       </Modal>
@@ -120,13 +128,18 @@ export default {
       width: 100%;
       display: flex;
       & .tag {
-         background: #323231;
+         background: transparent;
+         border: 1px solid #323231;
          border-radius: 3px;
          margin-right: 6px;
          margin-bottom: 3px;
          padding: 3px 6px;
          color: $blue;
          font-size: 13px;
+         &.night {
+            background: #323231;
+            border: none;
+         }
       }
    }
 }

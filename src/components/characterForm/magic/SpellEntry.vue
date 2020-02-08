@@ -20,6 +20,7 @@ export default {
       titlePlaceholder: { type: String, default: 'Title' },
       contentPlaceholder: { type: String, default: 'Content' },
       entry: Object,
+      night: { type: Boolean, default: false },
    },
 };
 </script>
@@ -32,7 +33,7 @@ export default {
          :inputStyle="{ paddingLeft: '8px' }"
          :value="entry.title"
          @input="handleTitle"
-         night
+         :night="night"
       />
       <Input
          textarea
@@ -41,7 +42,7 @@ export default {
          :value="entry.content"
          @input="handleContent"
          height="400px"
-         night
+         :night="night"
       />
    </div>
 </template>

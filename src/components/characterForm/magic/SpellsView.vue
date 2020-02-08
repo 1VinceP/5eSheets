@@ -7,6 +7,7 @@ export default {
    name: 'magic-view',
 
    computed: {
+      ...mapGetters(['night']),
       ...mapState('character', ['abilities', 'spellAbility', 'spellsList']),
       ...mapGetters('character', ['proficiencyBonus']),
 
@@ -42,7 +43,7 @@ export default {
 </script>
 
 <template>
-   <div class="magic">
+   <div class="spells-view">
       <div class="spell-skills">
          <Select
             name="spellAbility"
@@ -50,7 +51,7 @@ export default {
             :value="spellAbility"
             :options="['str', 'dex', 'con', 'int', 'wis', 'cha']"
             @change="editField"
-            night
+            :night="night"
          />
          <div class="displays">
             <Input
@@ -58,7 +59,7 @@ export default {
                :inputStyle="{ textAlign: 'right' }"
                :value="spellSaveDC"
                readonly
-               night
+               :night="night"
                style="width: 48%;"
             />
             <Input
@@ -66,7 +67,7 @@ export default {
                :value="spellAttackBonus"
                :inputStyle="{ textAlign: 'right' }"
                readonly
-               night
+               :night="night"
                style="width: 48%;"
             />
          </div>
@@ -78,6 +79,7 @@ export default {
             :key="i"
             :spellLevel="i"
             :spellLevelData="spellList"
+            :night="night"
          />
       </section>
 
@@ -86,7 +88,7 @@ export default {
 </template>
 
 <style lang="scss" scoped>
-.magic {
+.spells-view {
    width: 100%;
 
    & .spell-skills {
@@ -97,11 +99,6 @@ export default {
          justify-content: space-between;
          margin-top: -20px;
       }
-   }
-
-   & .spells {
-      width: 110%;
-      margin-left: -16px;
    }
 }
 </style>

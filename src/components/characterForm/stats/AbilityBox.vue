@@ -6,12 +6,14 @@ export default {
 
    computed: {
       label() {
-         return this.str ? 'Strength' // eslint-disable-next-line
-            : this.dex ? 'Dexterity' // eslint-disable-next-line
-            : this.con ? 'Constitution' // eslint-disable-next-line
-            : this.int ? 'Intelligence' // eslint-disable-next-line
-            : this.wis ? 'Wisdom' // eslint-disable-next-line
+         /* eslint-disable indent */
+         return this.str ? 'Strength'
+            : this.dex ? 'Dexterity'
+            : this.con ? 'Constitution'
+            : this.int ? 'Intelligence'
+            : this.wis ? 'Wisdom'
             : this.cha && 'Charisma';
+         /* eslint-enable indent */
       },
 
       shortLabel() {
@@ -43,18 +45,19 @@ export default {
       int: { type: Boolean, default: false },
       wis: { type: Boolean, default: false },
       cha: { type: Boolean, default: false },
+      night: { type: Boolean, default: false },
    },
 };
 </script>
 
 <template>
-   <div :class="['ability-box', { str, dex, con, int, wis, cha, proficient }]">
-      <h1 :class="['label', { proficient }]" @click="editProficient">
+   <div :class="['ability-box', { proficient, night }]">
+      <h1 :class="['label', { proficient, night }]" @click="editProficient">
          {{ label }}
       </h1>
       <div class="container">
          <div class="modifier">{{ ability.modifier > 0 ? '+' : '' }}{{ ability.modifier }}</div>
-         <div class="score">
+         <div :class="['score', { night }]">
             <input
                name="score"
                :value="ability.score"
@@ -79,7 +82,11 @@ export default {
    margin: 6px;
    border: 1px solid #323231;
    border-radius: 3px;
-   &.proficient { border-color: #fff; }
+   &.proficient { border-color: #aaa; }
+   &.night {
+      border: 1px solid #323231;
+      &.proficient { border: 1px solid #fff; }
+   }
 
    & .label {
       height: 20px;
@@ -90,8 +97,14 @@ export default {
       align-items: center;
       color: #fff;
       &.proficient {
-         background: #fff;
+         background: #aaa;
          color: #323231;
+      }
+      &.night {
+        &.proficient {
+            background: #fff;
+            color: #323231;
+         }
       }
    }
    & .container {
@@ -112,7 +125,9 @@ export default {
          display: flex;
          justify-content: center;
          align-items: center;
+         border: 1px solid #323231;
          border-radius: 50%;
+         &.night { border: none; }
          & input {
             width: 80%;
             border: none;

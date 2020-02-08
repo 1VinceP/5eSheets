@@ -5,6 +5,7 @@ export default {
    props: {
       value: String,
       checked: { type: Boolean, default: false },
+      night: { type: Boolean, default: false },
    },
 };
 </script>
@@ -14,7 +15,7 @@ export default {
       <input
          name="alignment"
          type="radio"
-         class="radio"
+         :class="['radio', { night }]"
          :id="value"
          :value="value"
          :checked="checked"
@@ -42,8 +43,9 @@ export default {
       content: '';
       display: inline-block;
       vertical-align: baseline;
-      border: 1px solid #eee;
+      border: 1px solid #323231;
       border-radius: 50%;
+      &.night { border: 1px solid #eee; }
    }
    & input#LG:checked + label::before { background: #FFD700; }
    & input#NG:checked + label::before { background: #80EB80; }

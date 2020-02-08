@@ -28,13 +28,14 @@ export default {
       spellLevel: Number,
       spell: Object,
       isHeader: { type: Boolean, default: false },
+      night: { type: Boolean, default: false },
    },
 };
 </script>
 
 <template>
    <div>
-      <div v-if="isHeader" class="spell head">
+      <div v-if="isHeader" :class="['spell', 'head', { night }]">
          <div class="col">Name</div>
          <div class="col">Time</div>
          <div class="col">C.</div>
@@ -57,14 +58,14 @@ export default {
          @primary="handleModal"
          @secondary="handleDelete"
          top
-         night
+         :night="night"
       >
          <Input
             textarea
             readonly
             height="400px"
             :value="spell.content"
-            night
+            :night="night"
          />
       </Modal>
    </div>
@@ -83,8 +84,9 @@ export default {
    &:last-child { border-radius: 0px 0px 3px 3px; }
    &.head {
       height: 24px;
-      background: #9400d344;
+      background: #0004;
       border-radius: 3px 3px 0px 0px;
+      &.night { background: #9400d344; }
    }
 
    & .col {

@@ -1,5 +1,5 @@
 <script>
-import { mapState, mapActions } from 'vuex';
+import { mapState, mapActions, mapGetters } from 'vuex';
 import ArrowIcon from 'vue-material-design-icons/ChevronRight.vue';
 import ImportIcon from 'vue-material-design-icons/FileImport.vue';
 import Header from '@/components/Header.vue';
@@ -10,6 +10,7 @@ export default {
 
    computed: {
       ...mapState(['characters']),
+      ...mapGetters(['night']),
    },
 
    created() {
@@ -64,28 +65,29 @@ export default {
             v-for="character in characters"
             :key="character.id"
             :to="`/characters/${character.id}`"
-            class="global-link character"
+            :class="['global-link', 'character', { night }]"
             @click="console.log(character.id)"
          >
-            {{ character.name }}
-            <div class="classes">
+            <span class="section name">{{ character.name }}</span>
+            <div class="section classes">
                <div v-for="(charClass, i) in character.classes" :key="charClass.name">
                   {{ i > 0 ? '/' : '' }} {{ charClass.name }} {{ charClass.level }}
                </div>
             </div>
-            <ArrowIcon />
+            <span class="section arrow"><ArrowIcon /></span>
          </router-link>
       </div>
    </div>
 </template>
 
 <style lang="scss" scoped>
+@import '../a-variables';
+
 .character-buttons {
    width: 100%;
    display: flex;
    justify-content: space-between;
    align-items: center;
-   margin-top: 10px;
 
    & .new-button {
       width: 80%;
@@ -113,17 +115,34 @@ export default {
       width: 100%;
       height: 52px;
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      // padding: 0px 10px;
       font-size: 16px;
-      border-bottom: 1px solid #eee;
+      border-bottom: 1px solid $navy;
+      &.night { border-color: #eee; }
+
+      & .section {
+         height: 100%;
+         display: flex;
+         align-items: center;
+         overflow:hidden;
+         white-space:nowrap;
+         text-overflow: ellipsis;
+      }
+
+      & .name { flex: 3; }
 
       & .classes {
-         display: flex;
+         flex: 6;
+         justify-content: center;
+         padding: 0 6px;
          font-size: 12px;
          font-style: italic;
          & div:not(:first-child) { margin-left: 4px; }
+      }
+
+      & .arrow {
+         flex: 3;
+         justify-content: flex-end;
       }
    }
 }

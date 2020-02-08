@@ -21,6 +21,7 @@ export default {
    }),
 
    computed: {
+      ...mapGetters(['night']),
       ...mapGetters('character', ['proficiencyBonus', 'initiativeBonus']),
 
       sortedSkills() {
@@ -105,41 +106,46 @@ export default {
 <template>
    <div class="stats">
       <Input
+         autocomplete="off"
          name="name"
          label="Name"
          :value="character.name"
          @input="editField"
-         night
+         :night="night"
+         style="margin-top: 20px;"
       />
 
       <section class="top-stats">
          <div class="stat-container">
             <Input
+               autocomplete="off"
                label="Armor Class"
                :inputStyle="{ textAlign: 'right' }"
-               night
+               :night="night"
             />
          </div>
          <div class="stat-container">
             <Input
+               autocomplete="off"
                label="Proficiency"
                :value="`+${proficiencyBonus}`"
                :inputStyle="{ textAlign: 'right' }"
                readonly
-               night
+               :night="night"
             />
          </div>
          <div class="stat-container">
             <Input
+               autocomplete="off"
                label="Initiative"
                :value="initiativeBonus"
                :inputStyle="{ textAlign: 'right' }"
-               night
+               :night="night"
             />
          </div>
       </section>
 
-      <div class="section-label margin">HP</div>
+      <div :class="['section-label', 'margin', { night }]">HP</div>
       <Counter
          name="hp"
          secondaryName="maxHp"
@@ -154,10 +160,10 @@ export default {
          @secondaryInput="(value, name) => editField(Number(value), name)"
          @onDecrease="(value, name) => editField(--character.hp, name)"
          @onIncrease="(value, name) => editField(++character.hp, name)"
-
+         :night="night"
       />
 
-      <div class="section-label margin">Temporary HP</div>
+      <div :class="['section-label', 'margin', { night }]">Temporary HP</div>
       <Counter
          name="tempHp"
          :min="0"
@@ -166,9 +172,15 @@ export default {
          @input="(value, name) => editField(Number(value), name)"
          @onDecrease="(value, name) => editField(--character.tempHp, name)"
          @onIncrease="(value, name) => editField(++character.tempHp, name)"
+         :night="night"
       />
 
-      <div v-if="hitDiceArray.some(hd => hd.max > 0)" class="section-label margin">Hit Dice</div>
+      <div
+         v-if="hitDiceArray.some(hd => hd.max > 0)"
+         :class="['section-label', 'margin', { night }]"
+      >
+         Hit Dice
+      </div>
       <div class="hd-container">
          <div
             v-for="(dieSet, i) in hitDiceArray"
@@ -195,11 +207,12 @@ export default {
                })"
                @onDecrease="editHitDie({ direction: 'decrease', dieValue: dieSet.dieValue })"
                @onIncrease="editHitDie({ direction: 'increase', dieValue: dieSet.dieValue })"
+               :night="night"
             />
          </div>
       </div>
 
-      <div class="section-label">Death Saves</div>
+      <div :class="['section-label', { night }]">Death Saves</div>
       <section class="death-saves">
          <div class="saves-container success">
             <span>Successes</span>
@@ -261,7 +274,7 @@ export default {
          :value="character.race"
          :options="raceList"
          @change="editField"
-         night
+         :night="night"
       />
 
       <div class="class-select" v-for="(charClass, i) in character.classes" :key="`class-${i}`">
@@ -273,10 +286,11 @@ export default {
             mapOptions
             @change="(value, prop) => editClass(value, prop, 'name')"
             label="Class"
-            night
+            :night="night"
             style="width: 45%;"
          />
          <Input
+            autocomplete="off"
             :name="`classLevel-${i}`"
             :value="charClass.level"
             :disabled="!charClass.name"
@@ -284,7 +298,7 @@ export default {
             label="Level"
             type="number"
             min="0"
-            night
+            :night="night"
             style="width: 45%;"
          />
          <Select
@@ -295,7 +309,7 @@ export default {
             optionKey="subclasses"
             @change="(value, prop) => editClass(value, prop, 'subclass')"
             label="Subclass"
-            night
+            :night="night"
             style="margin-top: 2px;"
          />
       </div>
@@ -304,34 +318,35 @@ export default {
          :disableDecrease="character.classes.length <= 1"
          @onDecrease="removeClass"
          @onIncrease="addClass"
+         :night="night"
       />
 
       <section class="abilities">
-         <div class="section-label">Abilities</div>
+         <div :class="['section-label', { night }]">Abilities</div>
          <p class="global-tip">
             Tap labels to edit saving proficiencies, and scores to edit scores.
          </p>
          <div class="ability-row">
-            <AbilityBox str :ability="character.abilities.str" />
-            <AbilityBox dex :ability="character.abilities.dex" />
+            <AbilityBox str :ability="character.abilities.str" :night="night" />
+            <AbilityBox dex :ability="character.abilities.dex" :night="night" />
          </div>
          <div class="ability-row">
-            <AbilityBox con :ability="character.abilities.con" />
-            <AbilityBox int :ability="character.abilities.int" />
+            <AbilityBox con :ability="character.abilities.con" :night="night" />
+            <AbilityBox int :ability="character.abilities.int" :night="night" />
          </div>
          <div class="ability-row">
-            <AbilityBox wis :ability="character.abilities.wis" />
-            <AbilityBox cha :ability="character.abilities.cha" />
+            <AbilityBox wis :ability="character.abilities.wis" :night="night" />
+            <AbilityBox cha :ability="character.abilities.cha" :night="night" />
          </div>
       </section>
 
       <section class="skills">
-         <div class="section-label">Skills</div>
+         <div :class="['section-label', { night }]">Skills</div>
          <p class="global-tip">
             Left box proficient, right box expertise. Header changes sort.
          </p>
          <div @click="changeSort" >
-            <Skill isHeader :sort="sort" />
+            <Skill isHeader :night="night" :sort="sort" />
          </div>
          <Skill
             v-for="skill in sortedSkills"
@@ -363,8 +378,9 @@ export default {
    width: 100%;
    margin-bottom: 6px;
    font-size: 14px;
-   color: $grey;
+   color: $navy;
    &.margin + div { margin-bottom: 16px; }
+   &.night { color: $grey; }
 }
 
 .top-stats {
