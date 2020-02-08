@@ -84,6 +84,7 @@ export default {
             @onDecrease="(name) => editSpellLevel(--currentSlots, name)"
             @onIncrease="(name) => editSpellLevel(++currentSlots, name)"
             style="width: 50%;"
+            :night="night"
          />
       </section>
       <Spell v-show="spellLevelData.spells.length > 0" isHeader :night="night" />
@@ -114,6 +115,7 @@ export default {
             :entry="{ title: newSpellName, content: newSpellContent }"
             @titleInput="value => newSpellName = value"
             @contentInput="value => newSpellContent = value"
+            :night="night"
          />
       </Modal>
    </div>

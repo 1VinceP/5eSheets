@@ -17,9 +17,17 @@ const initialSpellList = {
    spells: [],
 };
 
+// const initialDiscipline = {
+//    title: '',
+//    content: '',
+//    ability: { title: '', content: '' },
+// };
+
 const initialState = () => ({
    /* stats */
    name: '',
+   ac: 0,
+   initiativeBonus: 0,
    hp: 0,
    maxHp: 0,
    tempHp: 0,
@@ -48,6 +56,16 @@ const initialState = () => ({
    spellsList: [
       { ...initialSpellList },
    ],
+   sorceryPoints: 0,
+   maxSorceryPoints: 0,
+   psiPoints: 0,
+   maxPsiPoints: 0,
+   psiFocus: { title: '', content: '' },
+   psiTalents: [],
+   psiDisciplines: [],
+   /* features */
+   kiPoints: 0,
+   maxKiPoints: 0,
    /* life */
    playerName: '',
    xp: 0,
@@ -88,6 +106,19 @@ function parseNewSpell(title, content) {
    };
 }
 
+function parseNewDiscipline(title, content) {
+   const focusReg = new RegExp(/(Psychic Focus\. )(.*)/g);
+
+   return {
+      title,
+      content,
+      focus: {
+         title,
+         content: focusReg.exec(content)[2],
+      },
+   };
+}
+
 export default {
    namespaced: true,
 
@@ -104,12 +135,6 @@ export default {
          else if (totalLevel <= 12) return 4;
          else if (totalLevel <= 16) return 5;
          else return 6;
-      },
-
-      initiativeBonus: state => {
-         const dexMod = state.abilities.dex.modifier;
-         const symbol = dexMod >= 0 ? '+' : '';
-         return `${symbol}${dexMod}`;
       },
    },
 
@@ -165,6 +190,17 @@ export default {
          newListAtLevel.splice(spellIndex, 1);
          newSpellsList[level].spells = newListAtLevel;
          state.spellsList = newSpellsList;
+      },
+
+      addTalent(state, talent) {
+         const newTalents = [...state.psiTalents, talent];
+         state.psiTalents = newTalents;
+      },
+
+      addDiscipline(state, { title, content }) {
+         const newDiscipline = parseNewDiscipline(title, content);
+         const newDisciplines = [...state.psiDisciplines, newDiscipline];
+         state.psiDisciplines = newDisciplines;
       },
    },
 

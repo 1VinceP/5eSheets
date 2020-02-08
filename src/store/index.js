@@ -18,6 +18,7 @@ export default new Vuex.Store({
       night(state) {
          /* eslint-disable indent */
          switch (state.theme) {
+            // list of light themes
             case 'boxes':
             case 'parchment':
             case 'paper':

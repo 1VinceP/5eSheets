@@ -14,11 +14,12 @@ import ChevronUp from 'vue-material-design-icons/ChevronUp.vue';
 import Header from '@/components/Header.vue';
 import Stats from '@/components/characterForm/stats/Stats.vue';
 import Actions from '@/components/characterForm/actions/Actions.vue';
-import Feats from '@/components/characterForm/feats/Feats.vue';
 import Gear from '@/components/characterForm/gear/Gear.vue';
 import Magic from '@/components/characterForm/magic/Magic.vue';
-import Life from '@/components/characterForm/life/Life.vue';
+import Companions from '@/components/characterForm/companions/Companions.vue';
+import Features from '@/components/characterForm/features/Features.vue';
 import Journal from '@/components/characterForm/journal/Journal.vue';
+import Life from '@/components/characterForm/life/Life.vue';
 import { FAB } from '@/components/common';
 
 export default {
@@ -121,7 +122,18 @@ export default {
    },
 
    components: {
-      Header, FAB, Stats, Actions, Feats, Gear, Magic, Life, Journal, ChevronDown, ChevronUp,
+      Header,
+      FAB,
+      Stats,
+      Actions,
+      Gear,
+      Magic,
+      Companions,
+      Features,
+      Journal,
+      Life,
+      ChevronDown,
+      ChevronUp,
    },
 };
 </script>
@@ -138,10 +150,11 @@ export default {
       <Stats v-if="view === 'stats'" :character="character" />
       <Actions v-else-if="view === 'actions'" :character="character" />
       <Gear v-else-if="view === 'gear'" :character="character" />
-      <Feats v-else-if="view === 'feats'" :character="character" />
       <Magic v-else-if="view === 'magic'" :character="character" />
-      <Life v-else-if="view === 'life'" :character="character" />
+      <Companions v-else-if="view === 'companions'" :character="character" />
+      <Features v-else-if="view === 'features'" :character="character" />
       <Journal v-else-if="view === 'journal'" :character="character" />
+      <Life v-else-if="view === 'life'" :character="character" />
 
       <FAB
          :items="floatingItems"
@@ -152,52 +165,63 @@ export default {
       />
 
       <span :class="['footer', { footOpen }]">
-         <div
-            :class="['foot-item', { selected: view === 'stats' }]"
-            @click="setView('stats')"
-         >
-            Stats
-         </div>
-         <div
-            :class="['foot-item', { selected: view === 'actions' }]"
-            @click="setView('actions')"
-         >
-            Actions
-         </div>
-         <div
-            :class="['foot-item', { selected: view === 'gear' }]"
-            @click="setView('gear')"
-         >
-            Gear
-         </div>
-         <div
-            :class="['foot-item', { selected: view === 'magic' }]"
-            @click="setView('magic')"
-         >
-            Magic
-         </div>
-         <div class="foot-item" @click="footOpen = !footOpen">
-            <ChevronDown v-if="!footOpen" />
-            <ChevronUp v-else />
-         </div>
-         <div
-            :class="['foot-item', { selected: view === 'feats' }]"
-            @click="setView('feats')"
-         >
-            Features
-         </div>
-         <div
-            :class="['foot-item', { selected: view === 'life' }]"
-            @click="setView('life')"
-         >
-            Life
-         </div>
-         <div
-            :class="['foot-item', { selected: view === 'journal' }]"
-            @click="setView('journal')"
-         >
-            Journal
-         </div>
+         <section class="top">
+            <div
+               :class="['foot-item', { selected: view === 'stats' }]"
+               @click="setView('stats')"
+            >
+               Stats
+            </div>
+            <div
+               :class="['foot-item', { selected: view === 'actions' }]"
+               @click="setView('actions')"
+            >
+               Actions
+            </div>
+            <div
+               :class="['foot-item', { selected: view === 'gear' }]"
+               @click="setView('gear')"
+            >
+               Gear
+            </div>
+            <div
+               :class="['foot-item', { selected: view === 'magic' }]"
+               @click="setView('magic')"
+            >
+               Magic
+            </div>
+            <div class="foot-item chevron" @click="footOpen = !footOpen">
+               <ChevronDown v-if="!footOpen" />
+               <ChevronUp v-else />
+            </div>
+         </section>
+
+         <section class="bottom">
+            <div
+               :class="['foot-item', { selected: view === 'features' }]"
+               @click="setView('features')"
+            >
+               Features
+            </div>
+            <div
+               :class="['foot-item', { selected: view === 'companions' }]"
+               @click="setView('companions')"
+            >
+               Friends
+            </div>
+            <div
+               :class="['foot-item', { selected: view === 'journal' }]"
+               @click="setView('journal')"
+            >
+               Journal
+            </div>
+            <div
+               :class="['foot-item', { selected: view === 'life' }]"
+               @click="setView('life')"
+            >
+               Life
+            </div>
+         </section>
       </span>
    </div>
 </template>
@@ -221,7 +245,6 @@ export default {
    height: 100px;
    width: 100%;
    display: grid;
-   grid-template-columns: repeat(5, 1fr);
    grid-template-rows: repeat(2, 50%);
    background: #323231;
    position: fixed;
@@ -231,6 +254,15 @@ export default {
    transition: transform .15s ease-in-out;
    &.footOpen { transform: translateY(0px); }
 
+   & .top {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+   }
+   & .bottom {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+   }
+
    & .foot-item {
       height: 100%;
       flex: 1;
@@ -238,10 +270,12 @@ export default {
       justify-content: center;
       align-items: center;
       font-size: 14px;
+      &.large { grid-column: span 2; }
       &.selected {
          color: $blue;
          box-shadow: inset 0 -10px 6px -10px $blue;
       }
+      &.chevron { color: orange; }
    }
 }
 </style>

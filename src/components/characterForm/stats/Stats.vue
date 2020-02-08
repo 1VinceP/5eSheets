@@ -119,9 +119,13 @@ export default {
          <div class="stat-container">
             <Input
                autocomplete="off"
+               name="ac"
                label="Armor Class"
+               type="number"
+               :value="character.ac"
                :inputStyle="{ textAlign: 'right' }"
                :night="night"
+               @input="(value, prop) => editField(Number(value), prop)"
             />
          </div>
          <div class="stat-container">
@@ -137,10 +141,12 @@ export default {
          <div class="stat-container">
             <Input
                autocomplete="off"
+               name="initiativeBonus"
                label="Initiative"
-               :value="initiativeBonus"
+               :value="character.initiativeBonus"
                :inputStyle="{ textAlign: 'right' }"
                :night="night"
+               @input="editField"
             />
          </div>
       </section>

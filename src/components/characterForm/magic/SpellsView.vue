@@ -2,6 +2,7 @@
 import { mapState, mapGetters, mapMutations } from 'vuex';
 import { Button, Input, Select } from '@/components/common';
 import SpellContainer from './SpellContainer.vue';
+import Counter from '@/components/characterForm/Counter.vue';
 
 export default {
    name: 'magic-view',
@@ -20,9 +21,15 @@ export default {
 
       spellAttackBonus() {
          const { abilities, spellAbility, proficiencyBonus } = this;
-         return spellAbility
+         const bonus = spellAbility
             ? abilities[spellAbility].modifier + proficiencyBonus
             : '';
+         const symbol = bonus >= 0 ? '+' : '';
+         return symbol + bonus;
+      },
+
+      isSorcerer() {
+         return this.character.classes.findIndex(cl => cl.name === 'Sorcerer') >= 0;
       },
    },
 
@@ -34,7 +41,7 @@ export default {
       },
    },
 
-   components: { Button, Input, Select, SpellContainer },
+   components: { Button, Input, Select, SpellContainer, Counter },
 
    props: {
       character: Object,
@@ -73,6 +80,29 @@ export default {
          </div>
       </div>
 
+      <section class="points">
+         <div v-show="isSorcerer" :class="['section-label', 'margin', { night }]">
+            Sorcery Points
+         </div>
+         <Counter
+            v-show="isSorcerer"
+            name="sorceryPoints"
+            secondaryName="maxSorceryPoints"
+            label="/"
+            :min="0"
+            :max="character.maxSorceryPoints"
+            :value="character.sorceryPoints"
+            :secondaryValue="character.maxSorceryPoints"
+            :disableDecrease="character.sorceryPoints <= 0"
+            :disableIncrease="character.sorceryPoints >= character.maxSorceryPoints"
+            @input="(value, name) => editField(Number(value), name)"
+            @secondaryInput="(value, name) => editField(Number(value), name)"
+            @onDecrease="(value, name) => editField(--character.sorceryPoints, name)"
+            @onIncrease="(value, name) => editField(++character.sorceryPoints, name)"
+            :night="night"
+         />
+      </section>
+
       <section class="spells">
          <SpellContainer
             v-for="(spellList, i) in spellsList"
@@ -83,21 +113,44 @@ export default {
          />
       </section>
 
-      <Button full green @click="addSpellList">Add Spell Level</Button>
+      <Button
+         v-show="character.spellsList.length <= 9"
+         full
+         green
+         @click="addSpellList"
+      >
+            Add Spell Level
+      </Button>
    </div>
 </template>
 
 <style lang="scss" scoped>
+@import '../../../a-variables';
+
 .spells-view {
    width: 100%;
 
    & .spell-skills {
       width: 100%;
+
       & .displays {
          width: 100%;
          display: flex;
          justify-content: space-between;
          margin-top: -20px;
+      }
+   }
+
+   & .points {
+      margin-bottom: 20px;
+
+      & .section-label {
+         width: 100%;
+         margin-bottom: 6px;
+         font-size: 14px;
+         color: $navy;
+         &.margin + div { margin-bottom: 16px; }
+         &.night { color: $grey; }
       }
    }
 }
