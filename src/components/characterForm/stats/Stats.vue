@@ -151,6 +151,65 @@ export default {
          </div>
       </section>
 
+      <section class="top-stats">
+         <div class="stat-container small">
+            <Input
+               autocomplete="off"
+               name="walkSpeed"
+               label="Walk"
+               type="number"
+               step="5"
+               :min="0"
+               :value="character.walkSpeed"
+               :inputStyle="{ textAlign: 'right' }"
+               :night="night"
+               @input="(value, prop) => editField(Number(value), prop)"
+            />
+         </div>
+         <div class="stat-container small">
+            <Input
+               autocomplete="off"
+               name="climbSpeed"
+               label="Climb"
+               type="number"
+               step="5"
+               :min="0"
+               :value="character.climbSpeed"
+               :inputStyle="{ textAlign: 'right' }"
+               :night="night"
+               @input="(value, prop) => editField(Number(value), prop)"
+            />
+         </div>
+         <div class="stat-container small">
+            <Input
+               autocomplete="off"
+               name="flySpeed"
+               label="Fly"
+               type="number"
+               step="5"
+               :min="0"
+               :value="character.flySpeed"
+               :inputStyle="{ textAlign: 'right' }"
+               :night="night"
+               @input="(value, prop) => editField(Number(value), prop)"
+            />
+         </div>
+         <div class="stat-container small">
+            <Input
+               autocomplete="off"
+               name="swimSpeed"
+               label="Swim"
+               type="number"
+               step="5"
+               :min="0"
+               :value="character.swimSpeed"
+               :inputStyle="{ textAlign: 'right' }"
+               :night="night"
+               @input="(value, prop) => editField(Number(value), prop)"
+            />
+         </div>
+      </section>
+
       <div :class="['section-label', 'margin', { night }]">HP</div>
       <Counter
          name="hp"
@@ -395,7 +454,7 @@ export default {
    justify-content: space-between;
    & .stat-container {
       width: 30%;
-      & .input { text-align: right !important; }
+      &.small { width: 23%; }
    }
 }
 

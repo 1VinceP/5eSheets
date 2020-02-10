@@ -10,13 +10,16 @@ function parseNewSpell(title, content) {
    const timeReg = new RegExp(/(Casting Time: )(.*)/g);
    const rangeReg = new RegExp(/(Range: )(.*)/g);
    const concRegex = new RegExp(/Duration: Concentration/g);
+   const ritualRegex = new RegExp(/\(ritual\)/g);
 
    return {
       title,
       content,
+      prepared: false,
       time: timeReg.exec(content)[2] || '',
-      conc: concRegex.test(content) || '',
       range: rangeReg.exec(content)[2] || '',
+      conc: concRegex.test(content),
+      ritual: ritualRegex.test(content),
       id: shortId(),
    };
 }
@@ -68,6 +71,15 @@ export default {
       const newListAtLevel = [...newSpellsList[level].spells];
       const spellIndex = newListAtLevel.findIndex(spell => spell.id === spellId);
       newListAtLevel.splice(spellIndex, 1);
+      newSpellsList[level].spells = newListAtLevel;
+      state.spellsList = newSpellsList;
+   },
+
+   prepareSpell(state, { level, spellId }) {
+      const newSpellsList = [...state.spellsList];
+      const newListAtLevel = [...newSpellsList[level].spells];
+      const spellIndex = newListAtLevel.findIndex(spell => spell.id === spellId);
+      newListAtLevel[spellIndex].prepared = !newListAtLevel[spellIndex].prepared;
       newSpellsList[level].spells = newListAtLevel;
       state.spellsList = newSpellsList;
    },

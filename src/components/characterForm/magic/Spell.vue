@@ -10,7 +10,11 @@ export default {
    }),
 
    methods: {
-      ...mapMutations('character', ['deleteSpell']),
+      ...mapMutations('character', ['deleteSpell', 'prepareSpell']),
+
+      handlePrepareSpell() {
+         this.prepareSpell({ level: this.spellLevel, spellId: this.spell.id });
+      },
 
       handleDelete() {
          const confirmed = window.confirm(`${this.spell.title} will be deleted forever`);
@@ -39,16 +43,26 @@ export default {
 <template>
    <div>
       <div v-if="isHeader" :class="['spell', 'head', { night }]">
+         <div class="col">P.</div>
          <div class="col">Name</div>
          <div class="col">Time</div>
          <div class="col">C.</div>
          <div class="col">Range</div>
       </div>
-      <div v-else class="spell" @click="handleModal">
-         <div class="col">{{ spell.title }}</div>
-         <div class="col">{{ spell.time }}</div>
-         <div class="col">{{ spell.conc ? 'x' : '' }}</div>
-         <div class="col">{{ spell.range }}</div>
+      <div v-else :class="['spell', { ritual: spell.ritual }]">
+         <!-- <div class="col">{{ spell.prepared }}</div> -->
+         <div class="col">
+            <input
+               class="check"
+               type="checkbox"
+               :checked="spell.prepared"
+               @input="handlePrepareSpell"
+            />
+         </div>
+         <div class="col" @click="handleModal">{{ spell.title }}</div>
+         <div class="col" @click="handleModal">{{ spell.time }}</div>
+         <div class="col" @click="handleModal">{{ spell.conc ? 'x' : '' }}</div>
+         <div class="col" @click="handleModal">{{ spell.range }}</div>
       </div>
 
       <Modal
@@ -78,19 +92,20 @@ export default {
 @import '@/_a-variables.scss';
 
 .spell {
-   min-height: 20px;
+   height: 30px;
    width: 100%;
    display: grid;
-   grid-template-columns: 30% 30% 10% 30%;
+   grid-template-columns: 7.5% 30% 22.5% 10% 30%;
    border: 1px solid $grey;
    font-size: 12px;
    &:last-child { border-radius: 0px 0px 3px 3px; }
    &.head {
-      height: 24px;
+      height: 20px;
       background: #0004;
       border-radius: 3px 3px 0px 0px;
       &.night { background: #9400d344; }
    }
+   &.ritual { background: #faa50033; }
 
    & .col {
       height: 100%;
@@ -101,6 +116,9 @@ export default {
       text-align: center;
       &:not(:last-child) {
          border-right: 1px solid $grey;
+      }
+      & .check {
+         margin: 0;
       }
    }
 }

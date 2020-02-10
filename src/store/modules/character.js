@@ -23,6 +23,10 @@ const initialSpellList = {
 const initialState = () => ({
    /* stats */
    name: '',
+   walkSpeed: 0,
+   climbSpeed: 0,
+   flySpeed: 0,
+   swimSpeed: 0,
    ac: 0,
    initiativeBonus: 0,
    hp: 0,
@@ -72,8 +76,8 @@ const initialState = () => ({
    psiTalents: [],
    psiDisciplines: [],
    /* features */
-   kiPoints: 0,
-   maxKiPoints: 0,
+   classFeatures: [],
+   racialFeatures: [],
    /* life */
    playerName: '',
    xp: 0,

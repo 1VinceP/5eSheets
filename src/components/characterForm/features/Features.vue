@@ -8,16 +8,6 @@ export default {
 
    computed: {
       ...mapGetters(['night']),
-
-      // counters() {
-      //    return this.character.classes.filter(cl => {
-      //       const hasFeatures = cl.hasOwnProperty('features');
-      //       if (!hasFeatures) return false
-      //       return map(cl.features, feature => {
-      //          return feature.hasCounter && feature;
-      //       });
-      //    });
-      // },
    },
 
    methods: {

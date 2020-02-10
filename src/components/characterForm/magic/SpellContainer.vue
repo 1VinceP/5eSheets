@@ -12,10 +12,6 @@ export default {
    data() {
       return {
          modalOpen: false,
-         currentSlots: this.spellLevelData.currentSlots,
-         maxSlots: this.spellLevelData.maxSlots,
-         spellList: this.spellLevelData.spells,
-
          newSpellName: '',
          newSpellContent: '',
       };
@@ -29,6 +25,9 @@ export default {
          else if (this.spellLevel === 3) return '3rd Level';
          else return `${this.spellLevel}th Level`;
       },
+
+      currentSlots() { return this.spellLevelData.currentSlots; },
+      maxSlots() { return this.spellLevelData.maxSlots; },
    },
 
    methods: {
@@ -103,7 +102,7 @@ export default {
       <Modal
          :show="modalOpen"
          title="Add Spell"
-         primaryLabel="Save"
+         primaryLabel="Add"
          secondaryLabel="Cancel"
          @primary="addSpell"
          @secondary="closeModal"

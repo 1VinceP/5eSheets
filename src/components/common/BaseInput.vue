@@ -68,6 +68,7 @@ export default {
     min: String,
     max: String,
     height: String,
+    step: String,
     value: [String, Number],
     inputStyle: Object,
     buttonStyle: Object,
@@ -156,6 +157,7 @@ export default {
       :min="min"
       :max="max"
       :style="inputStyle"
+      :step="step"
     />
 
     <span v-show="(buttonLabel || type === 'password') && !textarea" class="accessories">
