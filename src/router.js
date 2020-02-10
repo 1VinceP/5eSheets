@@ -5,6 +5,8 @@ import EmptyRouterView from '@/components/common/EmptyRouterView.vue';
 import Home from './views/Home.vue';
 import Characters from './views/Characters.vue';
 import CharacterForm from './views/CharacterForm.vue';
+import DMView from './views/DungeonMaster.vue';
+import ContentManager from './views/ContentManager.vue';
 import Settings from './views/Settings.vue';
 
 Vue.use(Router);
@@ -36,6 +38,16 @@ const router = new Router({
                component: CharacterForm,
             },
          ],
+      },
+      {
+         path: '/dm',
+         name: 'dm',
+         component: DMView,
+      },
+      {
+         path: '/content-manager',
+         name: 'contentManager',
+         component: ContentManager,
       },
       {
          path: '/settings',

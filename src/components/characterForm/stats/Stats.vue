@@ -329,7 +329,7 @@ export default {
 
       <section class="abilities">
          <div :class="['section-label', { night }]">Abilities</div>
-         <p class="global-tip">
+         <p :class="['global-tip', { night }]">
             Tap labels to edit saving proficiencies, and scores to edit scores.
          </p>
          <div class="ability-row">
@@ -348,7 +348,7 @@ export default {
 
       <section class="skills">
          <div :class="['section-label', { night }]">Skills</div>
-         <p class="global-tip">
+         <p :class="['global-tip', { night }]">
             Left box proficient, right box expertise. Header changes sort.
          </p>
          <div @click="changeSort" >

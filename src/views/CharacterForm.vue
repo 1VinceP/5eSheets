@@ -27,7 +27,7 @@ export default {
    data: () => ({
       isNew: true,
       editing: true,
-      view: 'stats',
+      view: 'features',
       footOpen: false,
       footerTemp: '',
    }),
@@ -179,18 +179,18 @@ export default {
                Actions
             </div>
             <div
-               :class="['foot-item', { selected: view === 'gear' }]"
-               @click="setView('gear')"
-            >
-               Gear
-            </div>
-            <div
                :class="['foot-item', { selected: view === 'magic' }]"
                @click="setView('magic')"
             >
                Magic
             </div>
-            <div class="foot-item chevron" @click="footOpen = !footOpen">
+            <div
+               :class="['foot-item', { selected: view === 'features' }]"
+               @click="setView('features')"
+            >
+               Features
+            </div>
+            <div class="foot-item" @click="footOpen = !footOpen">
                <ChevronDown v-if="!footOpen" />
                <ChevronUp v-else />
             </div>
@@ -198,10 +198,10 @@ export default {
 
          <section class="bottom">
             <div
-               :class="['foot-item', { selected: view === 'features' }]"
-               @click="setView('features')"
+               :class="['foot-item', { selected: view === 'gear' }]"
+               @click="setView('gear')"
             >
-               Features
+               Gear
             </div>
             <div
                :class="['foot-item', { selected: view === 'companions' }]"
@@ -275,7 +275,6 @@ export default {
          color: $blue;
          box-shadow: inset 0 -10px 6px -10px $blue;
       }
-      &.chevron { color: orange; }
    }
 }
 </style>

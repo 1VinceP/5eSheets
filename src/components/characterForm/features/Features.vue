@@ -1,5 +1,6 @@
 <script>
 import { mapGetters } from 'vuex';
+// import map from 'lodash/map';
 import Counter from '@/components/characterForm/Counter.vue';
 
 export default {
@@ -7,12 +8,19 @@ export default {
 
    computed: {
       ...mapGetters(['night']),
+
+      // counters() {
+      //    return this.character.classes.filter(cl => {
+      //       const hasFeatures = cl.hasOwnProperty('features');
+      //       if (!hasFeatures) return false
+      //       return map(cl.features, feature => {
+      //          return feature.hasCounter && feature;
+      //       });
+      //    });
+      // },
    },
 
    methods: {
-      isMonk() {
-         return this.character.classes.findIndex(cl => cl.name === 'Monk') >= 0;
-      },
    },
 
    components: { Counter },
@@ -25,28 +33,31 @@ export default {
 
 <template>
    <div class="features">
-      <section class="counters">
-         <div v-show="isMonk" :class="['section-label', 'margin', { night }]">
-            Ki Points
+      <div
+         v-for="counter in counters"
+         :key="counter.label"
+         class="counters"
+      >
+         <div :class="['section-label', 'margin', { night }]">
+            {{ counter.label }}
          </div>
          <Counter
-            v-show="isMonk"
-            name="kiPoints"
-            secondaryName="maxKiPoints"
+            name="points"
+            secondaryName="maxPoints"
             label="/"
             :min="0"
-            :max="character.maxKiPoints"
-            :value="character.kiPoints"
-            :secondaryValue="character.maxKiPoints"
-            :disableDecrease="character.kiPoints <= 0"
-            :disableIncrease="character.kiPoints >= character.maxKiPoints"
+            :max="counter.maxPoints"
+            :value="counter.points"
+            :secondaryValue="counter.maxPoints"
+            :disableDecrease="counter.points <= 0"
+            :disableIncrease="counter.points >= counter.maxPoints"
             @input="(value, name) => editField(Number(value), name)"
             @secondaryInput="(value, name) => editField(Number(value), name)"
-            @onDecrease="(value, name) => editField(--character.kiPoints, name)"
-            @onIncrease="(value, name) => editField(++character.kiPoints, name)"
+            @onDecrease="character.currentValue = character.points - 1"
+            @onIncrease="character.currentValue = character.points + 1"
             :night="night"
          />
-      </section>
+      </div>
    </div>
 </template>
 
@@ -56,5 +67,9 @@ export default {
    display: flex;
    flex-direction: column;
    align-items: center;
+
+   & .counters {
+      width: 100%;
+   }
 }
 </style>

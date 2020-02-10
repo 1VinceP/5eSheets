@@ -13,8 +13,11 @@ export default {
       ...mapMutations('character', ['deleteSpell']),
 
       handleDelete() {
-         this.deleteSpell({ level: this.spellLevel, spellId: this.spell.id });
-         this.handleModal();
+         const confirmed = window.confirm(`${this.spell.title} will be deleted forever`);
+         if (confirmed) {
+            this.deleteSpell({ level: this.spellLevel, spellId: this.spell.id });
+            this.handleModal();
+         }
       },
 
       handleModal() {

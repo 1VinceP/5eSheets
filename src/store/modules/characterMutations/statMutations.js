@@ -1,6 +1,6 @@
 import classList from '@/constants/classes.constants';
 
-const initialClass = { name: '', level: 0, subclass: '', hitDie: null };
+const initialClass = { name: '', level: 0, subclass: '', hitDie: null, features: {} };
 
 function getNewHitDieValue(dieValue, classes) {
    return classes.reduce((total, next) => {
@@ -23,8 +23,11 @@ export default {
    editClassProp(state, { prop, value, index }) {
       state.classes[index][prop] = value;
       if (prop === 'name') {
+         const ClassConstant = classList.find(c => c.name === value);
+         state.classes[index].features = ClassConstant.features;
+
          const oldHitDie = state.classes[index].hitDie;
-         const newHitDie = classList.find(c => c.name === value).hitDie;
+         const newHitDie = ClassConstant.hitDie;
          state.classes[index].hitDie = newHitDie;
          if (oldHitDie) {
             // update hit dice when a class is swapped

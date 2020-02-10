@@ -4,6 +4,7 @@ export default [
       subclasses: ['Alchemist', 'Artillerist', 'Battle Smith'],
       subclassLevel: 3,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Barbarian',
@@ -17,6 +18,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '12',
+      features: {},
    },
    {
       name: 'Bard',
@@ -29,6 +31,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Cleric',
@@ -48,6 +51,7 @@ export default [
       ],
       subclassLevel: 1,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Druid',
@@ -60,6 +64,7 @@ export default [
       ],
       subclassLevel: 2,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Fighter',
@@ -73,6 +78,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '10',
+      features: {},
    },
    {
       name: 'Monk',
@@ -87,6 +93,18 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '8',
+      features: {
+         kiPoints: {
+            label: 'Ki Points',
+            hasCounter: true,
+            hasInput: false,
+            points: 0,
+            maxPoints: 0,
+            details: '',
+            set currentValue(points) { this.points = points; },
+            set maxValue(points) { this.maxPoints = points; },
+         },
+      },
    },
    {
       name: 'Mystic',
@@ -100,6 +118,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Paladin',
@@ -114,6 +133,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '10',
+      features: {},
    },
    {
       name: 'Ranger',
@@ -126,6 +146,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '10',
+      features: {},
    },
    {
       name: 'Rogue',
@@ -140,6 +161,7 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Sorcerer',
@@ -152,6 +174,7 @@ export default [
       ],
       subclassLevel: 1,
       hitDie: '6',
+      features: {},
    },
    {
       name: 'Warlock',
@@ -165,6 +188,7 @@ export default [
       ],
       subclassLevel: 1,
       hitDie: '8',
+      features: {},
    },
    {
       name: 'Wizard',
@@ -182,6 +206,7 @@ export default [
       ],
       subclassLevel: 2,
       hitDie: '6',
+      features: {},
    },
    {
       name: 'Teeny a Saurus',
@@ -193,5 +218,6 @@ export default [
       ],
       subclassLevel: 3,
       hitDie: '12',
+      features: {},
    },
 ];

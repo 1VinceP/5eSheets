@@ -1,5 +1,15 @@
+<script>
+export default {
+   name: 'about',
+};
+</script>
+
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="global-page">
+    <h1>About</h1>
   </div>
 </template>
+
+<style lang="stylus" scoped>
+
+</style>

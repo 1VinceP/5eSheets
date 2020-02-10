@@ -43,8 +43,12 @@ export default {
       },
 
       editFocus(value) {
-         const focus = this.focusOptions.find(option => option.title === value);
-         this.editProp({ value: focus, prop: 'psiFocus' });
+         if (value === '') {
+            this.editProp({ prop: 'psiFocus', value });
+         } else {
+            const focus = this.focusOptions.find(option => option.title === value);
+            this.editProp({ value: focus, prop: 'psiFocus' });
+         }
       },
    },
 
@@ -92,8 +96,8 @@ export default {
             :disableIncrease="character.psiPoints >= character.maxPsiPoints"
             @input="(value, name) => editField(Number(value), name)"
             @secondaryInput="(value, name) => editField(Number(value), name)"
-            @onDecrease="(value, name) => editField(--character.psiPoints, name)"
-            @onIncrease="(value, name) => editField(++character.psiPoints, name)"
+            @onDecrease="editField(--character.psiPoints, 'psiPoints')"
+            @onIncrease="editField(++character.psiPoints, 'psiPoints')"
             :night="night"
          />
 
@@ -113,13 +117,14 @@ export default {
                readonly
                class="focus-content"
                name="focusContent"
+               placeholder="No focus selected"
                :value="character.psiFocus.content"
                :night="night"
             />
          </section>
 
-         <PsiContainer isTalent :night="night" />
-         <PsiContainer :night="night" />
+         <PsiContainer isTalent :psionicData="character.psiTalents" :night="night" />
+         <PsiContainer :psionicData="character.psiDisciplines" :night="night" />
    </div>
 </template>
 
@@ -145,6 +150,7 @@ export default {
    }
 
    & .focus {
+      margin-top: 36px;
       & .focus-select {
          border-top-right-radius: 10px;
          border-bottom-left-radius: 0px;

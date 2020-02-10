@@ -1,7 +1,10 @@
 import toastr from 'toastr';
 import uuid from 'uuid/v4';
 import router from '@/router';
-import { statMutations, journalMutations } from './characterMutations';
+import {
+   statMutations, journalMutations, magicMutations,
+} from './characterMutations';
+import EquipmentItem from '../EquipmentItem';
 
 const initialSkill = {
    proficient: false,
@@ -16,12 +19,6 @@ const initialSpellList = {
    currentSlots: 0,
    spells: [],
 };
-
-// const initialDiscipline = {
-//    title: '',
-//    content: '',
-//    ability: { title: '', content: '' },
-// };
 
 const initialState = () => ({
    /* stats */
@@ -50,6 +47,17 @@ const initialState = () => ({
       wis: { ...initialSkill },
       cha: { ...initialSkill },
    },
+   /* gear */
+   cp: 0,
+   sp: 0,
+   gp: 0,
+   pp: 0,
+   equipment: [
+      new EquipmentItem(),
+      new EquipmentItem(),
+      new EquipmentItem(),
+   ],
+   treasure: '',
    /* magic */
    magicDisplay: 'spells',
    spellAbility: '',
@@ -88,36 +96,9 @@ const initialState = () => ({
    creationDate: '',
    lastEdited: '',
    /* journal */
+   quickNotes: '',
    journalEntries: [],
 });
-
-function parseNewSpell(title, content) {
-   const timeReg = new RegExp(/(Casting Time: )(.*)/g);
-   const rangeReg = new RegExp(/(Range: )(.*)/g);
-   const concRegex = new RegExp(/Duration: Concentration/g);
-
-   return {
-      title,
-      content,
-      time: timeReg.exec(content)[2],
-      conc: concRegex.test(content),
-      range: rangeReg.exec(content)[2],
-      id: uuid(),
-   };
-}
-
-function parseNewDiscipline(title, content) {
-   const focusReg = new RegExp(/(Psychic Focus\. )(.*)/g);
-
-   return {
-      title,
-      content,
-      focus: {
-         title,
-         content: focusReg.exec(content)[2],
-      },
-   };
-}
 
 export default {
    namespaced: true,
@@ -141,6 +122,7 @@ export default {
    mutations: {
       ...statMutations,
       ...journalMutations,
+      ...magicMutations,
 
       resetForm(state) {
          const s = initialState();
@@ -158,49 +140,28 @@ export default {
          state[prop] = value;
       },
 
-      addSpellList(state) {
-         if (state.spellsList.length < 10) {
-            state.spellsList = [...state.spellsList, { ...initialSpellList }];
+      addItem(state) {
+         state.equipment = [...state.equipment, new EquipmentItem()];
+      },
+
+      removeItem(state, { id }) {
+         const index = state.equipment.findIndex(item => item.id === id);
+         const newEquipment = [...state.equipment];
+         newEquipment.splice(index, 1);
+         state.equipment = newEquipment;
+      },
+
+      editItem(state, { name, value, id }) {
+         let newValue = value;
+         const index = state.equipment.findIndex(item => item.id === id);
+
+         if (name === 'location' && value === state.equipment[index].location) {
+            newValue = '';
          }
-      },
+         const newEquipment = [...state.equipment];
+         newEquipment[index][name] = newValue;
 
-      editSpellLevelData(state, { prop, value, index }) {
-         const newList = [...state.spellsList];
-         newList[index][prop] = value;
-         state.spellsList = newList;
-      },
-
-      removeSpellList(state) {
-         if (state.spellsList.length > 1) {
-            state.spellsList = state.spellsList.slice(0, -1);
-         }
-      },
-
-      addNewSpell(state, { title, content, level }) {
-         const newSpell = parseNewSpell(title, content);
-         const newSpellsList = [...state.spellsList];
-         newSpellsList[level].spells = [...newSpellsList[level].spells, newSpell];
-         state.spellsList = newSpellsList;
-      },
-
-      deleteSpell(state, { level, spellId }) {
-         const newSpellsList = [...state.spellsList];
-         const newListAtLevel = [...newSpellsList[level].spells];
-         const spellIndex = newListAtLevel.findIndex(spell => spell.id === spellId);
-         newListAtLevel.splice(spellIndex, 1);
-         newSpellsList[level].spells = newListAtLevel;
-         state.spellsList = newSpellsList;
-      },
-
-      addTalent(state, talent) {
-         const newTalents = [...state.psiTalents, talent];
-         state.psiTalents = newTalents;
-      },
-
-      addDiscipline(state, { title, content }) {
-         const newDiscipline = parseNewDiscipline(title, content);
-         const newDisciplines = [...state.psiDisciplines, newDiscipline];
-         state.psiDisciplines = newDisciplines;
+         state.equipment = newEquipment;
       },
    },
 

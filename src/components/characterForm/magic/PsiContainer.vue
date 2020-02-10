@@ -3,6 +3,7 @@ import { mapMutations } from 'vuex';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
 import { Modal } from '@/components/common';
 import SpellEntry from './SpellEntry.vue';
+import Psionic from './Psionic.vue';
 
 export default {
    name: 'psi-container',
@@ -11,15 +12,32 @@ export default {
       modalOpen: false,
       newName: '',
       newContent: '',
+      sortOn: 'title',
    }),
+
+   computed: {
+      sortedPsionics() {
+         const { sortOn } = this;
+         const newData = [...this.psionicData];
+         return newData.sort((a, b) => {
+            if (a[sortOn] < b[sortOn]) return -1;
+            if (a[sortOn] > b[sortOn]) return 1;
+            return 0;
+         });
+      },
+   },
 
    methods: {
       ...mapMutations('character', ['addTalent', 'addDiscipline']),
 
+      handleSort(value) {
+         this.sortOn = value;
+      },
+
       closeModal() {
          this.modalOpen = false;
          this.newName = '';
-         this.newcontent = '';
+         this.newContent = '';
       },
 
       addPsionic() {
@@ -33,9 +51,10 @@ export default {
       },
    },
 
-   components: { Modal, PlusIcon, SpellEntry },
+   components: { Modal, PlusIcon, SpellEntry, Psionic },
 
    props: {
+      psionicData: Array,
       isTalent: { type: Boolean, default: false },
       night: { type: Boolean, default: false },
    },
@@ -46,8 +65,19 @@ export default {
    <div class="psi-container">
       <section class="header">
          <div class="title">{{ isTalent ? 'Talents' : 'Disciplines' }}</div>
-         <PlusIcon :size="18" @click="modalOpen = true" />
       </section>
+      <Psionic isHeader :isTalent="isTalent" @sort="handleSort" :night="night" />
+      <Psionic
+         v-for="psionic in sortedPsionics"
+         :key="psionic.id"
+         :isTalent="isTalent"
+         :psionic="psionic"
+         :night="night"
+      />
+
+      <span class="add-psionic">
+         <PlusIcon :size="18" @click="modalOpen = true" />
+      </span>
 
       <Modal
          :show="modalOpen"
@@ -76,6 +106,7 @@ export default {
 <style lang="scss" scoped>
 .psi-container {
    width: 100%;
+   margin-bottom: 20px;
 
    & .header {
       width: 100%;

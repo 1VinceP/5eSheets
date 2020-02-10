@@ -2,6 +2,7 @@
 import { mapGetters } from 'vuex';
 import SheetsIcon from 'vue-material-design-icons/NewspaperVariantMultiple.vue';
 import MapIcon from 'vue-material-design-icons/MapLegend.vue';
+import ContentIcon from 'vue-material-design-icons/Notebook.vue';
 import SettingsIcon from 'vue-material-design-icons/Settings.vue';
 import AboutIcon from 'vue-material-design-icons/InformationVariant.vue';
 import Header from '@/components/Header.vue';
@@ -14,7 +15,7 @@ export default {
    },
 
    components: {
-      Header, SheetsIcon, MapIcon, SettingsIcon, AboutIcon,
+      Header, SheetsIcon, MapIcon, ContentIcon, SettingsIcon, AboutIcon,
    },
 };
 </script>
@@ -37,8 +38,15 @@ export default {
          </div>
       </router-link>
 
-      <router-link to="/settings" class="global-link">
+      <router-link to="/content-manager" class="global-link">
          <div :class="['home-card', 'green', { night }]">
+            <ContentIcon :size="102" />
+            <div>Content Manager</div>
+         </div>
+      </router-link>
+
+      <router-link to="/settings" class="global-link">
+         <div :class="['home-card', 'orange', { night }]">
             <SettingsIcon :size="102" />
             <div>Settings</div>
          </div>
@@ -74,7 +82,8 @@ export default {
       &.blue { border-color: $blue; }
       &.purple { border-color: darkviolet; }
       &.green { border-color: $green; }
-      &.red { border-color: $orange; }
+      &.orange { border-color: $orange; }
+      &.red { border-color: $red; }
       &.night { color: #eee; }
    }
 }

@@ -36,7 +36,11 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['addJournalEntry']),
+      ...mapMutations('character', ['addJournalEntry', 'editProp']),
+
+      editField(value, prop) {
+         this.editProp({ value, prop });
+      },
 
       switchFilterType() {
          if (this.tagFilterType === 'AND') {
@@ -60,13 +64,23 @@ export default {
       <section class="tags">
          <Input
             name="filter"
-            placeholder="Filter tags, leading with #"
+            placeholder="Filter tags, excluding #"
             v-model="tagFilter"
             :buttonLabel="tagFilterType"
             @button="switchFilterType"
             :night="night"
          />
       </section>
+
+      <Input
+         textarea
+         label="Quick Notes"
+         :value="character.quickNotes"
+         @input="editField"
+         :night="night"
+         height="140px"
+         style="margin-top: 40px;"
+      />
 
       <Button green full @click="addJournalEntry">Add Entry</Button>
 
