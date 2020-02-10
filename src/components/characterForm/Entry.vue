@@ -2,7 +2,7 @@
 import { Input } from '@/components/common';
 
 export default {
-   name: 'spell-entry',
+   name: 'entry',
 
    components: { Input },
 
@@ -19,6 +19,7 @@ export default {
    props: {
       titlePlaceholder: { type: String, default: 'Title' },
       contentPlaceholder: { type: String, default: 'Content' },
+      height: { type: String, default: '400px' },
       entry: Object,
       night: { type: Boolean, default: false },
    },
@@ -41,7 +42,7 @@ export default {
          :placeholder="contentPlaceholder"
          :value="entry.content"
          @input="handleContent"
-         height="400px"
+         :height="height"
          :night="night"
       />
    </div>

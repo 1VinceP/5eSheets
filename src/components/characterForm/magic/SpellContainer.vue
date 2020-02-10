@@ -3,7 +3,7 @@ import { mapMutations } from 'vuex';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
 import { Modal } from '@/components/common';
 import Counter from '../Counter.vue';
-import SpellEntry from './SpellEntry.vue';
+import Entry from '../Entry.vue';
 import Spell from './Spell.vue';
 
 export default {
@@ -53,7 +53,7 @@ export default {
       },
    },
 
-   components: { PlusIcon, Modal, Counter, SpellEntry, Spell },
+   components: { PlusIcon, Modal, Counter, Entry, Spell },
 
    props: {
       spellLevel: Number,
@@ -109,7 +109,7 @@ export default {
          top
          :night="night"
       >
-         <SpellEntry
+         <Entry
             contentPlaceholder="Paste spell data here. It will be parsed automagically."
             :entry="{ title: newSpellName, content: newSpellContent }"
             @titleInput="value => newSpellName = value"

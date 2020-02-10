@@ -101,8 +101,6 @@ export default [
             points: 0,
             maxPoints: 0,
             details: '',
-            set currentValue(points) { this.points = points; },
-            set maxValue(points) { this.maxPoints = points; },
          },
       },
    },

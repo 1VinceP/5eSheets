@@ -12,6 +12,7 @@ Notes
   - [x] List characters
   - [ ] Create Characters
     - [x] Stats
+      - [ ] Exhaustion
     - [ ] Actions
     - [ ] Features
     - [x] Magic

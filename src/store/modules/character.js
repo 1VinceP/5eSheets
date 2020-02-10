@@ -1,8 +1,13 @@
 import toastr from 'toastr';
 import uuid from 'uuid/v4';
+import shortId from '@/utils/generateId';
 import router from '@/router';
 import {
-   statMutations, journalMutations, magicMutations,
+   statMutations,
+   gearMutations,
+   magicMutations,
+   featureMutations,
+   journalMutations,
 } from './characterMutations';
 import EquipmentItem from '../EquipmentItem';
 
@@ -18,6 +23,12 @@ const initialSpellList = {
    maxSlots: 0,
    currentSlots: 0,
    spells: [],
+};
+
+const initialFeature = {
+   title: '',
+   content: '',
+   id: '',
 };
 
 const initialState = () => ({
@@ -76,8 +87,9 @@ const initialState = () => ({
    psiTalents: [],
    psiDisciplines: [],
    /* features */
-   classFeatures: [],
-   racialFeatures: [],
+   features: [{ ...initialFeature, id: shortId() }],
+   // classFeatures: [],
+   // racialFeatures: [],
    /* life */
    playerName: '',
    xp: 0,
@@ -125,8 +137,10 @@ export default {
 
    mutations: {
       ...statMutations,
-      ...journalMutations,
+      ...gearMutations,
+      ...featureMutations,
       ...magicMutations,
+      ...journalMutations,
 
       resetForm(state) {
          const s = initialState();
@@ -142,30 +156,6 @@ export default {
 
       editProp(state, { prop, value }) {
          state[prop] = value;
-      },
-
-      addItem(state) {
-         state.equipment = [...state.equipment, new EquipmentItem()];
-      },
-
-      removeItem(state, { id }) {
-         const index = state.equipment.findIndex(item => item.id === id);
-         const newEquipment = [...state.equipment];
-         newEquipment.splice(index, 1);
-         state.equipment = newEquipment;
-      },
-
-      editItem(state, { name, value, id }) {
-         let newValue = value;
-         const index = state.equipment.findIndex(item => item.id === id);
-
-         if (name === 'location' && value === state.equipment[index].location) {
-            newValue = '';
-         }
-         const newEquipment = [...state.equipment];
-         newEquipment[index][name] = newValue;
-
-         state.equipment = newEquipment;
       },
    },
 

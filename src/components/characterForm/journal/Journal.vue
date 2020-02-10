@@ -1,7 +1,7 @@
 <script>
 import { mapMutations, mapGetters } from 'vuex';
 import { Button, Input } from '@/components/common';
-import Entry from './Entry.vue';
+import JournalEntry from './JournalEntry.vue';
 
 export default {
    name: 'journal',
@@ -51,7 +51,7 @@ export default {
       },
    },
 
-   components: { Button, Input, Entry },
+   components: { Button, Input, JournalEntry },
 
    props: {
       character: Object,
@@ -85,7 +85,7 @@ export default {
       <Button green full @click="addJournalEntry">Add Entry</Button>
 
       <section class="entries">
-         <Entry
+         <JournalEntry
             v-for="entry in filteredEntries"
             :key="entry.id"
             :entry="entry"

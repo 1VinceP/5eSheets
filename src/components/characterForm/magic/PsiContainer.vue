@@ -2,7 +2,7 @@
 import { mapMutations } from 'vuex';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
 import { Modal } from '@/components/common';
-import SpellEntry from './SpellEntry.vue';
+import Entry from '../Entry.vue';
 import Psionic from './Psionic.vue';
 
 export default {
@@ -51,7 +51,7 @@ export default {
       },
    },
 
-   components: { Modal, PlusIcon, SpellEntry, Psionic },
+   components: { Modal, PlusIcon, Entry, Psionic },
 
    props: {
       psionicData: Array,
@@ -89,7 +89,7 @@ export default {
          top
          :night="night"
       >
-         <SpellEntry
+         <Entry
             :contentPlaceholder="
                // eslint-disable-next-line max-len
                `Paste ${isTalent ? 'talent' : 'discipline'} data here. It will be parsed automagically.`

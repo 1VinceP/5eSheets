@@ -1,7 +1,9 @@
 <script>
-import { mapGetters } from 'vuex';
+import { mapGetters, mapMutations } from 'vuex';
 // import map from 'lodash/map';
-import Counter from '@/components/characterForm/Counter.vue';
+// import Counter from '../Counter.vue';
+import { Button } from '@/components/common';
+import Entry from '../Entry.vue';
 
 export default {
    name: 'features',
@@ -11,9 +13,14 @@ export default {
    },
 
    methods: {
+      ...mapMutations('character', ['addFeature', 'editFeature']),
+
+      handleFeature(value, name, id) {
+         this.editFeature({ name, value, id });
+      },
    },
 
-   components: { Counter },
+   components: { Button, Entry },
 
    props: {
       character: Object,
@@ -22,32 +29,20 @@ export default {
 </script>
 
 <template>
-   <div class="features">
-      <div
-         v-for="counter in counters"
-         :key="counter.label"
-         class="counters"
-      >
-         <div :class="['section-label', 'margin', { night }]">
-            {{ counter.label }}
-         </div>
-         <Counter
-            name="points"
-            secondaryName="maxPoints"
-            label="/"
-            :min="0"
-            :max="counter.maxPoints"
-            :value="counter.points"
-            :secondaryValue="counter.maxPoints"
-            :disableDecrease="counter.points <= 0"
-            :disableIncrease="counter.points >= counter.maxPoints"
-            @input="(value, name) => editField(Number(value), name)"
-            @secondaryInput="(value, name) => editField(Number(value), name)"
-            @onDecrease="character.currentValue = character.points - 1"
-            @onIncrease="character.currentValue = character.points + 1"
+   <div class="features global-page">
+      <section class="entries">
+         <Entry
+            v-for="(feature, i) in character.features"
+            :key="i"
+            :entry="feature"
             :night="night"
+            @titleInput="(value) => handleFeature(value, 'title', feature.id)"
+            @contentInput="value => handleFeature(value, 'content', feature.id)"
+            height="100px"
          />
-      </div>
+      </section>
+
+      <Button green full @click="addFeature">Add Feature</Button>
    </div>
 </template>
 
@@ -58,7 +53,7 @@ export default {
    flex-direction: column;
    align-items: center;
 
-   & .counters {
+   & .entries {
       width: 100%;
    }
 }
