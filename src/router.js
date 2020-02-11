@@ -24,7 +24,7 @@ const router = new Router({
          children: [
             {
                path: '',
-               name: 'character',
+               name: 'characters',
                component: Characters,
             },
             {

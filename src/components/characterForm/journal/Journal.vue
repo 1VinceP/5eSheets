@@ -75,6 +75,7 @@ export default {
       <Input
          textarea
          label="Quick Notes"
+         name="quickNotes"
          :value="character.quickNotes"
          @input="editField"
          :night="night"

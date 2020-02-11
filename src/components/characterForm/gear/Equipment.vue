@@ -1,41 +1,104 @@
 <script>
 import { mapMutations } from 'vuex';
+import orderBy from 'lodash/orderBy';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
 import MinusIcon from 'vue-material-design-icons/MinusCircleOutline.vue';
+import { Modal } from '@/components/common';
+import Entry from '../Entry.vue';
 
 export default {
    name: 'equipment',
 
    data() {
       return {
-         sort: '',
+         sort: 'title',
          sortDir: 'asc',
          sortLoc: 'donned',
+         modalOpen: false,
+         currentItem: {},
       };
    },
 
    computed: {
       sortedItems() {
-         return this.items;
+         const newSort = this.sort === 'location'
+            ? e => e.location === this.sortLoc
+            : this.sort;
+         return orderBy(this.items, [newSort, 'title'], this.sortDir);
       },
    },
 
    methods: {
       ...mapMutations('character', ['addItem', 'removeItem', 'editItem']),
 
+      handleSort(sort, location = '') {
+         if (sort !== 'location') {
+            if (this.sort === sort) {
+               if (this.sortDir === 'asc') this.sortDir = 'desc';
+               else this.sortDir = 'asc';
+            } else {
+               this.sort = sort;
+               this.sortDir = 'asc';
+            }
+         } else {
+            if (this.sort === 'location') {
+               if (this.sortDir === 'asc') this.sortDir = 'desc';
+               else this.sortDir = 'asc';
+            }
+            this.sort = 'location';
+            this.sortLoc = location;
+         }
+
+         // if (sort === 'location' && this.sort === 'location') {
+         //    if (this.sortLoc === location) {
+         //       if (this.sortDir === 'asc') this.sortDir === 'desc'
+         //       else this.sortDir === 'asc';
+         //    } else {
+         //       this.sortLoc = location;
+         //       this.sortDir = 'asc';
+         //    }
+         // } else if (sort === 'location') {
+         //    this.sortLoc = location;
+         //    this.sortDir = 'asc';
+         // } else if (sort === this.sort ) {
+         //    if (this.sortDir === 'asc') this.sortDir = 'desc';
+         //    else this.sortDir = 'asc';
+         // } else {
+         //    this.sort = sort;
+         //    this.sortDir = 'asc';
+         // }
+      },
+
       handleInput(e, id) {
          const { name, value } = e.target;
          this.editItem({ name, value, id });
-         this.sort = '';
       },
 
       handleNumericInput(e, id) {
          const { name, value } = e.target;
          this.editItem({ name, value: Number(value), id });
       },
+
+      setItem(item) {
+         this.modalOpen = true;
+         this.currentItem = item;
+      },
+
+      updateItem() {
+         const { title, content, id } = this.currentItem;
+         this.editItem({ name: 'title', value: title, id });
+         this.editItem({ name: 'content', value: content, id });
+         this.modalOpen = false;
+         this.currentItem = {};
+      },
+
+      closeModal() {
+         this.modalOpen = false;
+         this.currentItem = {};
+      },
    },
 
-   components: { PlusIcon, MinusIcon },
+   components: { PlusIcon, MinusIcon, Modal, Entry },
 
    props: {
       items: Array,
@@ -69,10 +132,30 @@ export default {
          >
             lbs
          </div>
-         <div class="container" @click="handleSort('location', 'donned')">D</div>
-         <div class="container" @click="handleSort('location', 'backpack')">B</div>
-         <div class="container" @click="handleSort('location', 'pocket')">P</div>
-         <div class="container" @click="handleSort('location', 'vehicle')">V</div>
+         <div
+            :class="['container', { sorted: sort === 'location' && sortLoc === 'donned' }]"
+            @click="handleSort('location', 'donned')"
+         >
+            D
+         </div>
+         <div
+            :class="['container', { sorted: sort === 'location' && sortLoc === 'backpack' }]"
+            @click="handleSort('location', 'backpack')"
+         >
+            B
+         </div>
+         <div
+            :class="['container', { sorted: sort === 'location' && sortLoc === 'pocket' }]"
+            @click="handleSort('location', 'pocket')"
+         >
+            P
+         </div>
+         <div
+            :class="['container', { sorted: sort === 'location' && sortLoc === 'vehicle' }]"
+            @click="handleSort('location', 'vehicle')"
+         >
+            V
+         </div>
       </span>
       <span
          v-for="(item) in sortedItems"
@@ -83,14 +166,17 @@ export default {
          <div class="container item remove" @click="removeItem({ id: item.id })">
             <MinusIcon :size="12" fillColor="red" />
          </div>
-         <input
+         <!-- <input
             autocomplete="off"
             name="title"
             class="container data title"
             :value="item.title"
             @input="e => handleInput(e, item.id)"
             style="resize: horizontal;"
-         />
+         /> -->
+         <div class="container data title" @click="setItem(item)">
+            {{ item.title }}
+         </div>
          <input
             autocomplete="off"
             name="quantity"
@@ -148,9 +234,27 @@ export default {
             />
          </div>
       </span>
-      <div class="add-remove-buttons">
-         <PlusIcon  @click="addItem" :size="18" />
+      <div class="add-button">
+         <PlusIcon @click="addItem" :size="18" />
       </div>
+
+      <Modal
+         :show="modalOpen"
+         :title="currentItem.title || 'New Item'"
+         primaryLabel="Update"
+         secondaryLabel="Cancel"
+         @primary="updateItem"
+         @secondary="closeModal"
+         top
+         :night="night"
+      >
+         <Entry
+            :entry="currentItem"
+            @titleInput="value => currentItem.title = value"
+            @contentInput="value => currentItem.content = value"
+            :night="night"
+         />
+      </Modal>
    </div>
 </template>
 
@@ -199,14 +303,13 @@ export default {
       }
    }
 
-   & .add-remove-buttons {
+   & .add-button {
       width: 100%;
       display: flex;
       justify-content: flex-end;
       align-items: center;
       margin-top: 6px;
       padding-right: 4px;
-      & .minus { margin-right: 11px; }
    }
 }
 </style>

@@ -27,7 +27,7 @@ export default {
    data: () => ({
       isNew: true,
       editing: true,
-      view: 'features',
+      view: 'gear',
       footOpen: false,
       footerTemp: '',
    }),

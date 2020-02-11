@@ -153,7 +153,6 @@ export default {
          name="treasure"
          label="Treasure"
          height="400px"
-         placeholder="Any extra valuables"
          :value="character.treasure"
          @input="editField"
          :night="night"

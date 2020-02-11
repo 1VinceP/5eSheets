@@ -2,7 +2,9 @@ import EquipmentItem from '../../EquipmentItem';
 
 export default {
    addItem(state) {
-      state.equipment = [...state.equipment, new EquipmentItem()];
+      const newItem = new EquipmentItem();
+      state.equipment = [...state.equipment, newItem];
+      return newItem;
    },
 
    removeItem(state, { id }) {

@@ -67,11 +67,8 @@ const initialState = () => ({
    sp: 0,
    gp: 0,
    pp: 0,
-   equipment: [
-      new EquipmentItem(),
-      new EquipmentItem(),
-      new EquipmentItem(),
-   ],
+   equipment: [new EquipmentItem()],
+   specialItems: [],
    treasure: '',
    /* magic */
    magicDisplay: 'spells',
@@ -114,6 +111,7 @@ const initialState = () => ({
    /* journal */
    quickNotes: '',
    journalEntries: [],
+   id: '',
 });
 
 export default {
@@ -144,7 +142,10 @@ export default {
 
       resetForm(state) {
          const s = initialState();
-         Object.keys(s).forEach(key => { state[key] = s[key]; });
+         Object.keys(s).forEach(key => {
+            console.log(key, s[key]);
+            state[key] = s[key];
+         });
       },
 
       // called from the rootStore when the character page is loaded
@@ -164,6 +165,8 @@ export default {
          const id = uuid();
          const creationDate = new Date();
          const character = { ...state, id, creationDate };
+         state.id = id;
+         state.creationDate = creationDate;
          const newList = JSON.stringify([...rootState.characters, { ...character }]);
          localStorage.setItem('5e-characters', newList);
          router.push(`/characters/${id}`);
@@ -173,6 +176,7 @@ export default {
       saveCharacter({ state, rootState }, id) {
          const lastEdited = new Date();
          const character = { ...state, lastEdited };
+         state.lastEdited = lastEdited;
          const list = [...rootState.characters];
          const charIndex = list.findIndex(c => c.id === id);
          list.splice(charIndex, 1, character);
