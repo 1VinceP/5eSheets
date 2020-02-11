@@ -40,10 +40,13 @@ export default {
                this.sort = sort;
                this.sortDir = 'asc';
             }
-         } else {
-            if (this.sort === 'location') {
-               if (this.sortDir === 'asc') this.sortDir = 'desc';
-               else this.sortDir = 'asc';
+         } else if (sort === 'location') {
+            if (this.sortLoc === location) {
+               if (this.sort !== 'location') this.sortDir = 'desc';
+               else if (this.sortDir === 'desc') this.sortDir = 'asc';
+               else this.sortDir = 'desc';
+            } else {
+               this.sortDir = 'desc';
             }
             this.sort = 'location';
             this.sortLoc = location;
