@@ -23,9 +23,10 @@ Notes
     - [x] Saving
     - [x] Deleting
   - [x] Importing/Exporting
-- [x] (Settings) Theme and handedness switcher
+- [ ] (Settings) Theme, handedness switcher; Data reset
   - [x] Handedness
   - [x] Themes
+  - [ ] Clear character data
 - [ ] (DM View) Base DM View functionality
   - [ ] List Campaigns
     - [ ] Delete Campaign
@@ -40,7 +41,7 @@ Notes
   - [ ] Helpful hints
 
 ## Beta Goals
-- [ ] (Char Sheet) Equipment and spell sorting
+- [ ] (Char Sheet) Spell sorting
 - [ ] (Char Sheet) Auto class/race feature display
 - [ ] (Content Manager) Base CM functionality
   - [ ] View content

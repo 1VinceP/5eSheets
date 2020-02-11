@@ -41,6 +41,7 @@ export default {
                this.sortDir = 'asc';
             }
          } else if (sort === 'location') {
+            // boolean values sorted in reverse
             if (this.sortLoc === location) {
                if (this.sort !== 'location') this.sortDir = 'desc';
                else if (this.sortDir === 'desc') this.sortDir = 'asc';
@@ -51,25 +52,6 @@ export default {
             this.sort = 'location';
             this.sortLoc = location;
          }
-
-         // if (sort === 'location' && this.sort === 'location') {
-         //    if (this.sortLoc === location) {
-         //       if (this.sortDir === 'asc') this.sortDir === 'desc'
-         //       else this.sortDir === 'asc';
-         //    } else {
-         //       this.sortLoc = location;
-         //       this.sortDir = 'asc';
-         //    }
-         // } else if (sort === 'location') {
-         //    this.sortLoc = location;
-         //    this.sortDir = 'asc';
-         // } else if (sort === this.sort ) {
-         //    if (this.sortDir === 'asc') this.sortDir = 'desc';
-         //    else this.sortDir = 'asc';
-         // } else {
-         //    this.sort = sort;
-         //    this.sortDir = 'asc';
-         // }
       },
 
       handleInput(e, id) {
@@ -169,14 +151,6 @@ export default {
          <div class="container item remove" @click="removeItem({ id: item.id })">
             <MinusIcon :size="12" fillColor="red" />
          </div>
-         <!-- <input
-            autocomplete="off"
-            name="title"
-            class="container data title"
-            :value="item.title"
-            @input="e => handleInput(e, item.id)"
-            style="resize: horizontal;"
-         /> -->
          <div class="container data title" @click="setItem(item)">
             {{ item.title }}
          </div>

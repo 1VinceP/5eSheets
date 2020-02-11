@@ -21,6 +21,7 @@ export default {
       contentPlaceholder: { type: String, default: 'Content' },
       height: { type: String, default: '400px' },
       entry: Object,
+      autofocus: { type: Boolean, default: false },
       night: { type: Boolean, default: false },
    },
 };
@@ -29,6 +30,7 @@ export default {
 <template>
    <div class="entry">
       <Input
+         :autofocus="autofocus"
          class="entry-title"
          :placeholder="titlePlaceholder"
          :inputStyle="{ paddingLeft: '8px' }"
