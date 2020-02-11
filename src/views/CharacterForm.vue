@@ -27,7 +27,7 @@ export default {
    data: () => ({
       isNew: true,
       editing: true,
-      view: 'stats',
+      view: 'actions',
       footOpen: false,
       footerTemp: '',
    }),

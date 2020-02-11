@@ -272,6 +272,8 @@ export default {
          padding: 3px;
          &.title {
             justify-content: flex-start;
+            white-space: nowrap;
+            overflow-x: scroll;
             &.data { font-size: 10px; }
          }
          &.quantity, &.weight { text-align: center; }

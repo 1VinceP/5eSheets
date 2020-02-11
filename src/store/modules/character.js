@@ -4,12 +4,13 @@ import shortId from '@/utils/generateId';
 import router from '@/router';
 import {
    statMutations,
+   actionMutations,
    gearMutations,
    magicMutations,
    featureMutations,
    journalMutations,
 } from './characterMutations';
-import EquipmentItem from '../EquipmentItem';
+import EquipmentItem from './characterDefaults/EquipmentItem';
 
 const initialSkill = {
    proficient: false,
@@ -62,6 +63,28 @@ const initialState = () => ({
       wis: { ...initialSkill },
       cha: { ...initialSkill },
    },
+   /* actions */
+   actions: [
+      {
+         title: 'Greatsword of Masterful Distraction',
+         damage: '2d6',
+         inherentBonus: 0,
+         damageType: 'slashing',
+         properties: ['two handed', 'heavy'],
+         proficient: true,
+         id: '124',
+      },
+      {
+         title: 'Longbow',
+         damage: '1d12',
+         damageType: 'piercing',
+         inherentBonus: 1,
+         properties: ['two handed', 'heavy', 'ranged', 'ammunition'],
+         proficient: true,
+         range: '200/600',
+         id: '789',
+      },
+   ],
    /* gear */
    cp: 0,
    sp: 0,
@@ -135,6 +158,7 @@ export default {
 
    mutations: {
       ...statMutations,
+      ...actionMutations,
       ...gearMutations,
       ...featureMutations,
       ...magicMutations,

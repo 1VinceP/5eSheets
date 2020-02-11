@@ -1,5 +1,5 @@
 import toastr from 'toastr';
-import JournalEntry from '@/store/JournalEntry';
+import JournalEntry from '../characterDefaults/JournalEntry';
 
 export default {
    addJournalEntry(state) {

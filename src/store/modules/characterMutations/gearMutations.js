@@ -1,4 +1,4 @@
-import EquipmentItem from '../../EquipmentItem';
+import EquipmentItem from '../characterDefaults/EquipmentItem';
 
 export default {
    addItem(state) {
