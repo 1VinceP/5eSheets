@@ -129,16 +129,13 @@ export default {
   top: 0;
   left: 0;
   z-index: 99;
-  &.open {
-    visibility: visible;
-  }
-  &.closed {
-    visibility: hidden;
-  }
+  &.open { visibility: visible; }
+  &.closed {  visibility: hidden; }
   &.top {
     align-items: flex-start;
     padding-top: 60px;
   }
+  // &:focus-within { position: absolute; top: 0; left: 0; }
 }
 
 .modal {

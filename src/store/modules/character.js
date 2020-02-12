@@ -149,7 +149,6 @@ export default {
       resetForm(state) {
          const s = initialState();
          Object.keys(s).forEach(key => {
-            console.log(key, s[key]);
             state[key] = s[key];
          });
       },

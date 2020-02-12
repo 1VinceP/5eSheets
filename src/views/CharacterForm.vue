@@ -60,12 +60,17 @@ export default {
 
    created() {
       const { id } = this.$route.params;
+      const { view } = this.$route.query;
+
       this.getCharacters();
+
       if (id) {
          this.isNew = false;
          this.editing = false;
          this.setCharacterById(id);
       }
+
+      if (view) this.view = view;
    },
 
    methods: {
@@ -115,10 +120,6 @@ export default {
          downloadElement.click();
          downloadElement.remove();
       },
-   },
-
-   destroyed() {
-      this.resetForm();
    },
 
    components: {

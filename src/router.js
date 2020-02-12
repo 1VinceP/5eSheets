@@ -5,6 +5,7 @@ import EmptyRouterView from '@/components/common/EmptyRouterView.vue';
 import Home from './views/Home.vue';
 import Characters from './views/Characters.vue';
 import CharacterForm from './views/CharacterForm.vue';
+import ManageAction from './components/characterForm/actions/ManageAction.vue';
 import DMView from './views/DungeonMaster.vue';
 import ContentManager from './views/ContentManager.vue';
 import Settings from './views/Settings.vue';
@@ -36,6 +37,18 @@ const router = new Router({
                path: ':id',
                name: 'character',
                component: CharacterForm,
+            },
+            {
+               path: 'manage',
+               name: 'manage',
+               component: EmptyRouterView,
+               children: [
+                  {
+                     path: 'action',
+                     name: 'action',
+                     component: ManageAction,
+                  },
+               ],
             },
          ],
       },
