@@ -29,6 +29,23 @@ export default {
      },
   },
 
+  watch: {
+     // this works specifically for mobile
+     show(newValue) {
+        if (newValue) {
+           document.body.style.position = 'fixed';
+           document.body.style.top = `-${window.scrollY}px`;
+           document.body.style.right = '0px';
+           document.body.style.width = '100%';
+        } else {
+           const scrollY = document.body.style.top;
+           document.body.style.position = '';
+           document.body.style.top = '';
+           window.scrollTo(0, parseInt(scrollY || '0') * -1);
+        }
+     },
+  },
+
   components: {
     Button, Input,
   },
@@ -44,8 +61,8 @@ export default {
     },
     inputType: String,
     title: String,
-    primaryLabel: { type: String, default: 'Ok' },
     secondaryLabel: String,
+    primaryLabel: { type: String, default: 'Ok' },
     promptTitle: { type: Boolean, default: false },
     top: { type: Boolean, default: false }, // places the modal at the top of the screen
     prompt: { type: Boolean, default: false },

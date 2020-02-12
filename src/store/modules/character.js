@@ -64,27 +64,9 @@ const initialState = () => ({
       cha: { ...initialSkill },
    },
    /* actions */
-   actions: [
-      {
-         title: 'Greatsword of Masterful Distraction',
-         damage: '2d6',
-         inherentBonus: 0,
-         damageType: 'slashing',
-         properties: ['two handed', 'heavy'],
-         proficient: true,
-         id: '124',
-      },
-      {
-         title: 'Longbow',
-         damage: '1d12',
-         damageType: 'piercing',
-         inherentBonus: 1,
-         properties: ['two handed', 'heavy', 'ranged', 'ammunition'],
-         proficient: true,
-         range: '200/600',
-         id: '789',
-      },
-   ],
+   actions: [],
+   bonusActions: [],
+   reactions: [],
    /* gear */
    cp: 0,
    sp: 0,

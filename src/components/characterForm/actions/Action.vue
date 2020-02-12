@@ -2,7 +2,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 import startCase from 'lodash/startCase';
 import MinusIcon from 'vue-material-design-icons/MinusCircleOutline.vue';
-import { Modal } from '@/components/common';
+import { Input, Modal } from '@/components/common';
 import Entry from '../Entry.vue';
 
 export default {
@@ -14,6 +14,11 @@ export default {
 
    computed: {
       ...mapGetters('character', ['proficiencyBonus']),
+
+      info() {
+         const { actionTime, id } = this.action;
+         return { actionTime, id };
+      },
 
       abilityMod() {
          const { str, dex } = this.abilities;
@@ -48,19 +53,19 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['removeAction']),
+      ...mapMutations('character', ['removeAction', 'editAction']),
 
       handleDelete() {
-         this.removeAction(this.action.id);
+         const { actionTime, id } = this.action;
+         this.removeAction({ actionTime, id });
       },
    },
 
-   components: { MinusIcon, Modal, Entry },
+   components: { MinusIcon, Input, Modal, Entry },
 
    props: {
       abilities: Object,
       action: Object,
-      isHeader: { type: Boolean, default: false },
       night: { type: Boolean, default: false },
    },
 };
@@ -68,12 +73,12 @@ export default {
 
 <template>
    <div class="action">
-      <div class="action-container" @click="modalOpen = true">
+      <div v-if="action.type === 'weapon'" class="action-container">
          <section class="remove">
             <div @click="handleDelete"><MinusIcon :size="18" fillColor="red" /></div>
          </section>
 
-         <section class="content">
+         <section class="content" @click="modalOpen = true">
             <span class="top">
                <div class="col title">{{ action.title }}</div>
                <div class="col">{{ attackBonus }}</div>
@@ -87,6 +92,21 @@ export default {
          </section>
       </div>
 
+      <div v-else class="action-container">
+         <section class="remove">
+            <div @click="handleDelete"><MinusIcon :size="18" fillColor="red" /></div>
+         </section>
+
+         <section class="content" @click="modalOpen = true">
+            <span class="top other">
+               <div class="title">{{ action.title }}</div>
+            </span>
+            <span class="bottom other">
+               <div class="properties">{{ action.content }}</div>
+            </span>
+         </section>
+      </div>
+
       <Modal
          top
          :show="modalOpen"
@@ -95,12 +115,81 @@ export default {
          primaryLabel="Close"
          @primary="modalOpen = false"
       >
-         <div class="modal-container">
+         <div v-if="action.type === 'weapon'" class="modal-container">
+            <div class="manage-properties">
+               <div></div>
+            </div>
             <Entry
+               height="200px"
                :entry="action"
                :night="night"
+               @titleInput="value => editAction({ ...info, prop: 'title', value })"
+               @contentInput="value => editAction({ ...info, prop: 'content', value })"
             />
+            <div class="inputs">
+               <Input
+                  class="input"
+                  label="Damage"
+                  name="damage"
+                  :value="action.damage"
+                  @input="value => editAction({ ...info, prop: 'damage', value })"
+                  :night="night"
+               />
+               <Input
+                  class="input"
+                  label="Damage Type"
+                  name="damageType"
+                  :value="action.damageType"
+                  @input="value => editAction({ ...info, prop: 'damageType', value })"
+                  :night="night"
+               />
+            </div>
+            <div class="inputs">
+               <Input
+                  class="input"
+                  label="Weapon Bonus"
+                  name="bonus"
+                  type="number"
+                  min="0"
+                  :value="action.inherentBonus"
+                  @input="value => editAction({
+                     ...info,
+                     prop: 'inherentBonus',
+                     value: Number(value),
+                  })"
+                  :night="night"
+               />
+               <Input
+                  class="input"
+                  label="Range"
+                  name="range"
+                  :value="action.range"
+                  @input="value => editAction({ ...info, prop: 'range', value })"
+                  :night="night"
+               />
+            </div>
+            <div class="handle-proficient">
+               <div>Proficient</div>
+               <input
+                  type="checkbox"
+                  name="proficient"
+                  :checked="action.proficient"
+                  @input="value => editAction({
+                     ...info,
+                     prop: 'proficient',
+                     value: !action.proficient,
+                  })"
+               />
+            </div>
          </div>
+         <Entry
+            v-else
+            height="200px"
+            :entry="action"
+            :night="night"
+            @titleInput="value => editAction({ ...info, prop: 'title', value })"
+            @contentInput="value => editAction({ ...info, prop: 'content', value })"
+         />
       </Modal>
    </div>
 </template>
@@ -114,7 +203,7 @@ export default {
       width: 100%;
       display: flex;
       justify-content: space-between;
-      margin-bottom: 30px;
+      margin-bottom: 20px;
 
       & .remove {
          height: 100%;
@@ -134,15 +223,18 @@ export default {
             display: grid;
             grid-template-columns: 47% 13% 20% 20%;
             border-bottom: 1px solid #ccc;
+            &.other { display: flex; }
          }
 
          & .bottom {
             width: 100%;
             display: grid;
             grid-template-columns: 77% 23%;
+            &.other { grid-template-columns: 100%; }
 
             & .properties {
                height: 100%;
+               width: 100%;
                display: flex;
                align-items: center;
                font-size: 11px;
@@ -175,6 +267,22 @@ export default {
 
    & .modal-container {
       width: 100%;
+
+      & .inputs {
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+
+         & .input { width: 48%; }
+      }
+
+      & .handle-proficient {
+         width: 100%;
+         display: flex;
+         justify-content: space-between;
+         align-items: center;
+      }
    }
 }
 </style>

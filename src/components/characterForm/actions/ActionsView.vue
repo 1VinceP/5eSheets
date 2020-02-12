@@ -1,7 +1,6 @@
 <script>
 import { mapMutations } from 'vuex';
 import Action from './Action.vue';
-import { Button } from '@/components/common';
 
 export default {
    name: 'actions-view',
@@ -10,10 +9,11 @@ export default {
       ...mapMutations('character', ['addAction']),
    },
 
-   components: { Action, Button },
+   components: { Action },
 
    props: {
-      character: Object,
+      actions: Array,
+      abilities: Object,
       night: { type: Boolean, default: false },
    },
 };
@@ -22,14 +22,12 @@ export default {
 <template>
    <div class="actions-view">
       <Action
-         v-for="action in character.actions"
+         v-for="action in actions"
          :key="action.id"
          :action="action"
-         :abilities="character.abilities"
+         :abilities="abilities"
          :night="night"
       />
-
-      <Button green full @click="addAction">Add Action</Button>
    </div>
 </template>
 
