@@ -69,7 +69,8 @@ export default {
       },
 
       handleReturn() {
-         this.$router.push(`/characters/${this.id}?view=actions`);
+         const id = this.id ? this.id : 'new';
+         this.$router.push(`/characters/${id}?view=actions`);
       },
    },
 

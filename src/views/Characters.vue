@@ -1,5 +1,5 @@
 <script>
-import { mapState, mapActions, mapGetters } from 'vuex';
+import { mapState, mapActions, mapGetters, mapMutations } from 'vuex';
 import ArrowIcon from 'vue-material-design-icons/ChevronRight.vue';
 import ImportIcon from 'vue-material-design-icons/FileImport.vue';
 import Header from '@/components/Header.vue';
@@ -15,10 +15,12 @@ export default {
 
    created() {
       this.getCharacters();
+      this.resetForm();
    },
 
    methods: {
       ...mapActions(['getCharacters']),
+      ...mapMutations('character', ['resetForm']),
       ...mapActions('character', ['importCharacter']),
 
       // eslint-disable-next-line consistent-return
@@ -49,7 +51,7 @@ export default {
 
       <section class="character-buttons">
          <router-link to="/characters/new" class="global-link new-button">
-            <Button green full>New Character</Button>
+            <Button green full @click="resetForm">New Character</Button>
          </router-link>
 
          <div class="import-container">
