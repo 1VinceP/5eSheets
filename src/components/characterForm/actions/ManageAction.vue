@@ -58,7 +58,6 @@ export default {
             const index = newProperties.findIndex(p => p === name);
             newProperties.splice(index, 1);
          }
-         console.log(properties, newProperties);
          this.editAction({ ...this.info, prop: 'properties', value: newProperties });
       },
 
@@ -70,7 +69,7 @@ export default {
 
       handleReturn() {
          const id = this.id ? this.id : 'new';
-         this.$router.push(`/characters/${id}?view=actions`);
+         this.$router.push(`/characters/${id}?view=actions&reset=false`);
       },
    },
 

@@ -26,7 +26,6 @@ export default {
    name: 'character-form',
    data: () => ({
       isNew: true,
-      editing: true,
       view: 'stats',
       footOpen: false,
       footerTemp: '',
@@ -60,14 +59,17 @@ export default {
 
    created() {
       const { id } = this.$route.params;
-      const { view } = this.$route.query;
+      const { view, reset } = this.$route.query;
 
+      // retrieve characters to handle refreshing
       this.getCharacters();
 
       if (id) {
          this.isNew = false;
-         this.editing = false;
-         this.setCharacterById(id);
+         if (reset !== 'false') {
+            // don't reload character when returning from management pages
+            this.setCharacterById(id);
+         }
       }
 
       if (view) this.view = view;
@@ -99,15 +101,12 @@ export default {
 
       handleSave() {
          const { id } = this.$route.params;
-         let character;
          if (id) {
-            character = this.saveCharacter();
+            this.saveCharacter(id);
          } else {
-            character = this.saveNewCharacter();
+            this.saveNewCharacter();
             this.isNew = false;
          }
-
-         return character;
       },
 
       exportCharacter() {

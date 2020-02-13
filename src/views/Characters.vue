@@ -68,7 +68,6 @@ export default {
             :key="character.id"
             :to="`/characters/${character.id}`"
             :class="['global-link', 'character', { night }]"
-            @click="console.log(character.id)"
          >
             <span class="section name">{{ character.name }}</span>
             <div class="section classes">
