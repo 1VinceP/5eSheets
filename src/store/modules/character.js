@@ -163,6 +163,10 @@ export default {
       editProp(state, { prop, value }) {
          state[prop] = value;
       },
+
+      updateFeaturesOrder(state, newList) {
+         state.features = newList;
+      },
    },
 
    actions: {
