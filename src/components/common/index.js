@@ -1,5 +1,6 @@
 export { default as Button } from './BaseButton.vue';
 export { default as Collapsible } from './BaseCollapsible.vue';
+export { default as Entry } from './BaseEntry.vue';
 export { default as FAB } from './BaseFAB.vue';
 export { default as Input } from './BaseInput.vue';
 export { default as Modal } from './BaseModal.vue';

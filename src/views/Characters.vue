@@ -69,12 +69,14 @@ export default {
             :to="`/characters/${character.id}`"
             :class="['global-link', 'character', { night }]"
          >
-            <span class="section name">{{ character.name }}</span>
-            <div class="section classes">
-               <div v-for="(charClass, i) in character.classes" :key="charClass.name">
-                  {{ i > 0 ? '/' : '' }} {{ charClass.name }} {{ charClass.level }}
+            <section class="section left">
+               <span class="title">{{ character.name }}</span>
+               <div class="classes">
+                  <div v-for="(charClass, i) in character.classes" :key="charClass.name">
+                     {{ i > 0 ? '/' : '' }} {{ charClass.name }} {{ charClass.level }}
+                  </div>
                </div>
-            </div>
+            </section>
             <span class="section arrow"><ArrowIcon /></span>
          </router-link>
       </div>
@@ -114,36 +116,46 @@ export default {
 
    & .character {
       width: 100%;
-      height: 52px;
+      height: 44px;
       display: flex;
       align-items: center;
+      border: 1px solid $navy;
+      border-radius: 3px;
+      margin-bottom: 10px;
+      padding: 3px 0;
       font-size: 16px;
-      border-bottom: 1px solid $navy;
-      &.night { border-color: #eee; }
+      &.night {
+         background: #8883;
+         border: none;
+      }
 
       & .section {
          height: 100%;
          display: flex;
          align-items: center;
-         overflow:hidden;
-         white-space:nowrap;
-         text-overflow: ellipsis;
-      }
-
-      & .name { flex: 3; }
-
-      & .classes {
-         flex: 6;
-         justify-content: center;
-         padding: 0 6px;
-         font-size: 12px;
-         font-style: italic;
-         & div:not(:first-child) { margin-left: 4px; }
-      }
-
-      & .arrow {
-         flex: 3;
-         justify-content: flex-end;
+         &.left {
+            width: 95%;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: flex-start;
+            padding-left: 6px;
+            & .title {
+               width: 100%;
+               font-size: 14px;
+            }
+            & .classes {
+               width: 100%;
+               display: flex;
+               // justify-content: center;
+               font-size: 12px;
+               font-style: italic;
+               & div:not(:first-child) { margin-left: 4px; }
+            }
+         }
+         &.arrow {
+            width: 5%;
+            justify-content: flex-end;
+         }
       }
    }
 }

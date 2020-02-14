@@ -1,21 +1,11 @@
 <script>
 import { mapMutations } from 'vuex';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
-import { Modal } from '@/components/common';
 import Counter from '../Counter.vue';
-import Entry from '../Entry.vue';
 import Spell from './Spell.vue';
 
 export default {
    name: 'spell-container',
-
-   data() {
-      return {
-         modalOpen: false,
-         newSpellName: '',
-         newSpellContent: '',
-      };
-   },
 
    computed: {
       title() {
@@ -31,29 +21,14 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['editSpellLevelData', 'addNewSpell']),
-
-      closeModal() {
-         this.modalOpen = false;
-         this.newSpellName = '';
-         this.newSpellContent = '';
-      },
+      ...mapMutations('character', ['editSpellLevelData', 'addSpell']),
 
       editSpellLevel(value, name) {
          this.editSpellLevelData({ prop: name, value: Number(value), index: this.spellLevel });
       },
-
-      addSpell() {
-         this.addNewSpell({
-            title: this.newSpellName,
-            content: this.newSpellContent,
-            level: this.spellLevel,
-         });
-         this.closeModal();
-      },
    },
 
-   components: { PlusIcon, Modal, Counter, Entry, Spell },
+   components: { PlusIcon, Counter, Spell },
 
    props: {
       spellLevel: Number,
@@ -96,10 +71,10 @@ export default {
       />
 
       <span class="add-spell">
-         <PlusIcon :size="18" @click="modalOpen = true" />
+         <PlusIcon :size="18" @click="addSpell({ level: spellLevel })" />
       </span>
 
-      <Modal
+      <!-- <Modal
          :show="modalOpen"
          title="Add Spell"
          primaryLabel="Add"
@@ -116,7 +91,7 @@ export default {
             @contentInput="value => newSpellContent = value"
             :night="night"
          />
-      </Modal>
+      </Modal> -->
    </div>
 </template>
 

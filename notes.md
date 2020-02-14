@@ -1,7 +1,10 @@
+*http://5eSheets.surge.sh* <!-- stable release -->
+*http://5eSheets-alpha.surge.sh* <!-- alpha release -->
+
 Notes
 ==============
 
-### Major Known Issues
+### Known Issues
 ~~(High) UUID and vue-dev-tools conflicts occasionally cause id loss~~
    - ~~Potentially due to vue-dev-tools running the mutation/action twice~~
    - ~~Shouldn't be an issue in production~~
@@ -9,6 +12,8 @@ Notes
 (Medium) Magic Page is messy code
 (Medium) undefined: 4
    - property appearing on all saved characters
+(Low)
+   - Refreshing a management page then routing back to characterForm loads a new character
 
 ## Alpha Goals
 - [ ] (Char Sheet) Base Character Sheet functionality

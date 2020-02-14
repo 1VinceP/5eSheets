@@ -10,13 +10,10 @@ export default {
    },
 
    removeAction(state, { actionTime, id }) {
-      const confirmed = window.confirm('This action will be gone forever.');
-      if (confirmed) {
-         const actionIndex = state[actionTime].findIndex(action => action.id === id);
-         const newActions = [...state[actionTime]];
-         newActions.splice(actionIndex, 1);
-         state[actionTime] = newActions;
-      }
+      const actionIndex = state[actionTime].findIndex(action => action.id === id);
+      const newActions = [...state[actionTime]];
+      newActions.splice(actionIndex, 1);
+      state[actionTime] = newActions;
    },
 
    editAction(state, { actionTime, id, prop, value }) {

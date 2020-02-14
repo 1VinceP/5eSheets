@@ -1,5 +1,5 @@
 <script>
-import { Input } from '@/components/common';
+import Input from './BaseInput.vue';
 
 export default {
    name: 'entry',
@@ -31,6 +31,7 @@ export default {
    <div class="entry">
       <Input
          :autofocus="autofocus"
+         autocomplete="off"
          class="entry-title"
          :placeholder="titlePlaceholder"
          :inputStyle="{ paddingLeft: '8px' }"
@@ -40,6 +41,7 @@ export default {
       />
       <Input
          textarea
+         autocomplete="off"
          class="entry-content"
          :placeholder="contentPlaceholder"
          :value="entry.content"
@@ -67,8 +69,7 @@ export default {
    & .entry-content {
       margin-top: -20px;
       margin-bottom: 10px;
-      border-top-right-radius: 0px;
-      border-top-left-radius: 0px;
+      border-radius: 0px 0px 10px 10px !important; // override common componentStyles
    }
 
    & .tags {

@@ -184,9 +184,13 @@ export default {
          state.lastEdited = lastEdited;
          const list = [...rootState.characters];
          const charIndex = list.findIndex(c => c.id === id);
-         list.splice(charIndex, 1, character);
-         localStorage.setItem('5e-characters', JSON.stringify(list));
-         toastr.success(`${character.name} has been saved.`);
+         if (charIndex >= 0) {
+            list.splice(charIndex, 1, character);
+            localStorage.setItem('5e-characters', JSON.stringify(list));
+            toastr.success(`${character.name} has been saved.`);
+         } else {
+            toastr.error('Something went wrong... Export your character for safety, and try again.');
+         }
       },
 
       deleteCharacter({ state, rootState, commit }) {

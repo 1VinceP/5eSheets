@@ -1,9 +1,7 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
 import startCase from 'lodash/startCase';
-import { Input, Button } from '@/components/common';
-import Header from '@/components/Header.vue';
-import Entry from '../Entry.vue';
+import { Input, Button, Entry } from '@/components/common';
 
 export default {
    name: 'manage-action',
@@ -27,9 +25,10 @@ export default {
 
    computed: {
       ...mapGetters(['night']),
-      ...mapState('character', ['actions', 'bonusActions', 'reactions', 'id']),
+      ...mapState('character', ['actions', 'bonusActions', 'reactions']),
 
       action() {
+         // action id, not character id
          const { id, time } = this.$route.query;
          const actions = this[time];
          const action = actions.find(a => a.id === id);
@@ -62,28 +61,25 @@ export default {
       },
 
       handleDelete() {
-         const { actionTime, id } = this.action;
-         this.removeAction({ actionTime, id });
-         this.handleReturn();
-      },
-
-      handleReturn() {
-         const id = this.id ? this.id : 'new';
-         this.$router.push(`/characters/${id}?view=actions&reset=false`);
+         const confirmed = window.confirm('Your item will be gone forever.');
+         if (confirmed) {
+            const { actionTime, id } = this.action;
+            this.removeAction({ actionTime, id });
+            this.handleReturn();
+         }
       },
    },
 
-   components: { Entry, Header, Input, Button },
+   components: { Entry, Input, Button },
+
+   props: {
+      handleReturn: Function,
+   },
 };
 </script>
 
 <template>
-   <div class="global-page action">
-      <Header />
-
-      <!-- <span class="delete">
-         <Button red sm @click="handleDelete">Delete</Button>
-      </span> -->
+   <div class="action">
       <Entry
          height="200px"
          :entry="action"
@@ -106,6 +102,7 @@ export default {
       </div>
       <div v-show="action.type === 'weapon'" class="inputs">
          <Input
+            autocomplete="off"
             class="input"
             label="Damage"
             name="damage"
@@ -114,6 +111,7 @@ export default {
             :night="night"
          />
          <Input
+            autocomplete="off"
             class="input"
             label="Damage Type"
             name="damageType"
@@ -124,6 +122,7 @@ export default {
       </div>
       <div v-show="action.type === 'weapon'" class="inputs">
          <Input
+            autocomplete="off"
             class="input"
             label="Weapon Bonus"
             name="bonus"
@@ -138,6 +137,7 @@ export default {
             :night="night"
          />
          <Input
+            autocomplete="off"
             class="input"
             label="Range"
             name="range"
@@ -158,14 +158,12 @@ export default {
          </div>
       </div>
       <Button class="delete" red full @click="handleDelete">Remove</Button>
-
-      <Button class="save-button" green full @click="handleReturn">Return</Button>
    </div>
 </template>
 
 <style lang="scss" scoped>
 .action {
-   padding-bottom: 60px;
+   width: 100%;
 }
 
 .inputs {
@@ -173,7 +171,6 @@ export default {
    display: flex;
    justify-content: space-between;
    align-items: center;
-
    & .input { width: 48%; }
 }
 
@@ -199,12 +196,5 @@ export default {
 
 .delete {
    margin-top: 10px;
-}
-
-.save-button {
-   width: 100vw;
-   position: fixed;
-   bottom: 0;
-   left: 0;
 }
 </style>

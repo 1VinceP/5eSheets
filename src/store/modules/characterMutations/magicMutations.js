@@ -1,3 +1,4 @@
+import Spell from '../characterDefaults/Spell';
 import shortId from '@/utils/generateId';
 
 const initialSpellList = {
@@ -6,23 +7,23 @@ const initialSpellList = {
    spells: [],
 };
 
-function parseNewSpell(title, content) {
-   const timeReg = new RegExp(/(Casting Time: )(.*)/g);
-   const rangeReg = new RegExp(/(Range: )(.*)/g);
-   const concRegex = new RegExp(/Duration: Concentration/g);
-   const ritualRegex = new RegExp(/\(ritual\)/g);
+// function parseNewSpell(title, content) {
+//    const timeReg = new RegExp(/(Casting Time: )(.*)/g);
+//    const rangeReg = new RegExp(/(Range: )(.*)/g);
+//    const concRegex = new RegExp(/Duration: Concentration/g);
+//    const ritualRegex = new RegExp(/\(ritual\)/g);
 
-   return {
-      title,
-      content,
-      prepared: false,
-      time: timeReg.exec(content)[2] || '',
-      range: rangeReg.exec(content)[2] || '',
-      conc: concRegex.test(content),
-      ritual: ritualRegex.test(content),
-      id: shortId(),
-   };
-}
+//    return {
+//       title,
+//       content,
+//       prepared: false,
+//       time: timeReg.exec(content)[2] || '',
+//       range: rangeReg.exec(content)[2] || '',
+//       conc: concRegex.test(content),
+//       ritual: ritualRegex.test(content),
+//       id: shortId(),
+//    };
+// }
 
 function parseNewDiscipline(title, content) {
    const orderReg = new RegExp(/(.*)( Discipline\n)/);
@@ -59,29 +60,26 @@ export default {
       }
    },
 
-   addNewSpell(state, { title, content, level }) {
-      const newSpell = parseNewSpell(title, content);
-      const newSpellsList = [...state.spellsList];
-      newSpellsList[level].spells = [...newSpellsList[level].spells, newSpell];
-      state.spellsList = newSpellsList;
+   addSpell(state, { level }) {
+      state.spellsList[level].spells = [
+         ...state.spellsList[level].spells,
+         new Spell(),
+      ];
    },
 
-   deleteSpell(state, { level, spellId }) {
-      const newSpellsList = [...state.spellsList];
-      const newListAtLevel = [...newSpellsList[level].spells];
-      const spellIndex = newListAtLevel.findIndex(spell => spell.id === spellId);
+   deleteSpell(state, { level, id }) {
+      // const newSpellsList = [...state.spellsList];
+      const newListAtLevel = [...state.spellsList[level].spells];
+      const spellIndex = newListAtLevel.findIndex(spell => spell.id === id);
       newListAtLevel.splice(spellIndex, 1);
-      newSpellsList[level].spells = newListAtLevel;
-      state.spellsList = newSpellsList;
+      state.spellsList[level].spells = newListAtLevel;
+      // newSpellsList[level].spells = newListAtLevel;
+      // state.spellsList = newSpellsList;
    },
 
-   prepareSpell(state, { level, spellId }) {
-      const newSpellsList = [...state.spellsList];
-      const newListAtLevel = [...newSpellsList[level].spells];
-      const spellIndex = newListAtLevel.findIndex(spell => spell.id === spellId);
-      newListAtLevel[spellIndex].prepared = !newListAtLevel[spellIndex].prepared;
-      newSpellsList[level].spells = newListAtLevel;
-      state.spellsList = newSpellsList;
+   editSpell(state, { level, id, prop, value }) {
+      const spellIndex = state.spellsList[level].spells.findIndex(s => s.id === id);
+      state.spellsList[level].spells[spellIndex][prop] = value;
    },
 
    addTalent(state, talent) {

@@ -2,9 +2,6 @@
 import { mapMutations } from 'vuex';
 import orderBy from 'lodash/orderBy';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
-import MinusIcon from 'vue-material-design-icons/MinusCircleOutline.vue';
-import { Modal } from '@/components/common';
-import Entry from '../Entry.vue';
 
 export default {
    name: 'equipment',
@@ -14,8 +11,6 @@ export default {
          sort: 'title',
          sortDir: 'asc',
          sortLoc: 'donned',
-         modalOpen: false,
-         currentItem: {},
       };
    },
 
@@ -64,26 +59,12 @@ export default {
          this.editItem({ name, value: Number(value), id });
       },
 
-      setItem(item) {
-         this.modalOpen = true;
-         this.currentItem = item;
-      },
-
-      updateItem() {
-         const { title, content, id } = this.currentItem;
-         this.editItem({ name: 'title', value: title, id });
-         this.editItem({ name: 'content', value: content, id });
-         this.modalOpen = false;
-         this.currentItem = {};
-      },
-
-      closeModal() {
-         this.modalOpen = false;
-         this.currentItem = {};
+      manageItem(id) {
+         this.$router.push(`/characters/manage/gear?id=${id}&prev=gear`);
       },
    },
 
-   components: { PlusIcon, MinusIcon, Modal, Entry },
+   components: { PlusIcon },
 
    props: {
       items: Array,
@@ -98,7 +79,6 @@ export default {
          [D]onned, [B]ackpack, [P]ocket/pouch, [V]ehicle/creature
       </div>
       <span :class="['item', 'header', { night }]">
-         <div class="container remove" />
          <div
             :class="['container', 'title', { sorted: sort === 'title' }]"
             @click="handleSort('title')"
@@ -148,10 +128,7 @@ export default {
          :night="night"
          :class="['item', { night }]"
       >
-         <div class="container item remove" @click="removeItem({ id: item.id })">
-            <MinusIcon :size="12" fillColor="red" />
-         </div>
-         <div class="container data title" @click="setItem(item)">
+         <div class="container data title" @click="manageItem(item.id)">
             {{ item.title }}
          </div>
          <input
@@ -214,24 +191,6 @@ export default {
       <div class="add-button">
          <PlusIcon @click="addItem" :size="18" />
       </div>
-
-      <Modal
-         :show="modalOpen"
-         :title="currentItem.title || 'New Item'"
-         primaryLabel="Update"
-         secondaryLabel="Cancel"
-         @primary="updateItem"
-         @secondary="closeModal"
-         top
-         :night="night"
-      >
-         <Entry
-            :entry="currentItem"
-            @titleInput="value => currentItem.title = value"
-            @contentInput="value => currentItem.content = value"
-            :night="night"
-         />
-      </Modal>
    </div>
 </template>
 
@@ -248,7 +207,7 @@ export default {
       height: 30px;
       width: 100%;
       display: grid;
-      grid-template-columns: 7.5% 42.5% 10% 10% 7.5% 7.5% 7.5% 7.5%;
+      grid-template-columns: 50% 10% 10% 7.5% 7.5% 7.5% 7.5%;
       border: none;
       color: $navy;
       &:not(:last-child) { border-bottom: 1px solid $blue; }
@@ -277,7 +236,7 @@ export default {
             &.data { font-size: 10px; }
          }
          &.quantity, &.weight { text-align: center; }
-         &.remove, &.title, &.quantity, &.weight { border-right: 1px solid $grey; }
+         &.title, &.quantity, &.weight { border-right: 1px solid $grey; }
          &.sorted { color: $green; }
       }
    }

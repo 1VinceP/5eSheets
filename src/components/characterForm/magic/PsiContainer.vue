@@ -1,8 +1,7 @@
 <script>
 import { mapMutations } from 'vuex';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
-import { Modal } from '@/components/common';
-import Entry from '../Entry.vue';
+import { Modal, Entry } from '@/components/common';
 import Psionic from './Psionic.vue';
 
 export default {

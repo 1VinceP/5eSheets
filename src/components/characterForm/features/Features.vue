@@ -2,8 +2,7 @@
 import { mapGetters, mapMutations } from 'vuex';
 // import map from 'lodash/map';
 // import Counter from '../Counter.vue';
-import { Button } from '@/components/common';
-import Entry from '../Entry.vue';
+import { Button, Entry } from '@/components/common';
 
 export default {
    name: 'features',

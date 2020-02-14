@@ -1,35 +1,17 @@
 <script>
 import { mapMutations } from 'vuex';
-import { Input, Modal } from '@/components/common';
 
 export default {
    name: 'spell',
 
-   data: () => ({
-      modalOpen: false,
-   }),
-
    methods: {
-      ...mapMutations('character', ['deleteSpell', 'prepareSpell']),
+      ...mapMutations('character', ['deleteSpell', 'editSpell']),
 
-      handlePrepareSpell() {
-         this.prepareSpell({ level: this.spellLevel, spellId: this.spell.id });
-      },
-
-      handleDelete() {
-         const confirmed = window.confirm(`${this.spell.title} will be deleted forever`);
-         if (confirmed) {
-            this.deleteSpell({ level: this.spellLevel, spellId: this.spell.id });
-            this.handleModal();
-         }
-      },
-
-      handleModal() {
-         this.modalOpen = !this.modalOpen;
+      manageSpell() {
+         const { id } = this.spell;
+         this.$router.push(`/characters/manage/spell?id=${id}&level=${this.spellLevel}&prev=magic`);
       },
    },
-
-   components: { Input, Modal },
 
    props: {
       spellLevel: Number,
@@ -44,47 +26,30 @@ export default {
    <div>
       <div v-if="isHeader" :class="['spell', 'head', { night }]">
          <div class="col">P.</div>
-         <div class="col">Name</div>
+         <div class="col title">Name</div>
          <div class="col">Time</div>
          <div class="col">C.</div>
          <div class="col">Range</div>
       </div>
       <div v-else :class="['spell', { ritual: spell.ritual }]">
-         <!-- <div class="col">{{ spell.prepared }}</div> -->
          <div class="col">
             <input
                class="check"
                type="checkbox"
                :checked="spell.prepared"
-               @input="handlePrepareSpell"
+               @input="editSpell({
+                  level: spellLevel,
+                  id: spell.id,
+                  prop: 'prepared',
+                  value: !spell.prepared,
+               })"
             />
          </div>
-         <div class="col" @click="handleModal">{{ spell.title }}</div>
-         <div class="col" @click="handleModal">{{ spell.time }}</div>
-         <div class="col" @click="handleModal">{{ spell.conc ? 'x' : '' }}</div>
-         <div class="col" @click="handleModal">{{ spell.range }}</div>
+         <div class="col title" @click="manageSpell">{{ spell.title }}</div>
+         <div class="col" @click="manageSpell">{{ spell.time }}</div>
+         <div class="col" @click="manageSpell">{{ spell.conc ? 'x' : '' }}</div>
+         <div class="col" @click="manageSpell">{{ spell.range }}</div>
       </div>
-
-      <Modal
-         v-if="!isHeader"
-         id="view-spell-modal"
-         :show="modalOpen"
-         :title="spell.title.toUpperCase()"
-         primaryLabel="Close"
-         secondaryLabel="Delete"
-         @primary="handleModal"
-         @secondary="handleDelete"
-         top
-         :night="night"
-      >
-         <Input
-            textarea
-            readonly
-            height="400px"
-            :value="spell.content"
-            :night="night"
-         />
-      </Modal>
    </div>
 </template>
 
@@ -95,9 +60,9 @@ export default {
    height: 30px;
    width: 100%;
    display: grid;
-   grid-template-columns: 7.5% 30% 22.5% 10% 30%;
+   grid-template-columns: 7.5% 50% 10% 10% 22.5%;
    border: 1px solid $grey;
-   font-size: 12px;
+   font-size: 10px;
    &:last-child { border-radius: 0px 0px 3px 3px; }
    &.head {
       height: 20px;
@@ -114,6 +79,12 @@ export default {
       justify-content: center;
       align-items: center;
       text-align: center;
+      &.title {
+         justify-content: flex-start;
+         white-space: nowrap;
+         overflow-x: scroll;
+         padding: 0px 6px;
+      }
       &:not(:last-child) {
          border-right: 1px solid $grey;
       }

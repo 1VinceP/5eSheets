@@ -46,7 +46,7 @@ export default {
 
       handleNav() {
          const { id, actionTime } = this.action;
-         this.$router.push(`/characters/manage/action?id=${id}&time=${actionTime}`);
+         this.$router.push(`/characters/manage/action?id=${id}&time=${actionTime}&prev=actions`);
       },
    },
 

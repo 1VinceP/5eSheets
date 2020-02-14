@@ -5,7 +5,12 @@ import EmptyRouterView from '@/components/common/EmptyRouterView.vue';
 import Home from './views/Home.vue';
 import Characters from './views/Characters.vue';
 import CharacterForm from './views/CharacterForm.vue';
+
+import Manage from './views/Manage.vue';
 import ManageAction from './components/characterForm/actions/ManageAction.vue';
+import ManageSpell from './components/characterForm/magic/ManageSpell.vue';
+import ManageGear from './components/characterForm/gear/ManageGear.vue';
+
 import DMView from './views/DungeonMaster.vue';
 import ContentManager from './views/ContentManager.vue';
 import Settings from './views/Settings.vue';
@@ -44,9 +49,26 @@ const router = new Router({
                component: EmptyRouterView,
                children: [
                   {
-                     path: 'action',
-                     name: 'action',
-                     component: ManageAction,
+                     path: '',
+                     name: 'manage',
+                     component: Manage,
+                     children: [
+                        {
+                           path: 'action',
+                           name: 'manage-action',
+                           component: ManageAction,
+                        },
+                        {
+                           path: 'spell',
+                           name: 'manage-spell',
+                           component: ManageSpell,
+                        },
+                        {
+                           path: 'gear',
+                           name: 'manage-gear',
+                           component: ManageGear,
+                        },
+                     ],
                   },
                ],
             },
