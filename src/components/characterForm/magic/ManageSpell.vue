@@ -1,9 +1,22 @@
 <script>
 import { mapMutations, mapGetters, mapState } from 'vuex';
-import { Button, Entry, Input } from '@/components/common';
+import { Button, Entry, Input, Select } from '@/components/common';
 
 export default {
    name: 'spell-manager',
+
+   data: () => ({
+      schools: [
+         'Abjuration',
+         'Conjuration',
+         'Divination',
+         'Enchantment',
+         'Evocation',
+         'Illusion',
+         'Necromancy',
+         'Transmutation',
+      ],
+   }),
 
    computed: {
       ...mapGetters(['night']),
@@ -34,7 +47,7 @@ export default {
       },
    },
 
-   components: { Button, Entry, Input },
+   components: { Button, Entry, Input, Select },
 
    props: {
       handleReturn: Function,
@@ -45,7 +58,7 @@ export default {
 <template>
    <div class="spell">
       <Entry
-         height="200px"
+         height="300px"
          :entry="spell"
          :night="night"
          @titleInput="value => editSpell({ ...info, prop: 'title', value })"
@@ -58,6 +71,7 @@ export default {
             <input
                type="checkbox"
                :checked="spell.prepared"
+               :disabled="$route.query.level === '0'"
                @change="editSpell({ ...info, prop: 'prepared', value: !spell.prepared })"
             />
          </div>
@@ -100,14 +114,26 @@ export default {
             @input="(value, prop) => editSpell({ ...info, prop, value })"
          />
       </div>
-      <Input
-         autocomplete="off"
-         name="duration"
-         label="Duration"
-         :value="spell.duration"
-         :night="night"
-         @input="(value, prop) => editSpell({ ...info, prop, value })"
-      />
+      <div class="inputs">
+         <Input
+            class="input"
+            autocomplete="off"
+            name="duration"
+            label="Duration"
+            :value="spell.duration"
+            :night="night"
+            @input="(value, prop) => editSpell({ ...info, prop, value })"
+         />
+         <Select
+            class="input"
+            name="school"
+            label="School"
+            :value="spell.school"
+            :options="schools"
+            :night="night"
+            @change="value => editSpell({ ...info, prop: 'school', value })"
+         />
+      </div>
 
       <section class="components">
          <div class="component">

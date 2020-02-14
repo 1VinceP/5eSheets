@@ -1,16 +1,12 @@
 <script>
 import { mapMutations } from 'vuex';
 import PlusIcon from 'vue-material-design-icons/PlusCircleOutline.vue';
-import { Modal, Entry } from '@/components/common';
 import Psionic from './Psionic.vue';
 
 export default {
    name: 'psi-container',
 
    data: () => ({
-      modalOpen: false,
-      newName: '',
-      newContent: '',
       sortOn: 'title',
    }),
 
@@ -27,7 +23,7 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['addTalent', 'addDiscipline']),
+      ...mapMutations('character', ['addPsionic']),
 
       handleSort(value) {
          this.sortOn = value;
@@ -39,18 +35,18 @@ export default {
          this.newContent = '';
       },
 
-      addPsionic() {
+      handleAddPsionic() {
          if (this.isTalent) {
-            this.addTalent({ title: this.newName, content: this.newContent });
+            // this.addTalent({ title: this.newName, content: this.newContent });
+            this.addPsionic('psiTalents');
          } else {
-            this.addDiscipline({ title: this.newName, content: this.newContent });
+            this.addPsionic('psiDisciplines');
+            // this.addDiscipline({ title: this.newName, content: this.newContent });
          }
-
-         this.closeModal();
       },
    },
 
-   components: { Modal, PlusIcon, Entry, Psionic },
+   components: { PlusIcon, Psionic },
 
    props: {
       psionicData: Array,
@@ -75,30 +71,8 @@ export default {
       />
 
       <span class="add-psionic">
-         <PlusIcon :size="18" @click="modalOpen = true" />
+         <PlusIcon :size="18" @click="handleAddPsionic" />
       </span>
-
-      <Modal
-         :show="modalOpen"
-         :title="`Add ${isTalent ? 'Talent' : 'Discipline'}`"
-         primaryLabel="Save"
-         secondaryLabel="Cancel"
-         @primary="addPsionic"
-         @secondary="closeModal"
-         top
-         :night="night"
-      >
-         <Entry
-            :contentPlaceholder="
-               // eslint-disable-next-line max-len
-               `Paste ${isTalent ? 'talent' : 'discipline'} data here. It will be parsed automagically.`
-            "
-            :entry="{ title: newName, content: newContent }"
-            @titleInput="value => newName = value"
-            @contentInput="value => newContent = value"
-            :night="night"
-         />
-      </Modal>
    </div>
 </template>
 

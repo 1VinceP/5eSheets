@@ -69,6 +69,16 @@ export default {
          if (reset !== 'false') {
             // don't reload character when returning from management pages
             this.setCharacterById(id);
+         } else {
+            // remove reset query from url to preserve state after refresh
+            const { path, query } = this.$route;
+            const newQueries = Object.keys(query)
+               .filter(key => key !== 'reset')
+               .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
+               .join('&');
+            const newUrl = `/#${path}?${newQueries}`;
+            console.log(newUrl);
+            window.history.replaceState({}, null, newUrl);
          }
       }
 

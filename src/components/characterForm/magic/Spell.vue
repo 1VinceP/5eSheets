@@ -5,7 +5,7 @@ export default {
    name: 'spell',
 
    methods: {
-      ...mapMutations('character', ['deleteSpell', 'editSpell']),
+      ...mapMutations('character', ['editSpell']),
 
       manageSpell() {
          const { id } = this.spell;
@@ -36,6 +36,7 @@ export default {
             <input
                class="check"
                type="checkbox"
+               :disabled="spellLevel === 0"
                :checked="spell.prepared"
                @input="editSpell({
                   level: spellLevel,
@@ -62,11 +63,12 @@ export default {
    display: grid;
    grid-template-columns: 7.5% 50% 10% 10% 22.5%;
    border: 1px solid $grey;
+   border-top: none;
    font-size: 10px;
-   &:last-child { border-radius: 0px 0px 3px 3px; }
    &.head {
       height: 20px;
       background: #0004;
+      border-top: 1px solid $grey;
       border-radius: 3px 3px 0px 0px;
       &.night { background: #9400d344; }
    }

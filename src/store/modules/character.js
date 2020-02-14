@@ -85,7 +85,7 @@ const initialState = () => ({
    maxSorceryPoints: 0,
    psiPoints: 0,
    maxPsiPoints: 0,
-   psiFocus: { title: '', content: '' },
+   psiFocus: { title: '', focus: '' },
    psiTalents: [],
    psiDisciplines: [],
    /* features */

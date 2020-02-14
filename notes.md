@@ -12,8 +12,7 @@ Notes
 (Medium) Magic Page is messy code
 (Medium) undefined: 4
    - property appearing on all saved characters
-(Low)
-   - Refreshing a management page then routing back to characterForm loads a new character
+(Low) Refreshing a management page then routing back to characterForm loads a new character
 
 ## Alpha Goals
 - [ ] (Char Sheet) Base Character Sheet functionality

@@ -9,6 +9,7 @@ import CharacterForm from './views/CharacterForm.vue';
 import Manage from './views/Manage.vue';
 import ManageAction from './components/characterForm/actions/ManageAction.vue';
 import ManageSpell from './components/characterForm/magic/ManageSpell.vue';
+import ManagePsionic from './components/characterForm/magic/ManagePsionic.vue';
 import ManageGear from './components/characterForm/gear/ManageGear.vue';
 
 import DMView from './views/DungeonMaster.vue';
@@ -62,6 +63,11 @@ const router = new Router({
                            path: 'spell',
                            name: 'manage-spell',
                            component: ManageSpell,
+                        },
+                        {
+                           path: 'psionic',
+                           name: 'manage-psionic',
+                           component: ManagePsionic,
                         },
                         {
                            path: 'gear',

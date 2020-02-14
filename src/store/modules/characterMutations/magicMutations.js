@@ -1,5 +1,5 @@
 import Spell from '../characterDefaults/Spell';
-import shortId from '@/utils/generateId';
+import Psionic from '../characterDefaults/Psionic';
 
 const initialSpellList = {
    maxSlots: 0,
@@ -7,39 +7,21 @@ const initialSpellList = {
    spells: [],
 };
 
-// function parseNewSpell(title, content) {
-//    const timeReg = new RegExp(/(Casting Time: )(.*)/g);
-//    const rangeReg = new RegExp(/(Range: )(.*)/g);
-//    const concRegex = new RegExp(/Duration: Concentration/g);
-//    const ritualRegex = new RegExp(/\(ritual\)/g);
+// function parseNewDiscipline(title, content) {
+//    const orderReg = new RegExp(/(.*)( Discipline\n)/);
+//    const focusReg = new RegExp(/(Psychic Focus\. )(.*)/g);
 
 //    return {
 //       title,
 //       content,
-//       prepared: false,
-//       time: timeReg.exec(content)[2] || '',
-//       range: rangeReg.exec(content)[2] || '',
-//       conc: concRegex.test(content),
-//       ritual: ritualRegex.test(content),
+//       order: orderReg.exec(content)[1] || '',
+//       focus: {
+//          title,
+//          content: focusReg.exec(content)[2] || '',
+//       },
 //       id: shortId(),
 //    };
 // }
-
-function parseNewDiscipline(title, content) {
-   const orderReg = new RegExp(/(.*)( Discipline\n)/);
-   const focusReg = new RegExp(/(Psychic Focus\. )(.*)/g);
-
-   return {
-      title,
-      content,
-      order: orderReg.exec(content)[1] || '',
-      focus: {
-         title,
-         content: focusReg.exec(content)[2] || '',
-      },
-      id: shortId(),
-   };
-}
 
 export default {
    addSpellList(state) {
@@ -68,13 +50,10 @@ export default {
    },
 
    deleteSpell(state, { level, id }) {
-      // const newSpellsList = [...state.spellsList];
       const newListAtLevel = [...state.spellsList[level].spells];
       const spellIndex = newListAtLevel.findIndex(spell => spell.id === id);
       newListAtLevel.splice(spellIndex, 1);
       state.spellsList[level].spells = newListAtLevel;
-      // newSpellsList[level].spells = newListAtLevel;
-      // state.spellsList = newSpellsList;
    },
 
    editSpell(state, { level, id, prop, value }) {
@@ -82,28 +61,19 @@ export default {
       state.spellsList[level].spells[spellIndex][prop] = value;
    },
 
-   addTalent(state, talent) {
-      const newTalents = [...state.psiTalents, { ...talent, id: shortId() }];
-      state.psiTalents = newTalents;
+   addPsionic(state, psionic) {
+      state[psionic] = [...state[psionic], new Psionic()];
    },
 
-   addDiscipline(state, { title, content }) {
-      const newDiscipline = parseNewDiscipline(title, content);
-      const newDisciplines = [...state.psiDisciplines, newDiscipline];
-      state.psiDisciplines = newDisciplines;
+   removePsionic(state, { psiType, id }) {
+      const index = state[psiType].findIndex(p => p.id === id);
+      const newList = [...state[psiType]];
+      newList.splice(index, 1);
+      state[psiType] = newList;
    },
 
-   removeTalent(state, id) {
-      const index = state.psiTalents.findIndex(d => d.id === id);
-      const newTalents = [...state.psiTalents];
-      newTalents.splice(index, 1);
-      state.psiTalents = newTalents;
-   },
-
-   removeDiscipline(state, id) {
-      const index = state.psiDisciplines.findIndex(d => d.id === id);
-      const newDisciplines = [...state.psiDisciplines];
-      newDisciplines.splice(index, 1);
-      state.psiDisciplines = newDisciplines;
+   editPsionic(state, { psiType, id, prop, value }) {
+      const index = state[psiType].findIndex(p => p.id === id);
+      state[psiType][index][prop] = value;
    },
 };

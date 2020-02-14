@@ -25,13 +25,14 @@ export default {
       },
 
       focusOptions() {
-         return this.character.psiDisciplines.map(disc => {
-            return disc.focus;
-         }).sort((a, b) => {
-            if (a.title < b.title) return -1;
-            if (a.title > b.title) return 1;
-            return 0;
-         });
+         return this.character.psiDisciplines
+            .filter(d => d.title && d.focus)
+            .map(d => ({ title: d.title, focus: d.focus }))
+            .sort((a, b) => {
+               if (a.title < b.title) return -1;
+               if (a.title > b.title) return 1;
+               return 0;
+            });
       },
    },
 
@@ -44,7 +45,7 @@ export default {
 
       editFocus(value) {
          if (value === '') {
-            this.editProp({ prop: 'psiFocus', value });
+            this.editProp({ prop: 'psiFocus', value: { title: '', focus: '' } });
          } else {
             const focus = this.focusOptions.find(option => option.title === value);
             this.editProp({ value: focus, prop: 'psiFocus' });
@@ -106,6 +107,7 @@ export default {
                name="psiFocus"
                label="Psychic Focus"
                class="focus-select"
+               :disabled="focusOptions.length <= 0"
                :value="character.psiFocus.title"
                :options="focusOptions"
                optionKey="title"
@@ -118,7 +120,8 @@ export default {
                class="focus-content"
                name="focusContent"
                placeholder="No focus selected"
-               :value="character.psiFocus.content"
+               :disabled="!character.psiFocus.focus"
+               :value="character.psiFocus.focus"
                :night="night"
             />
          </section>

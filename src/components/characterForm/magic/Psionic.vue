@@ -1,7 +1,4 @@
 <script>
-import { mapMutations } from 'vuex';
-import { Modal } from '@/components/common';
-
 export default {
    name: 'psionic',
 
@@ -16,22 +13,12 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['removeTalent', 'removeDiscipline']),
-
-      handleModal() {
-         this.modalOpen = !this.modalOpen;
-      },
-
-      handleDelete() {
-         const confirmed = window.confirm(`${this.psionic.title} will be deleted forever`);
-         if (confirmed) {
-            if (this.isTalent) this.removeTalent(this.psionic.id);
-            else this.removeDiscipline(this.psionic.id);
-         }
+      managePsionic() {
+         const { id } = this.psionic;
+         const psiType = this.isTalent ? 'psiTalents' : 'psiDisciplines';
+         this.$router.push(`/characters/manage/psionic?id=${id}&psiType=${psiType}&prev=magic`);
       },
    },
-
-   components: { Modal },
 
    props: {
       psionic: Object,
@@ -48,25 +35,10 @@ export default {
          <div class="col" @click="$emit('sort', 'title')">Name</div>
          <div v-show="!isTalent" class="col" @click="$emit('sort', 'order')">Order</div>
       </div>
-      <div v-else :class="['psionic', { isTalent }]" @click="handleModal">
+      <div v-else :class="['psionic', { isTalent }]" @click="managePsionic">
          <div class="col title">{{ psionic.title }}</div>
          <div v-show="!isTalent" class="col">{{ psionic.order }}</div>
       </div>
-
-      <Modal
-         v-if="!isHeader"
-         id="view-psionic-modal"
-         :show="modalOpen"
-         :title="psionic.title.toUpperCase()"
-         primaryLabel="Close"
-         secondaryLabel="Delete"
-         @primary="handleModal"
-         @secondary="handleDelete"
-         top
-         :night="night"
-      >
-         <div class="psi-content" v-html="formattedContent" />
-      </Modal>
    </div>
 </template>
 
@@ -79,12 +51,13 @@ export default {
    display: grid;
    grid-template-columns: 75% 25%;
    border: 1px solid $grey;
+   border-top: none;
    font-size: 12px;
-   &:last-child { border-radius: 0px 0px 3px 3px; }
    &.head {
       height: 24px;
       background: #0004;
       border-radius: 3px 3px 0px 0px;
+      border-top: 1px solid $grey;
       &.night { background: #9400d344; }
    }
    &.isTalent {
