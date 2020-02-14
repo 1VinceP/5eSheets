@@ -30,17 +30,17 @@ export default {
             }
             /* eslint-enable indent */
          }, 0);
-         return `${weight} lbs.`;
+         return weight;
       },
 
       weightCapacity() {
          const { score } = this.character.abilities.str;
 
          return {
-            enc: `${score * 5} lbs.`,
-            heavyEnc: `${score * 10} lbs.`,
-            max: `${score * 15} lbs.`,
-            move: `${score * 30} lbs.`,
+            enc: score * 5,
+            heavyEnc: score * 10,
+            max: score * 15,
+            move: score * 30,
          };
       },
    },
@@ -112,27 +112,27 @@ export default {
 
       <span class="current-weight">
          <div>Total Weight:</div>
-         <div>{{ currentWeight }}</div>
+         <div>{{ currentWeight }} lbs.</div>
       </span>
       <section class="carry-weight" @click="showModal = true">
-         <div class="weight encumbered">
+         <div :class="['weight', 'encumbered', { heavy: currentWeight >= weightCapacity.enc }]">
             <div class="container head">Encumbered</div>
             <div :class="['container', 'body', { night }]">
-               {{ weightCapacity.enc }}
+               {{ weightCapacity.enc }} lbs.
             </div>
             <div class="container foot">STR x5</div>
          </div>
-         <div class="weight heavy-enc">
+         <div :class="['weight', 'heavy-enc', { heavy: currentWeight >= weightCapacity.heavyEnc }]">
             <div class="container head">Heavily Enc.</div>
             <div :class="['container', 'body', { night }]">
-               {{ weightCapacity.heavyEnc }}
+               {{ weightCapacity.heavyEnc }} lbs.
             </div>
             <div class="container foot">STR x10</div>
          </div>
-         <div class="weight max">
+         <div :class="['weight', 'max', { heavy: currentWeight >= weightCapacity.max }]">
             <div class="container head">Max Carry</div>
             <div :class="['container', 'body', { night }]">
-               {{ weightCapacity.max }}
+               {{ weightCapacity.max }} lbs.
             </div>
             <div class="container foot">STR x15</div>
          </div>
@@ -227,6 +227,10 @@ export default {
          justify-content: space-between;
          border: 1px solid #323231;
          color: #eee;
+         &.heavy {
+            border: 1px solid $red;
+            // & .container.head, & .container.foot { background: $red; }
+         }
          & .container {
             width: 100%;
             display: flex;

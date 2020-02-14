@@ -49,8 +49,9 @@ Notes
   - [ ] Helpful hints
 
 ## Beta Goals
-- [ ] (Char Sheet) Spell sorting
+- [ ] (Char Sheet) Magic sorting
 - [ ] (Char Sheet) Auto class/race feature display
+- [ ] (Char Sheet) Organize foot options
 - [ ] (Content Manager) Base CM functionality
   - [ ] View content
     - [ ] Characters
