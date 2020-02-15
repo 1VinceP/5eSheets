@@ -126,7 +126,7 @@ export default {
       font-size: 16px;
       &.night {
          background: #8883;
-         border: none;
+         border-color: $grey;
       }
 
       & .section {
@@ -146,7 +146,6 @@ export default {
             & .classes {
                width: 100%;
                display: flex;
-               // justify-content: center;
                font-size: 12px;
                font-style: italic;
                & div:not(:first-child) { margin-left: 4px; }

@@ -164,10 +164,11 @@ export default {
       <Button
         v-show="buttonLabel && !readonly"
         link
+        id="input-button"
         :disabled="disabled"
         :loading="loading"
-        @click="$emit('button', value)"
         :style="buttonStyle"
+        @click="$emit('button', value)"
       >
         {{ buttonLabel }}
       </Button>

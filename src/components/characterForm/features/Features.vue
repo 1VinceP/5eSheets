@@ -41,12 +41,13 @@ export default {
 <template>
    <div class="features global-page">
       <section class="entries">
-         <draggable v-model="features" handle=".entry-title">
+         <draggable v-model="features" :key="features.length" handle="#input-button">
             <Entry
                v-for="feature in features"
                :key="feature.id"
                :entry="feature"
                :night="night"
+               buttonLabel="Move"
                @titleInput="(value) => handleFeature(value, 'title', feature.id)"
                @contentInput="value => handleFeature(value, 'content', feature.id)"
                height="100px"
@@ -55,7 +56,7 @@ export default {
 
       </section>
 
-      <Button green full @click="addFeature">Add Feature</Button>
+      <Button class="add-feature" green full sm @click="addFeature">Add Feature</Button>
    </div>
 </template>
 
@@ -68,6 +69,10 @@ export default {
 
    & .entries {
       width: 100%;
+   }
+
+   & .add-feature {
+      margin-top: 16px;
    }
 }
 </style>

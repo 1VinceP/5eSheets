@@ -11,6 +11,7 @@ import ManageAction from './components/characterForm/actions/ManageAction.vue';
 import ManageSpell from './components/characterForm/magic/ManageSpell.vue';
 import ManagePsionic from './components/characterForm/magic/ManagePsionic.vue';
 import ManageGear from './components/characterForm/gear/ManageGear.vue';
+import ManageFriend from './components/characterForm/friends/ManageFriend.vue';
 
 import DMView from './views/DungeonMaster.vue';
 import ContentManager from './views/ContentManager.vue';
@@ -73,6 +74,11 @@ const router = new Router({
                            path: 'gear',
                            name: 'manage-gear',
                            component: ManageGear,
+                        },
+                        {
+                           path: 'friend',
+                           name: 'manage-friend',
+                           component: ManageFriend,
                         },
                      ],
                   },

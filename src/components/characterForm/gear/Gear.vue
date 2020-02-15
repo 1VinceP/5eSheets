@@ -226,10 +226,10 @@ export default {
          flex-direction: column;
          justify-content: space-between;
          border: 1px solid #323231;
+         border-radius: 2px;
          color: #eee;
          &.heavy {
             border: 1px solid $red;
-            // & .container.head, & .container.foot { background: $red; }
          }
          & .container {
             width: 100%;

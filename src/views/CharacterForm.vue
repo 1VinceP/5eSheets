@@ -16,7 +16,7 @@ import Stats from '@/components/characterForm/stats/Stats.vue';
 import Actions from '@/components/characterForm/actions/Actions.vue';
 import Gear from '@/components/characterForm/gear/Gear.vue';
 import Magic from '@/components/characterForm/magic/Magic.vue';
-import Companions from '@/components/characterForm/companions/Companions.vue';
+import Friends from '@/components/characterForm/friends/Friends.vue';
 import Features from '@/components/characterForm/features/Features.vue';
 import Journal from '@/components/characterForm/journal/Journal.vue';
 import Life from '@/components/characterForm/life/Life.vue';
@@ -138,7 +138,7 @@ export default {
       Actions,
       Gear,
       Magic,
-      Companions,
+      Friends,
       Features,
       Journal,
       Life,
@@ -161,7 +161,7 @@ export default {
       <Actions v-else-if="view === 'actions'" :character="character" />
       <Gear v-else-if="view === 'gear'" :character="character" />
       <Magic v-else-if="view === 'magic'" :character="character" />
-      <Companions v-else-if="view === 'companions'" :character="character" />
+      <Friends v-else-if="view === 'friends'" :character="character" />
       <Features v-else-if="view === 'features'" :character="character" />
       <Journal v-else-if="view === 'journal'" :character="character" />
       <Life v-else-if="view === 'life'" :character="character" />
@@ -214,8 +214,8 @@ export default {
                Gear
             </div>
             <div
-               :class="['foot-item', { selected: view === 'companions' }]"
-               @click="setView('companions')"
+               :class="['foot-item', { selected: view === 'friends' }]"
+               @click="setView('friends')"
             >
                Friends
             </div>

@@ -9,8 +9,10 @@ import {
    magicMutations,
    featureMutations,
    journalMutations,
+   friendMutations,
 } from './characterMutations';
 import EquipmentItem from './characterDefaults/EquipmentItem';
+import Companion from './characterDefaults/Friend';
 
 const initialSkill = {
    proficient: false,
@@ -117,6 +119,8 @@ const initialState = () => ({
    quickNotes: '',
    journalEntries: [],
    id: '',
+   /* friends */
+   friends: [new Companion()],
 });
 
 export default {
@@ -145,6 +149,7 @@ export default {
       ...featureMutations,
       ...magicMutations,
       ...journalMutations,
+      ...friendMutations,
 
       resetForm(state) {
          const s = initialState();
@@ -162,10 +167,6 @@ export default {
 
       editProp(state, { prop, value }) {
          state[prop] = value;
-      },
-
-      updateFeaturesOrder(state, newList) {
-         state.features = newList;
       },
    },
 

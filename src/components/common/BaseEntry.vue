@@ -14,9 +14,14 @@ export default {
       handleContent(value) {
          this.$emit('contentInput', value);
       },
+
+      handleButton() {
+         this.$emit('button', { title: this.entry.title, content: this.entry.content });
+      },
    },
 
    props: {
+      buttonLabel: String,
       titlePlaceholder: { type: String, default: 'Title' },
       contentPlaceholder: { type: String, default: 'Content' },
       height: { type: String, default: '400px' },
@@ -33,11 +38,13 @@ export default {
          :autofocus="autofocus"
          autocomplete="off"
          class="entry-title"
+         :buttonLabel="buttonLabel"
          :placeholder="titlePlaceholder"
          :inputStyle="{ paddingLeft: '8px' }"
          :value="entry.title"
-         @input="handleTitle"
          :night="night"
+         @input="handleTitle"
+         @button="handleButton"
       />
       <Input
          textarea
@@ -45,9 +52,9 @@ export default {
          class="entry-content"
          :placeholder="contentPlaceholder"
          :value="entry.content"
-         @input="handleContent"
          :height="height"
          :night="night"
+         @input="handleContent"
       />
    </div>
 </template>

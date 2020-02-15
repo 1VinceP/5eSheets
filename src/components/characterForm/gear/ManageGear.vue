@@ -45,7 +45,7 @@ export default {
 <template>
    <div class="gear">
       <Entry
-         height="200px"
+         height="400px"
          contentPlaceholder="Details"
          :entry="item"
          :night="night"
