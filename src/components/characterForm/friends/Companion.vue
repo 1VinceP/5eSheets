@@ -1,16 +1,14 @@
 <script>
+import calcAbilityMod from '@/utils/calcAbilityMod';
+
 export default {
    name: 'companion',
 
    computed: {},
 
    methods: {
-      calcMod(score) {
-         return Math.floor((Number(score) - 10) / 2);
-      },
-
       display(score) {
-         return `${score} (${this.calcMod(score)})`;
+         return `${score} (${calcAbilityMod(score, true)})`;
       },
 
       handleNav() {
@@ -93,7 +91,7 @@ export default {
       white-space: nowrap;
       overflow-x: scroll;
       & .subname {
-         margin-left: 10px;
+         margin-left: 6px;
          font-size: 14px;
       }
    }

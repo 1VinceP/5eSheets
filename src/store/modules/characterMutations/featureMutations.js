@@ -17,4 +17,8 @@ export default {
       newFeatures[index][name] = value;
       state.features = newFeatures;
    },
+
+   updateFeaturesOrder(state, newList) {
+      state.features = newList;
+   },
 };

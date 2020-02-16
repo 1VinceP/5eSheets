@@ -10,29 +10,29 @@ export class FriendAbility {
 
 export default class Companion {
    constructor() {
-      this.title = 'Raven';
-      this.nickname = 'Taffers';
-      this.size = 'Small';
-      this.race = 'Beast';
-      this.subrace = '';
-      this.alignment = 'Neutral';
+      this.title = '';
+      this.nickname = '';
+      this.size = '';
+      this.species = '';
+      this.race = '';
+      this.alignment = '';
       this.ac = 10;
       this.initiative = '';
       this.cr = '';
-      this.hp = 144;
-      this.maxHp = 186;
+      this.hp = 0;
+      this.maxHp = 0;
       this.tempHp = 0;
       this.walk = 0;
       this.climb = 0;
       this.swim = 0;
       this.fly = 0;
       this.abilityScores = {
-         str: 0,
-         dex: 0,
-         con: 0,
-         int: 0,
-         wis: 0,
-         cha: 0,
+         str: 10,
+         dex: 10,
+         con: 10,
+         int: 10,
+         wis: 10,
+         cha: 10,
       };
       this.abilities = [
          new FriendAbility('Proficiencies'),

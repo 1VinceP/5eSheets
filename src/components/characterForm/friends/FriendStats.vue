@@ -2,12 +2,24 @@
 import { mapMutations } from 'vuex';
 import { Button, Input } from '@/components/common';
 import Counter from '../Counter.vue';
+import calcAbilityMod from '@/utils/calcAbilityMod';
 
 export default {
    name: 'friend-stats',
 
+   computed: {
+      strLabel() { return `Str (${calcAbilityMod(this.friend.abilityScores.str, true)})`; },
+      dexLabel() { return `Dex (${calcAbilityMod(this.friend.abilityScores.dex, true)})`; },
+      conLabel() { return `Con (${calcAbilityMod(this.friend.abilityScores.con, true)})`; },
+      intLabel() { return `Int (${calcAbilityMod(this.friend.abilityScores.int, true)})`; },
+      wisLabel() { return `Wis (${calcAbilityMod(this.friend.abilityScores.wis, true)})`; },
+      chaLabel() { return `Cha (${calcAbilityMod(this.friend.abilityScores.cha, true)})`; },
+   },
+
    methods: {
       ...mapMutations('character', ['editFriend', 'editFriendScore']),
+
+      calcAbilityMod,
    },
 
    components: { Counter, Button, Input },
@@ -74,6 +86,36 @@ export default {
       />
 
       <section class="stats margin">
+         <Input
+            autocomplete="off"
+            class="input-third"
+            name="size"
+            label="Size"
+            :night="night"
+            :value="friend.size"
+            @input="(value, prop) => editFriend({ id: friend.id, prop, value })"
+         />
+         <Input
+            autocomplete="off"
+            class="input-third"
+            name="species"
+            label="Species"
+            :night="night"
+            :value="friend.species"
+            @input="(value, prop) => editFriend({ id: friend.id, prop, value })"
+         />
+         <Input
+            autocomplete="off"
+            class="input-third"
+            name="race"
+            label="Race"
+            :night="night"
+            :value="friend.race"
+            @input="(value, prop) => editFriend({ id: friend.id, prop, value })"
+         />
+      </section>
+
+      <section class="stats margin-reduced">
          <Input
             autocomplete="off"
             class="input-third"
@@ -167,70 +209,70 @@ export default {
          <Input
             autocomplete="off"
             class="input-third"
-            label="Str"
+            :label="strLabel"
             type="number"
             min="0"
             :value="friend.abilityScores.str"
             :inputStyle="{ textAlign: 'right' }"
             :night="night"
-            @input="value => editFriendScore({ id: friend.id, prop: 'str', value })"
+            @input="value => editFriendScore({ id: friend.id, prop: 'str', value: Number(value) })"
          />
          <Input
             autocomplete="off"
             class="input-third"
-            label="Dex"
+            :label="dexLabel"
             type="number"
             min="0"
             :value="friend.abilityScores.dex"
             :inputStyle="{ textAlign: 'right' }"
             :night="night"
-            @input="value => editFriendScore({ id: friend.id, prop: 'dex', value })"
+            @input="value => editFriendScore({ id: friend.id, prop: 'dex', value: Number(value) })"
          />
          <Input
             autocomplete="off"
             class="input-third"
-            label="Con"
+            :label="conLabel"
             type="number"
             min="0"
             :value="friend.abilityScores.con"
             :inputStyle="{ textAlign: 'right' }"
             :night="night"
-            @input="value => editFriendScore({ id: friend.id, prop: 'con', value })"
+            @input="value => editFriendScore({ id: friend.id, prop: 'con', value: Number(value) })"
          />
       </section>
       <section class="stats margin-reduced">
          <Input
             autocomplete="off"
             class="input-third"
-            label="Int"
+            :label="intLabel"
             type="number"
             min="0"
             :value="friend.abilityScores.int"
             :inputStyle="{ textAlign: 'right' }"
             :night="night"
-            @input="value => editFriendScore({ id: friend.id, prop: 'int', value })"
+            @input="value => editFriendScore({ id: friend.id, prop: 'int', value: Number(value) })"
          />
          <Input
             autocomplete="off"
             class="input-third"
-            label="Wis"
+            :label="wisLabel"
             type="number"
             min="0"
             :value="friend.abilityScores.wis"
             :inputStyle="{ textAlign: 'right' }"
             :night="night"
-            @input="value => editFriendScore({ id: friend.id, prop: 'wis', value })"
+            @input="value => editFriendScore({ id: friend.id, prop: 'wis', value: Number(value) })"
          />
          <Input
             autocomplete="off"
             class="input-third"
-            label="Cha"
+            :label="chaLabel"
             type="number"
             min="0"
             :value="friend.abilityScores.cha"
             :inputStyle="{ textAlign: 'right' }"
             :night="night"
-            @input="value => editFriendScore({ id: friend.id, prop: 'cha', value })"
+            @input="value => editFriendScore({ id: friend.id, prop: 'cha', value: Number(value) })"
          />
       </section>
 

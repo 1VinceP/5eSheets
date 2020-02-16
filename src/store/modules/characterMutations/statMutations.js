@@ -1,4 +1,5 @@
 import classList from '@/constants/classes.constants';
+import calcAbilityMod from '@/utils/calcAbilityMod';
 
 const initialClass = { name: '', level: 0, subclass: '', hitDie: null, features: {} };
 
@@ -58,7 +59,6 @@ export default {
          const dieValue = classList
             .find(c => c.name === oldClassName).hitDie;
          const newValue = getNewHitDieValue(dieValue, state.classes);
-         console.log(dieValue, newValue);
 
          state.hitDice[dieValue].max = newValue;
          state.hitDice[dieValue].current = newValue;
@@ -70,7 +70,7 @@ export default {
 
       if (prop === 'score') {
          charAbility.score = value;
-         charAbility.modifier = Math.floor((Number(value) - 10) / 2);
+         charAbility.modifier = calcAbilityMod(value);
       } else if (prop === 'proficient') {
          charAbility.proficient = !charAbility.proficient;
       } else if (prop === 'skills' || prop === 'experts') {

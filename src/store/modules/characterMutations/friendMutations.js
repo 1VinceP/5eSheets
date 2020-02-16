@@ -5,6 +5,11 @@ function friendIndex(state, id) {
 }
 
 export default {
+   updateFriendAbilitiesOrder(state, { id, newList }) {
+      const index = friendIndex(state, id);
+      state.friends[index].abilities = newList;
+   },
+
    addFriend(state) {
       state.friends = [...state.friends, new Friend()];
    },
@@ -16,10 +21,6 @@ export default {
       state.friends = newFriends;
    },
 
-   updateFeaturesOrder(state, newList) {
-      state.features = newList;
-   },
-
    editFriend(state, { id, prop, value }) {
       const index = friendIndex(state, id);
       state.friends[index][prop] = value;
@@ -27,7 +28,7 @@ export default {
 
    editFriendScore(state, { id, prop, value }) {
       const index = friendIndex(state, id);
-      state.friends[index].abilities[prop] = value;
+      state.friends[index].abilityScores[prop] = value;
    },
 
    addFriendAbility(state, id) {

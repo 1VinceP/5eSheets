@@ -77,7 +77,6 @@ export default {
                .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(query[key])}`)
                .join('&');
             const newUrl = `/#${path}?${newQueries}`;
-            console.log(newUrl);
             window.history.replaceState({}, null, newUrl);
          }
       }

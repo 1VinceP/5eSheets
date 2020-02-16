@@ -12,7 +12,6 @@ import {
    friendMutations,
 } from './characterMutations';
 import EquipmentItem from './characterDefaults/EquipmentItem';
-import Companion from './characterDefaults/Friend';
 
 const initialSkill = {
    proficient: false,
@@ -120,7 +119,7 @@ const initialState = () => ({
    journalEntries: [],
    id: '',
    /* friends */
-   friends: [new Companion()],
+   friends: [],
 });
 
 export default {
