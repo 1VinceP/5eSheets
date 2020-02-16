@@ -206,16 +206,4 @@ export default [
       hitDie: '6',
       features: {},
    },
-   {
-      name: 'Teeny a Saurus',
-      subclasses: [
-         'Ankylosaur',
-         'Brontosaurus',
-         'Stegosaurus',
-         'Velociraptor',
-      ],
-      subclassLevel: 3,
-      hitDie: '12',
-      features: {},
-   },
 ];
