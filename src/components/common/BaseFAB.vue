@@ -126,7 +126,6 @@ export default {
    }
 
    #hamburger-menu {
-      height: 100%;
       width: 100%;
       margin-top: -20px;
       position: relative;
