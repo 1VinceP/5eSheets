@@ -32,4 +32,11 @@ export default {
    updateFeaturesOrder(state, newList) {
       state.features = newList;
    },
+
+   removeFeature(state, id) {
+      const newFeatures = [...state.features];
+      const index = newFeatures.findIndex(f => f.id === id);
+      newFeatures.splice(index, 1);
+      state.features = newFeatures;
+   },
 };

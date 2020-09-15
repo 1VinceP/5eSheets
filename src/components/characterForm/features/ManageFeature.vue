@@ -18,15 +18,25 @@ export default {
    },
 
    methods: {
-      ...mapMutations('character', ['editFeature']),
+      ...mapMutations('character', ['editFeature', 'removeFeature']),
 
       handleFeature(value, name, id) {
          this.editFeature({ name, value, id });
       },
 
-      handleDelete() {},
+      handleDelete() {
+         const confirmed = window.confirm('This will be permanently deleted.');
+         if (confirmed) {
+            this.removeFeature(this.feature.id);
+            this.handleReturn();
+         }
+      },
 
       handleOrigin() {},
+   },
+
+   props: {
+      handleReturn: Function,
    },
 };
 </script>
