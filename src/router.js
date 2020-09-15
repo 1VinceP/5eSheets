@@ -48,7 +48,6 @@ const router = new Router({
             },
             {
                path: 'manage',
-               name: 'manage',
                component: EmptyRouterView,
                children: [
                   {

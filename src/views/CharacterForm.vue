@@ -99,6 +99,7 @@ export default {
       },
 
       setView(view) {
+         this.$router.push({ query: { ...this.$route.query, view } });
          this.view = view;
          this.footOpen = false;
          window.scrollTo(0, 0);
