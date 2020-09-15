@@ -30,6 +30,7 @@ const initialSpellList = {
 const initialFeature = {
    title: '',
    content: '',
+   type: 'entry',
    id: '',
 };
 

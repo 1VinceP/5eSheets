@@ -13,6 +13,7 @@ export default class Spell {
       this.somatic = false;
       this.verbal = false;
       this.prepared = false;
+      this.permanentlyPrepared = false;
       this.ritual = false;
       this.conc = false;
       this.id = shortId();

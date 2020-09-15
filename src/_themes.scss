@@ -6,10 +6,10 @@
 .argyle {
    background-color: #6d695c;
    background-image:
-   repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
-   repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
-   linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
-   linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
+      repeating-linear-gradient(120deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+      repeating-linear-gradient(60deg, rgba(255,255,255,.1), rgba(255,255,255,.1) 1px, transparent 1px, transparent 60px),
+      linear-gradient(60deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1)),
+      linear-gradient(120deg, rgba(0,0,0,.1) 25%, transparent 25%, transparent 75%, rgba(0,0,0,.1) 75%, rgba(0,0,0,.1));
    background-size: 70px 120px;
 }
 
@@ -19,21 +19,21 @@ $bx-3: #FC354C;
 $bx-4: #0ABFBC;
 .boxes { // unused
    background-image:
-   repeating-linear-gradient(45deg, $bx-2 0, $bx-2 32px, $bx-1 32px, $bx-1 44px, $bx-2 44px, $bx-2 56px, $bx-1 56px, $bx-1 68px, $bx-2 0),
-   repeating-linear-gradient(-45deg, $bx-2 0, $bx-2 32px, $bx-1 32px, $bx-1 44px, $bx-2 44px, $bx-2 56px, $bx-1 56px, $bx-1 68px, $bx-2 0),
-   linear-gradient(to bottom left, $bx-3, $bx-4);
+      repeating-linear-gradient(45deg, $bx-2 0, $bx-2 32px, $bx-1 32px, $bx-1 44px, $bx-2 44px, $bx-2 56px, $bx-1 56px, $bx-1 68px, $bx-2 0),
+      repeating-linear-gradient(-45deg, $bx-2 0, $bx-2 32px, $bx-1 32px, $bx-1 44px, $bx-2 44px, $bx-2 56px, $bx-1 56px, $bx-1 68px, $bx-2 0),
+      linear-gradient(to bottom left, $bx-3, $bx-4);
 }
 
 .carbon {
    background:
-   linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
-   linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
-   linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
-   linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
-   linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
-   linear-gradient(
-      #1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424
-   );
+      linear-gradient(27deg, #151515 5px, transparent 5px) 0 5px,
+      linear-gradient(207deg, #151515 5px, transparent 5px) 10px 0px,
+      linear-gradient(27deg, #222 5px, transparent 5px) 0px 10px,
+      linear-gradient(207deg, #222 5px, transparent 5px) 10px 5px,
+      linear-gradient(90deg, #1b1b1b 10px, transparent 10px),
+      linear-gradient(
+         #1d1d1d 25%, #1a1a1a 25%, #1a1a1a 50%, transparent 50%, transparent 75%, #242424 75%, #242424
+      );
    background-color: #131313;
    background-size: 20px 20px;
 }
@@ -43,22 +43,22 @@ $cf-hilite: rgba(255, 255, 255, 0.1);
 $cf-bg: #282828;
 .carbon-fiber {
    background:
-   radial-gradient($cf-dots 15%, transparent 16%) 0 0,
-   radial-gradient($cf-dots 15%, transparent 16%) 8px 8px,
-   radial-gradient($cf-hilite 15%, transparent 20%) 0 1px,
-   radial-gradient($cf-hilite 15%, transparent 20%) 8px 9px;
+      radial-gradient($cf-dots 15%, transparent 16%) 0 0,
+      radial-gradient($cf-dots 15%, transparent 16%) 8px 8px,
+      radial-gradient($cf-hilite 15%, transparent 20%) 0 1px,
+      radial-gradient($cf-hilite 15%, transparent 20%) 8px 9px;
    background-color:$cf-bg;
    background-size:16px 16px;
 }
 
 .honeycomb-dark {
    background:
-   radial-gradient(circle farthest-side at 0% 50%,#111 23.5%,rgba(240,166,17,0) 0)21px 30px,
-   radial-gradient(circle farthest-side at 0% 50%,#444 24%,rgba(240,166,17,0) 0)19px 30px,
-   linear-gradient(#111 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#111 0)0 0,
-   linear-gradient(150deg,#111 24%,#444 0,#444 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#444 0,#444 76%,#111 0)0 0,
-   linear-gradient(30deg,#111 24%,#444 0,#444 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#444 0,#444 76%,#111 0)0 0,
-   linear-gradient(90deg,#444 2%,#111 0,#111 98%,#444 0%)0 0 #111;
+      radial-gradient(circle farthest-side at 0% 50%,#111 23.5%,rgba(240,166,17,0) 0)21px 30px,
+      radial-gradient(circle farthest-side at 0% 50%,#444 24%,rgba(240,166,17,0) 0)19px 30px,
+      linear-gradient(#111 14%,rgba(240,166,17,0) 0, rgba(240,166,17,0) 85%,#111 0)0 0,
+      linear-gradient(150deg,#111 24%,#444 0,#444 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#444 0,#444 76%,#111 0)0 0,
+      linear-gradient(30deg,#111 24%,#444 0,#444 26%,rgba(240,166,17,0) 0,rgba(240,166,17,0) 74%,#444 0,#444 76%,#111 0)0 0,
+      linear-gradient(90deg,#444 2%,#111 0,#111 98%,#444 0%)0 0 #111;
    background-size: 40px 60px;
 }
 
@@ -69,12 +69,12 @@ $oc-inner: #15ffa5;
 $oc-outer: #00ced1;
 .ocean { // unused
    background: radial-gradient(1.5em 6.28571em at 1.95em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 0 0,
-   radial-gradient(1.5em 6.28571em at -0.45em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 1.5em 5.5em,
-   radial-gradient(2.3em 4.57143em at 2.99em, $oc-white1 50%, $oc-white3 50%, $oc-white3 55%, $oc-white1 55%) 0 0,
-   radial-gradient(2.3em 4.57143em at -0.69em, $oc-white1 50%, $oc-white3 50%, $oc-white3 55%, $oc-white1 55%) 2.3em 4em,
-   radial-gradient(3.5em 6.28571em at 4.55em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 0 0,
-   radial-gradient(3.5em 6.28571em at -1.05em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 3.5em 5.5em,
-   radial-gradient($oc-inner, $oc-outer);
+      radial-gradient(1.5em 6.28571em at -0.45em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 1.5em 5.5em,
+      radial-gradient(2.3em 4.57143em at 2.99em, $oc-white1 50%, $oc-white3 50%, $oc-white3 55%, $oc-white1 55%) 0 0,
+      radial-gradient(2.3em 4.57143em at -0.69em, $oc-white1 50%, $oc-white3 50%, $oc-white3 55%, $oc-white1 55%) 2.3em 4em,
+      radial-gradient(3.5em 6.28571em at 4.55em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 0 0,
+      radial-gradient(3.5em 6.28571em at -1.05em, $oc-white1 50%, $oc-white2 50%, $oc-white2 55%, $oc-white1 55%) 3.5em 5.5em,
+      radial-gradient($oc-inner, $oc-outer);
    background-color: mediumspringgreen;
    background-size: 1.5em 11em, 1.5em 11em, 2.3em 8em, 2.3em 8em, 3.5em 11em, 3.5em 11em, 100% 100%;
    background-repeat: repeat;
@@ -83,8 +83,8 @@ $oc-outer: #00ced1;
 .paper {
    background-color: #fff;
    background-image:
-   // // linear-gradient(90deg, transparent 59px, #abced4 59px, #abced4 61px, transparent 61px),
-   linear-gradient(#eee .1em, transparent .1em);
+   // linear-gradient(90deg, transparent 59px, #abced4 59px, #abced4 61px, transparent 61px),
+      linear-gradient(#eee .1em, transparent .1em);
    background-size: 100% 1.2em;
 }
 
@@ -93,10 +93,10 @@ $oc-outer: #00ced1;
 .stars {
    background-color:black;
    background-image:
-   radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
-   radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
-   radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
-   radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
+      radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+      radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+      radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px),
+      radial-gradient(rgba(255,255,255,.4), rgba(255,255,255,.1) 2px, transparent 30px);
    background-size: 550px 550px, 350px 350px, 250px 250px, 150px 150px;
    background-position: 0 0, 40px 60px, 130px 270px, 70px 100px;
 }
@@ -105,8 +105,8 @@ $weave-box: #510274;
 $weave-line: darkviolet;
 .weave {
    background:
-   linear-gradient(135deg, $weave-box 21px, $weave-line 22px, $weave-line 24px, transparent 24px, transparent 67px, $weave-line 67px, $weave-line 69px, transparent 69px),
-   linear-gradient(225deg, $weave-box 21px, $weave-line 22px, $weave-line 24px, transparent 24px, transparent 67px, $weave-line 67px, $weave-line 69px, transparent 69px)0 64px;
+      linear-gradient(135deg, $weave-box 21px, $weave-line 22px, $weave-line 24px, transparent 24px, transparent 67px, $weave-line 67px, $weave-line 69px, transparent 69px),
+      linear-gradient(225deg, $weave-box 21px, $weave-line 22px, $weave-line 24px, transparent 24px, transparent 67px, $weave-line 67px, $weave-line 69px, transparent 69px)0 64px;
    background-color:$weave-box;
    background-size: 64px 128px;
 }

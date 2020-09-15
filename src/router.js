@@ -10,6 +10,7 @@ import Manage from './views/Manage.vue';
 import ManageAction from './components/characterForm/actions/ManageAction.vue';
 import ManageSpell from './components/characterForm/magic/ManageSpell.vue';
 import ManagePsionic from './components/characterForm/magic/ManagePsionic.vue';
+import ManageFeature from './components/characterForm/features/ManageFeature.vue';
 import ManageGear from './components/characterForm/gear/ManageGear.vue';
 import ManageFriend from './components/characterForm/friends/ManageFriend.vue';
 
@@ -69,6 +70,11 @@ const router = new Router({
                            path: 'psionic',
                            name: 'manage-psionic',
                            component: ManagePsionic,
+                        },
+                        {
+                           path: 'feature',
+                           name: 'manage-feature',
+                           component: ManageFeature,
                         },
                         {
                            path: 'gear',

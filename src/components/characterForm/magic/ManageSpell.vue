@@ -71,8 +71,20 @@ export default {
             <input
                type="checkbox"
                :checked="spell.prepared"
-               :disabled="$route.query.level === '0'"
+               :disabled="$route.query.level === '0' || spell.permanentlyPrepared"
                @change="editSpell({ ...info, prop: 'prepared', value: !spell.prepared })"
+            />
+         </div>
+         <div v-if="spell.prepared" class="component">
+            <span>Permanently Prepared</span>
+            <input
+               type="checkbox"
+               :checked="spell.permanentlyPrepared"
+               @change="editSpell({
+                  ...info,
+                  prop: 'permanentlyPrepared',
+                  value: !spell.permanentlyPrepared,
+               })"
             />
          </div>
          <div class="component">

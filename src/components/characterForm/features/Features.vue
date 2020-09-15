@@ -1,12 +1,18 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
-import draggable from 'vuedraggable';
+import Draggable from 'vuedraggable';
 // import map from 'lodash/map';
-// import Counter from '../Counter.vue';
-import { Button, Entry } from '@/components/common';
+import { Button } from '@/components/common';
+import Feature from './Feature.vue';
 
 export default {
    name: 'features',
+
+   components: {
+      Button,
+      Draggable,
+      Feature,
+   },
 
    computed: {
       ...mapGetters(['night']),
@@ -30,8 +36,6 @@ export default {
       },
    },
 
-   components: { Button, Entry, draggable },
-
    props: {
       character: Object,
    },
@@ -41,8 +45,8 @@ export default {
 <template>
    <div class="features global-page">
       <section class="entries">
-         <draggable v-model="features" :key="features.length" handle="#input-button">
-            <Entry
+         <Draggable v-model="features" :key="features.length" handle=".move-btn">
+            <!-- <Entry
                v-for="feature in features"
                :key="feature.id"
                :entry="feature"
@@ -51,12 +55,21 @@ export default {
                @titleInput="(value) => handleFeature(value, 'title', feature.id)"
                @contentInput="value => handleFeature(value, 'content', feature.id)"
                height="100px"
+            /> -->
+            <Feature
+               v-for="feature in features"
+               :key="feature.id"
+               :feature="feature"
+               :night="night"
             />
          </draggable>
 
       </section>
 
-      <Button class="add-feature" green full sm @click="addFeature">Add Feature</Button>
+      <div class="buttons">
+         <Button class="add-feature" green sm @click="addFeature('entry')">Add Feature</Button>
+         <Button orange sm @click="addFeature('counter')">Add Counter</Button>
+      </div>
    </div>
 </template>
 
@@ -67,12 +80,12 @@ export default {
    flex-direction: column;
    align-items: center;
 
-   & .entries {
-      width: 100%;
-   }
+   .entries { width: 100%; }
 
-   & .add-feature {
-      margin-top: 16px;
+   .buttons {
+      width: 100%;
+      display: flex;
+      justify-content: space-around;
    }
 }
 </style>

@@ -36,7 +36,7 @@ export default {
             <input
                class="check"
                type="checkbox"
-               :disabled="spellLevel === 0"
+               :disabled="spellLevel === 0 || spell.permanentlyPrepared"
                :checked="spell.prepared"
                @input="editSpell({
                   level: spellLevel,

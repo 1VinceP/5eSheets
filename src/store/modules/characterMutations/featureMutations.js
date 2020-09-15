@@ -7,8 +7,19 @@ const initialFeature = {
 };
 
 export default {
-   addFeature(state) {
-      state.features = [...state.features, { ...initialFeature, id: shortId() }];
+   addFeature(state, type = 'entry') {
+      const newFeature = {
+         ...initialFeature,
+         type,
+         id: shortId(),
+      };
+
+      if (type === 'counter') {
+         newFeature.value = 0;
+         newFeature.max = 0;
+      }
+
+      state.features = [...state.features, newFeature];
    },
 
    editFeature(state, { name, value, id }) {
