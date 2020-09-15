@@ -7,22 +7,6 @@ const initialSpellList = {
    spells: [],
 };
 
-// function parseNewDiscipline(title, content) {
-//    const orderReg = new RegExp(/(.*)( Discipline\n)/);
-//    const focusReg = new RegExp(/(Psychic Focus\. )(.*)/g);
-
-//    return {
-//       title,
-//       content,
-//       order: orderReg.exec(content)[1] || '',
-//       focus: {
-//          title,
-//          content: focusReg.exec(content)[2] || '',
-//       },
-//       id: shortId(),
-//    };
-// }
-
 export default {
    addSpellList(state) {
       if (state.spellsList.length < 10) {

@@ -46,16 +46,6 @@ export default {
    <div class="features global-page">
       <section class="entries">
          <Draggable v-model="features" :key="features.length" handle=".move-btn">
-            <!-- <Entry
-               v-for="feature in features"
-               :key="feature.id"
-               :entry="feature"
-               :night="night"
-               buttonLabel="Move"
-               @titleInput="(value) => handleFeature(value, 'title', feature.id)"
-               @contentInput="value => handleFeature(value, 'content', feature.id)"
-               height="100px"
-            /> -->
             <Feature
                v-for="feature in features"
                :key="feature.id"
