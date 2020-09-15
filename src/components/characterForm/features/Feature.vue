@@ -8,6 +8,12 @@ export default {
 
    components: { Button, Counter },
 
+   created() {
+      if (!this.feature.type) {
+         this.editFeature({ name: 'type', value: 'entry', id: this.feature.id });
+      }
+   },
+
    methods: {
       ...mapMutations('character', ['editFeature']),
 
