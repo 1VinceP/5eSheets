@@ -210,17 +210,15 @@ export default {
       }
    }
 
-   .points {
-      margin-bottom: 20px;
+   .points { margin-bottom: 20px; }
 
-      .section-label {
-         width: 100%;
-         margin-bottom: 6px;
-         font-size: 14px;
-         color: $navy;
-         &.margin + div { margin-bottom: 16px; }
-         &.night { color: $grey; }
-      }
+   .section-label {
+      width: 100%;
+      margin-bottom: 6px;
+      font-size: 14px;
+      color: $navy;
+      &.margin + div { margin-bottom: 16px; }
+      &.night { color: $grey; }
    }
 }
 </style>
