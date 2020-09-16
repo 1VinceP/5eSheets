@@ -73,25 +73,6 @@ export default {
       <span class="add-spell">
          <PlusIcon :size="18" @click="addSpell({ level: spellLevel })" />
       </span>
-
-      <!-- <Modal
-         :show="modalOpen"
-         title="Add Spell"
-         primaryLabel="Add"
-         secondaryLabel="Cancel"
-         @primary="addSpell"
-         @secondary="closeModal"
-         top
-         :night="night"
-      >
-         <Entry
-            contentPlaceholder="Paste spell data here. It will be parsed automagically."
-            :entry="{ title: newSpellName, content: newSpellContent }"
-            @titleInput="value => newSpellName = value"
-            @contentInput="value => newSpellContent = value"
-            :night="night"
-         />
-      </Modal> -->
    </div>
 </template>
 

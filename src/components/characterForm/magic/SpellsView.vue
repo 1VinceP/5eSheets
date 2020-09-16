@@ -38,6 +38,9 @@ export default {
       if (this.character.spellsKnown === undefined) {
          this.editProp({ prop: 'spellsKnown', value: 0 });
       }
+      if (this.character.cantripsKnown === undefined) {
+         this.editProp({ prop: 'cantripsKnown', value: 0 });
+      }
    },
 
    methods: {
@@ -103,20 +106,37 @@ export default {
          </div>
       </div>
 
-      <section>
-         <div :class="['section-label', 'margin', { night }]">
-            Max spells known/prepared
+      <section class="spell-counters">
+         <div class="container">
+            <div :class="['section-label', 'margin', { night }]">
+               Max cantrips
+            </div>
+            <Counter
+               name="cantripsKnown"
+               :min="0"
+               :value="character.cantripsKnown"
+               :disableDecrease="character.cantripsKnown <= 0"
+               @input="(value, name) => editField(Number(value), name)"
+               @onDecrease="(value, name) => editField(--character.cantripsKnown, name)"
+               @onIncrease="(value, name) => editField(++character.cantripsKnown, name)"
+               :night="night"
+            />
          </div>
-         <Counter
-            name="spellsKnown"
-            :min="0"
-            :value="character.spellsKnown"
-            :disableDecrease="character.spellsKnown <= 0"
-            @input="(value, name) => editField(Number(value), name)"
-            @onDecrease="(value, name) => editField(--character.spellsKnown, name)"
-            @onIncrease="(value, name) => editField(++character.spellsKnown, name)"
-            :night="night"
-         />
+         <div class="container">
+            <div :class="['section-label', 'margin', { night }]">
+               Max spells
+            </div>
+            <Counter
+               name="spellsKnown"
+               :min="0"
+               :value="character.spellsKnown"
+               :disableDecrease="character.spellsKnown <= 0"
+               @input="(value, name) => editField(Number(value), name)"
+               @onDecrease="(value, name) => editField(--character.spellsKnown, name)"
+               @onIncrease="(value, name) => editField(++character.spellsKnown, name)"
+               :night="night"
+            />
+         </div>
       </section>
 
       <section class="points">
@@ -169,10 +189,10 @@ export default {
 .spells-view {
    width: 100%;
 
-   & .spell-skills {
+   .spell-skills {
       width: 100%;
 
-      & .displays {
+      .displays {
          width: 100%;
          display: flex;
          justify-content: space-between;
@@ -180,10 +200,20 @@ export default {
       }
    }
 
-   & .points {
+   .spell-counters {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+
+      .container {
+         width: 48%;
+      }
+   }
+
+   .points {
       margin-bottom: 20px;
 
-      & .section-label {
+      .section-label {
          width: 100%;
          margin-bottom: 6px;
          font-size: 14px;
