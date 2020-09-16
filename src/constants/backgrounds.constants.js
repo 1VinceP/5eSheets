@@ -6,6 +6,12 @@ export default [
       feat: { name: '', data: '' },
    },
    {
+      name: 'Athlete',
+      skills: [],
+      proficiencies: [],
+      feat: { name: '', data: '' },
+   },
+   {
       name: 'Charlatan',
       skills: [],
       proficiencies: [],
@@ -55,6 +61,12 @@ export default [
    },
    {
       name: 'Hermit',
+      skills: [],
+      proficiencies: [],
+      feat: { name: '', data: '' },
+   },
+   {
+      name: 'Marine',
       skills: [],
       proficiencies: [],
       feat: { name: '', data: '' },
