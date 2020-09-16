@@ -126,6 +126,7 @@ export default [
          'Oath of Conquest',
          'Oath of the Crown',
          'Oath of Devotion',
+         'Oath of Glory',
          'Oath of Redemption',
          'Oath of Vengeance',
       ],
