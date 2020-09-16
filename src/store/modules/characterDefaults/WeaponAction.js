@@ -6,7 +6,8 @@ export default class Action {
       this.content = '';
       this.damage = '';
       this.damageType = '';
-      this.inherentBonus = 0;
+      this.hitBonus = 0;
+      this.damageBonus = 0;
       this.range = '';
       this.properties = [];
       this.proficient = false;

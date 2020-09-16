@@ -120,18 +120,33 @@ export default {
             :night="night"
          />
       </div>
-      <div v-show="action.type === 'weapon'" class="inputs">
+      <div v-show="action.type === 'weapon'" class="inputs three">
          <Input
             autocomplete="off"
             class="input"
-            label="Weapon Bonus"
-            name="bonus"
+            label="Hit Bonus"
+            name="hitBonus"
             type="number"
             min="0"
-            :value="action.inherentBonus"
+            :value="action.hitBonus"
             @input="value => editAction({
                ...info,
-               prop: 'inherentBonus',
+               prop: 'hitBonus',
+               value: Number(value),
+            })"
+            :night="night"
+         />
+         <Input
+            autocomplete="off"
+            class="input"
+            label="Dmg Bonus"
+            name="damageBonus"
+            type="number"
+            min="0"
+            :value="action.damageBonus"
+            @input="value => editAction({
+               ...info,
+               prop: 'damageBonus',
                value: Number(value),
             })"
             :night="night"
@@ -171,7 +186,9 @@ export default {
    display: flex;
    justify-content: space-between;
    align-items: center;
-   & .input { width: 48%; }
+   .input { width: 48%; }
+   &.three .input { width: 30%; }
+
 }
 
 .handle-proficient {

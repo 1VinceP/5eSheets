@@ -22,13 +22,13 @@ export default {
 
       attackBonus() {
          const profBonus = this.action.proficient ? this.proficiencyBonus : 0;
-         const total = 0 + this.abilityMod + profBonus + this.action.inherentBonus;
+         const total = 0 + this.abilityMod + profBonus + this.action.hitBonus;
          const symbol = total >= 0 ? '+' : '';
          return `${symbol}${total}`;
       },
 
       damageBonus() {
-         const total = 0 + this.abilityMod + this.action.inherentBonus;
+         const total = 0 + this.abilityMod + this.action.damageBonus;
          const symbol = total > 0 ? ' + ' : ' - ';
          // convert to positive for display
          const bonus = total < 0 ? total * -1 : total;
@@ -39,6 +39,18 @@ export default {
          // spreading to avoid side effects
          return [...this.action.properties].sort().map(p => startCase(p)).join(', ');
       },
+   },
+
+   created() {
+      if (this.action.type === 'weapon') {
+         const { actionTime, id, inherentBonus } = this.action;
+         if (this.action.hitBonus === undefined) {
+            this.editAction({ actionTime, id, prop: 'hitBonus', value: inherentBonus || 0 });
+         }
+         if (this.action.damageBonus === undefined) {
+            this.editAction({ actionTime, id, prop: 'damageBonus', value: inherentBonus || 0 });
+         }
+      }
    },
 
    methods: {
