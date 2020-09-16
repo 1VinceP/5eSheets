@@ -78,6 +78,7 @@ const initialState = () => ({
    specialItems: [],
    treasure: '',
    /* magic */
+   spellsKnown: 0,
    magicDisplay: 'spells',
    spellAbility: '',
    spellsList: [

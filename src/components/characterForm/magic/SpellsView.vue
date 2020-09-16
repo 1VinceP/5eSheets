@@ -1,5 +1,6 @@
 <script>
 import { mapState, mapGetters, mapMutations } from 'vuex';
+import orderBy from 'lodash/orderBy';
 import { Button, Input, Select } from '@/components/common';
 import SpellContainer from './SpellContainer.vue';
 import Counter from '@/components/characterForm/Counter.vue';
@@ -33,11 +34,33 @@ export default {
       },
    },
 
+   created() {
+      if (this.character.spellsKnown === undefined) {
+         this.editProp({ prop: 'spellsKnown', value: 0 });
+      }
+   },
+
    methods: {
       ...mapMutations('character', ['editProp', 'addSpellList', 'removeSpellList']),
 
       editField(value, prop) {
          this.editProp({ value, prop });
+      },
+
+      orderSpellList(spellList) {
+         const newSpellList = {
+            ...spellList,
+            spells: orderBy(
+               spellList.spells,
+               [
+                  'permanentlyPrepared',
+                  'prepared',
+                  'title',
+               ],
+               ['desc', 'desc', 'asc'],
+            ),
+         };
+         return newSpellList;
       },
    },
 
@@ -80,6 +103,22 @@ export default {
          </div>
       </div>
 
+      <section>
+         <div :class="['section-label', 'margin', { night }]">
+            Max spells known/prepared
+         </div>
+         <Counter
+            name="spellsKnown"
+            :min="0"
+            :value="character.spellsKnown"
+            :disableDecrease="character.spellsKnown <= 0"
+            @input="(value, name) => editField(Number(value), name)"
+            @onDecrease="(value, name) => editField(--character.spellsKnown, name)"
+            @onIncrease="(value, name) => editField(++character.spellsKnown, name)"
+            :night="night"
+         />
+      </section>
+
       <section class="points">
          <div v-show="isSorcerer" :class="['section-label', 'margin', { night }]">
             Sorcery Points
@@ -108,7 +147,7 @@ export default {
             v-for="(spellList, i) in spellsList"
             :key="i"
             :spellLevel="i"
-            :spellLevelData="spellList"
+            :spellLevelData="orderSpellList(spellList)"
             :night="night"
          />
       </section>
