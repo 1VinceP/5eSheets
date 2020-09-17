@@ -1,5 +1,7 @@
 <script>
 import { mapState, mapActions, mapGetters, mapMutations } from 'vuex';
+import map from 'lodash/map';
+import uuid from 'uuid/v4';
 import ArrowIcon from 'vue-material-design-icons/ChevronRight.vue';
 import ImportIcon from 'vue-material-design-icons/FileImport.vue';
 import Header from '@/components/Header.vue';
@@ -21,7 +23,9 @@ export default {
    methods: {
       ...mapActions(['getCharacters']),
       ...mapMutations('character', ['resetForm']),
-      ...mapActions('character', ['importCharacter']),
+      ...mapActions('character', ['importCharacter', 'deleteCharacter']),
+
+      map,
 
       // eslint-disable-next-line consistent-return
       loadFiles() {
@@ -36,6 +40,33 @@ export default {
             this.importCharacter(character);
          };
          fr.readAsText(files[0]);
+      },
+
+      handleBrokenCharacter(character, index) {
+         if (!character.id) {
+            const confirmDownload = window.confirm('Something seems to have gone wrong with this character. Would you like to download a copy?');
+            const confirmDelete = window.confirm('Would you like to delete the broken character?');
+            if (confirmDownload) {
+               this.exportCharacter(character);
+            }
+            if (confirmDelete) {
+               const newCharacterList = [...this.characters];
+               newCharacterList.splice(index, 1);
+               localStorage.setItem('5e-characters', JSON.stringify(newCharacterList));
+               this.getCharacters();
+            }
+         }
+      },
+
+      exportCharacter(brokenCharacter) {
+         const character = JSON.stringify({ ...brokenCharacter, id: uuid() });
+         const dataStr = `data:text/json;charset=utf-8,${encodeURIComponent(character)}`;
+         const downloadElement = document.createElement('a');
+         downloadElement.setAttribute('href', dataStr);
+         downloadElement.setAttribute('download', 'broken_character.json');
+         document.body.appendChild(downloadElement);
+         downloadElement.click();
+         downloadElement.remove();
       },
    },
 
@@ -64,12 +95,12 @@ export default {
 
       <div class="character-list">
          <router-link
-            v-for="character in characters"
+            v-for="(character, i) in characters"
             :key="character.id"
             :to="`/characters/${character.id}`"
             :class="['global-link', 'character', { night }]"
          >
-            <section class="section left">
+            <section class="section left" @click="handleBrokenCharacter(character, i)">
                <span class="title">{{ character.name }}</span>
                <div class="classes">
                   <div v-for="(charClass, i) in character.classes" :key="charClass.name">
