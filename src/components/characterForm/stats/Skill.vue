@@ -6,7 +6,7 @@ export default {
    name: 'skill',
 
    computed: {
-      ...mapState('character', ['abilities']),
+      ...mapState('character', ['abilities', 'classes']),
       ...mapGetters('character', ['proficiencyBonus']),
 
       ability() {
@@ -30,6 +30,11 @@ export default {
          } else {
             total += (this.ability.modifier * 1);
          }
+
+         if (!this.proficient) {
+            total += this.jackOfAllTrades;
+         }
+
          return total;
       },
 
@@ -52,6 +57,7 @@ export default {
       sort: String,
       skill: Object,
       isHeader: { type: Boolean, default: false },
+      jackOfAllTrades: { type: Number, default: 0 },
       night: { type: Boolean, default: false },
    },
 };

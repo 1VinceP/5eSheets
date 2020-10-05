@@ -40,6 +40,12 @@ export default {
       hitDiceArray() {
          return map(this.character.hitDice).filter(hd => hd.max > 0);
       },
+
+      jackOfAllTrades() {
+         const isBard2 = this.character.classes.find(clas => clas.name === 'Bard' && clas.level >= 2);
+         if (isBard2) return Math.floor(this.proficiencyBonus / 2);
+         return 0;
+      },
    },
 
    created() {
@@ -418,6 +424,7 @@ export default {
             :key="skill.label"
             :skill="skill"
             :sort="sort"
+            :jackOfAllTrades="jackOfAllTrades"
          />
          <div class="passive-perception">
             Passive perception
