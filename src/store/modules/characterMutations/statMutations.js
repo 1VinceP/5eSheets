@@ -1,7 +1,15 @@
 import classList from '@/constants/classes.constants';
+import subclassList from '@/constants/subclasses.constants';
 import calcAbilityMod from '@/utils/calcAbilityMod';
 
-const initialClass = { name: '', level: 0, subclass: '', hitDie: null, features: {} };
+const initialClass = {
+   name: '',
+   level: 0,
+   subclass: '',
+   hitDie: null,
+   features: [],
+   subclassFeatures: [],
+};
 
 function getNewHitDieValue(dieValue, classes) {
    return classes.reduce((total, next) => {
@@ -25,7 +33,7 @@ export default {
       state.classes[index][prop] = value;
       if (prop === 'name') {
          const ClassConstant = classList.find(c => c.name === value);
-         state.classes[index].features = ClassConstant.features;
+         state.classes[index].features = ClassConstant.features[1];
 
          const oldHitDie = state.classes[index].hitDie;
          const newHitDie = ClassConstant.hitDie;
@@ -40,11 +48,47 @@ export default {
             state.hitDice[newHitDie].current = newValueForNewDice;
          }
       } else if (prop === 'level') {
-         const dieValue = classList.find(c => c.name === state.classes[index].name).hitDie;
+         const ClassConstant = classList.find(c => c.name === state.classes[index].name);
+         const SubclassConstant = subclassList.find(sc => sc.name === state.classes[index].subclass);
+         const dieValue = ClassConstant.hitDie;
          const newValue = getNewHitDieValue(dieValue, state.classes);
 
          state.hitDice[dieValue].max = newValue;
          state.hitDice[dieValue].current = newValue;
+
+         // assign current features from class
+         state.classes[index].features = [];
+         for (let i = 1; i <= value; i++) {
+            if (ClassConstant.features[i]) {
+               state.classes[index].features = [
+                  ...state.classes[index].features,
+                  ...ClassConstant.features[i],
+               ];
+            }
+         }
+
+         // assign current features from subclass
+         state.classes[index].subclassFeatures = [];
+         for (let i = 1; i <= value; i++) {
+            if (SubclassConstant && SubclassConstant.features[i]) {
+               state.classes[index].subclassFeatures = [
+                  ...state.classes[index].subclassFeatures,
+                  ...SubclassConstant.features[i],
+               ];
+            }
+         }
+      } else if (prop === 'subclass') {
+         // const ClassConstant = classList.find(c => c.name === state.classes[index].name);
+         const SubclassConstant = subclassList.find(sc => sc.name === value);
+         state.classes[index].subclassFeatures = [];
+         for (let i = 1; i <= state.classes[index].level; i++) {
+            if (SubclassConstant && SubclassConstant.features[i]) {
+               state.classes[index].subclassFeatures = [
+                  ...state.classes[index].subclassFeatures,
+                  ...SubclassConstant.features[i],
+               ];
+            }
+         }
       }
    },
 

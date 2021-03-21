@@ -27,13 +27,6 @@ const initialSpellList = {
    spells: [],
 };
 
-const initialFeature = {
-   title: '',
-   content: '',
-   type: 'entry',
-   id: '',
-};
-
 const initialState = () => ({
    /* stats */
    name: '',
@@ -55,7 +48,14 @@ const initialState = () => ({
    deathSucceeds: 0,
    deathFails: 0,
    race: '',
-   classes: [{ name: '', level: 0, subclass: '', hitDie: null }],
+   classes: [{
+      name: '',
+      level: 0,
+      subclass: '',
+      hitDie: null,
+      features: [],
+      subclassFeatures: [],
+   }],
    proficiencyBonus: 2,
    abilities: {
       str: { ...initialSkill },
@@ -93,7 +93,7 @@ const initialState = () => ({
    psiTalents: [],
    psiDisciplines: [],
    /* features */
-   features: [{ ...initialFeature, id: shortId() }],
+   features: [],
    // classFeatures: [],
    // racialFeatures: [],
    /* life */

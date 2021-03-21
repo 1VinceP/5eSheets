@@ -1,5 +1,6 @@
 <script>
 import { mapGetters, mapMutations, mapState } from 'vuex';
+import flatMap from 'lodash/flatMap';
 import { Input, Entry, Button } from '@/components/common';
 
 export default {
@@ -9,12 +10,21 @@ export default {
 
    computed: {
       ...mapGetters(['night']),
-      ...mapState('character', ['features']),
+      ...mapState('character', ['features', 'classes']),
 
       feature() {
          const { id } = this.$route.query;
-         return this.features.find(f => f.id === id);
+         let feature = this.features.find(f => f.id === id);
+
+         if (!feature) {
+            feature = flatMap(this.classes, c => [...c.features, ...c.subclassFeatures])
+               .find(f => f.id === id);
+         }
+
+         return feature;
       },
+
+      disabled() { return this.feature.fromClass || this.feature.fromSubclass; },
    },
 
    methods: {
@@ -31,8 +41,6 @@ export default {
             this.handleReturn();
          }
       },
-
-      handleOrigin() {},
    },
 
    props: {
@@ -48,6 +56,7 @@ export default {
          @titleInput="value => handleFeature(value, 'title', feature.id)"
          @contentInput="value => handleFeature(value, 'content', feature.id)"
          :entry="feature"
+         :disabled="disabled"
          :night="night"
       />
       <Input
@@ -56,6 +65,7 @@ export default {
          name="origin"
          placeholder="Racial, Cleric, etc..."
          :value="feature.origin"
+         :disabled="disabled"
          :night="night"
          @input="value => handleFeature(value, 'origin', feature.id)"
       />
@@ -65,6 +75,7 @@ export default {
          name="value"
          placeholder="0"
          :value="feature.value"
+         :disabled="disabled"
          :night="night"
          @input="value => handleFeature(Number(value), 'value', feature.id)"
       />
@@ -74,10 +85,11 @@ export default {
          name="max"
          placeholder="0"
          :value="feature.max"
+         :disabled="disabled"
          :night="night"
          @input="value => handleFeature(Number(value), 'max', feature.id)"
       />
-      <Button class="delete" red full @click="handleDelete">Remove</Button>
+      <Button v-show="!disabled" class="delete" red full @click="handleDelete">Remove</Button>
    </div>
 </template>
 

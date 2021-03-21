@@ -1,7 +1,8 @@
 <script>
 import { mapGetters, mapMutations } from 'vuex';
 import Draggable from 'vuedraggable';
-// import map from 'lodash/map';
+import flatMap from 'lodash/flatMap';
+import orderBy from 'lodash/orderBy';
 import { Button } from '@/components/common';
 import Feature from './Feature.vue';
 
@@ -20,10 +21,24 @@ export default {
 
       features: {
          get() {
-            return this.character.features;
+            const classFeatures = flatMap(this.character.classes, c => c.features || []);
+            const subclassFeatures = flatMap(this.character.classes, c => c.subclassFeatures || []);
+            const features = [...this.character.features, ...classFeatures, ...subclassFeatures];
+            return orderBy(
+               features,
+               [
+                  feature => feature.type === 'counter',
+                  feature => feature.fromClass,
+                  feature => feature.fromSubclass,
+                  feature => !feature.fromClass && !feature.fromSubclass,
+               ],
+               'desc',
+            );
          },
          set(newList) {
-            this.updateFeaturesOrder(newList);
+            this.updateFeaturesOrder(
+               newList.filter(feature => !feature.fromClass && !feature.fromSubclass),
+            );
          },
       },
    },

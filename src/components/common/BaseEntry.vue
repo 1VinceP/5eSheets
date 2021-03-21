@@ -27,6 +27,7 @@ export default {
       height: { type: String, default: '400px' },
       entry: Object,
       autofocus: { type: Boolean, default: false },
+      disabled: { type: Boolean, default: false },
       night: { type: Boolean, default: false },
    },
 };
@@ -42,6 +43,7 @@ export default {
          :placeholder="titlePlaceholder"
          :inputStyle="{ paddingLeft: '8px' }"
          :value="entry.title"
+         :disabled="disabled"
          :night="night"
          @input="handleTitle"
          @button="handleButton"
@@ -53,6 +55,7 @@ export default {
          :placeholder="contentPlaceholder"
          :value="entry.content"
          :height="height"
+         :disabled="disabled"
          :night="night"
          @input="handleContent"
       />

@@ -8,6 +8,10 @@ export default {
 
    components: { Button, Counter },
 
+   computed: {
+      movable() { return !(this.feature.fromClass || this.feature.fromSubclass); },
+   },
+
    created() {
       if (!this.feature.type) {
          this.editFeature({ name: 'type', value: 'entry', id: this.feature.id });
@@ -28,7 +32,7 @@ export default {
    },
 
    props: {
-      feature: Object,
+      feature: { type: Object, default: () => ({}) },
       night: { type: Boolean, default: false },
    },
 };
@@ -38,7 +42,7 @@ export default {
    <div v-if="feature.type === 'entry'" class="feature-entry" @click="handleNav">
       <section class="top">
          <span class="title">{{ feature.title }}</span>
-         <Button class="move-btn" link sm>Move</Button>
+         <Button v-show="movable" class="move-btn" link sm>Move</Button>
       </section>
       <section class="bottom">
          <span class="origin">{{ feature.origin }}</span>
@@ -48,12 +52,13 @@ export default {
    <div v-else-if="feature.type === 'counter'" class="feature-counter">
       <div class="counter-header">
          <div class="title" @click="handleNav">{{ feature.title || 'Tap to edit' }}</div>
-         <Button class="move-btn" link sm>Move</Button>
+         <Button v-show="movable" class="move-btn" link sm>Move</Button>
       </div>
       <Counter
          label="/"
          :name="feature.title"
          :value="feature.value"
+         :min="0"
          :secondaryValue="feature.max"
          @input="value => handleCounter('value', value)"
          @secondaryInput="value => handleCounter('max', value)"

@@ -3,6 +3,9 @@ import shortId from '@/utils/generateId';
 const initialFeature = {
    title: '',
    content: '',
+   refresh: null, // null | 'short' | 'long'
+   fromClass: false,
+   fromSubclass: false,
    id: '',
 };
 
